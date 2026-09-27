@@ -1,125 +1,123 @@
-# Loch Raven Capital — Autonomous Multi-Strategy Desk
+﻿# Loch Raven Capital
 
-An AI investment firm modeled on institutional asset managers (T. Rowe Price
-structure): a research floor of five analyst desks, an adversarial
-bull/bear/base debate room, a PM judge, a risk desk, an execution desk wired
-to Public.com, and four autonomous strategy sleeves — all behind a localhost
-dashboard.
+An autonomous AI investment committee with an institutional memory.
 
-## Start
+Built by Patrick Kamdem (Morgan State University) for the **T. Rowe Price NextGen Finance Innovation Challenge at hackUMBC 2026**.
 
-```powershell
-cd loch-raven
-py -3.11 app.py        # -> http://localhost:8420
+![Loch Raven Institutional Memory console](docs/console.png)
+
+## The problem
+
+Investment firms are putting AI into their research. On September 10, 2026 T. Rowe Price announced it is expanding Claude across its investment organization. The hard question is not whether an AI can write a research note. It is how anyone knows the AI was right.
+
+Most AI tools answer from generic memory, cannot show their sources and are never graded against what the market did next. Loch Raven measured its own AI committee. Across 1,794 real decisions since June 2026, its buy and sell calls were right only 41% of the time over the following 20 trading days, measured against the S&P 500. Confident is not the same as right.
+
+## What Loch Raven is
+
+Loch Raven Capital is an AI investment firm that runs on one computer. Every morning it screens the whole US stock market, five Claude research desks study the best candidates, a bull, a bear and a base case argue, a portfolio manager agent issues a binding verdict, and a risk desk with hard limits decides what the firm may do. Four strategy sleeves trade a paper book. See `docs/ENGINE.md` for the full engine.
+
+## What was built at hackUMBC 2026
+
+The hackUMBC rules ask that submitted work happen during the hacking period, from 12 PM Saturday September 26 to 11:45 AM Sunday September 27, 2026. Here is exactly what existed before and what was built during it.
+
+* **Before the event.** The trading engine above, built and run from June to September 2026, is imported unchanged in the first commit (`35f7903`) except for removing personal paths and contact details.
+* **During the event.** Everything in every later commit. That is the Institutional Memory layer below, its console, its tests and this documentation.
+
+| Built at hackUMBC | File |
+| --- | --- |
+| Archive of 1,794 graded committee decisions | `data/memory/memos.jsonl`, `scripts/build_memory_dataset.py`, `firm/memory_archive.py` |
+| Firm playbook of 9 methodology chapters and 12 lessons | `data/memory/playbook/`, `data/memory/lessons.md` |
+| Point in time hybrid retrieval (RAG) | `firm/memory_rag.py` |
+| Guardrails and a hash chained audit log | `firm/memory_guard.py` |
+| Memory grounded Claude review | `firm/memory_review.py` |
+| Walk forward evaluation | `firm/memory_eval.py` |
+| RAFT fine tuning datasets | `firm/memory_finetune.py` |
+| Console and API | `memory_console.py`, `firm/memory_api.py`, `dashboard/memory.html` |
+| Precedents in every committee judge prompt | `firm/debate.py` |
+| 63 check memory test suite | `tests/test_memory.py` |
+
+## Quick start, offline, no keys
+
+```bash
+git clone https://github.com/PadiusD1/loch-raven-capital
+cd loch-raven-capital
+python -m pip install -r requirements.txt
+python memory_console.py
 ```
 
-Headless cycle (for Task Scheduler / cron):
+Open http://localhost:8421/memory and click AMD, MU, CSCO or QQQ. Those four reviews are real Claude answers recorded tonight. The console replays them offline and reruns every guardrail live.
 
-```powershell
-py -3.11 run_cycle.py                 # full research + trade cycle
-py -3.11 run_cycle.py --monitor-only  # exit sweep only
-py -3.11 run_cycle.py --depth full    # max research depth this run
+For a live review, sign in to the Claude Code CLI (`claude`) and switch the console to Live Claude. The full firm cockpit runs with `python app.py` on port 8420 and mounts the same memory routes.
+
+## How the memory works
+
+**Two kinds of institutional memory.** The playbook holds how the firm analyzes. Its nine chapters cover financial statements, thesis and due diligence, modeling, multiples, DCF, research writing, evidence on extreme winners and the firm risk policy, plus the 12 lessons the firm distilled from its own graded trades. The history holds what the firm decided and what the market did next. Every memo carries its outcome 5 and 20 trading days later versus SPY, and the date that outcome became knowable.
+
+**Retrieval.** Every document is indexed twice. BM25 catches exact language such as tickers, catalysts and metric names. Latent semantic vectors, TF IDF followed by a truncated SVD, catch paraphrase. The two rankings are fused with reciprocal rank fusion. A per ticker cap keeps results diverse, and a source quota puts at least one methodology passage in every review.
+
+**Point in time.** A decision dated D only sees memos written before D, and only sees outcomes that were already knowable before D. This is enforced in the retriever, checked again by the guardrails and tested in the suite.
+
+**Grounded answers.** Claude receives the playbook passages as `[K1]` to `[K3]` and the precedents as `[P1]` to `[P6]`, and must cite what it relies on.
+
+**Guardrails the model cannot override.** Every answer is checked for real citations, figures that trace back to the evidence, no look ahead and firm policy limits, and every answer is a recommendation that a human signs off. Each review is appended to a hash chained audit log, so editing any past record breaks the chain.
+
+**Fine tuning data, the careful way.** `firm/memory_finetune.py` exports supervised examples (only calls the market proved right), KTO examples (every graded call labeled desirable or undesirable) and reward labels. Prompts follow the RAFT recipe (retrieval augmented fine tuning), so each example carries the playbook passages and point in time precedents the committee could have retrieved that day. Training rows were all graded before the split date and test rows were all decided after it, with zero leaked rows.
+
+## Honest results
+
+Walk forward over every graded buy and sell call, each call seeing only what was knowable on its own date.
+
+| Group | Calls | Right | Average versus SPY |
+| --- | --- | --- | --- |
+| Committee alone | 264 | 41% | minus 3.1 points |
+| Memory supported the call | 73 | 32% | minus 5.0 points |
+| Memory warned against the call | 145 | 45% | minus 3.2 points |
+| Conviction 60 to 69 | 188 | 37% | minus 4.6 points |
+
+The memory retrieves six precedents, the same number the live committee sees. Across retrieval depths from 5 to 12, calls the memory supported were right 32% to 41% of the time and calls it warned against 40% to 45%. In no setting did following the memory clearly beat ignoring it, and at 218 calls none of these gaps is statistically significant. Momentum reversed in July, so setups that had worked in June stopped working. The memory therefore informs the committee and never overrules it.
+
+It did surface a real flaw. Most calls sat at 60 to 69 conviction and were right only 37% of the time, the same weakness the firm's own review flagged on September 18, which is now retrieved and cited at every decision.
+
+## The four sleeves and the $100k paper book
+
+The AI team runs a $100,000 paper book split across four categories, $25,000 each at launch on June 9, 2026. Alpha Stocks is a committee sized single stock book. Core Blend holds a 55% ETF core whose seats are earned by momentum plus 45% conviction satellites. The Options Desk trades long calls and puts only, with exit ladders designed per trade by an AI exit strategist. ETF Rotation holds the top 3 of 17 ETFs by momentum and moves to T bills when nothing beats cash.
+
+The team allocates on its own. The portfolio manager sizes every position from its conviction, the risk desk caps any name at 18% of a sleeve and any sector at 35%, a weekly rebalance moves idle cash when a sleeve drifts outside 12% to 40% of the firm, and the learning review retunes caps inside hard bounds.
+
+At the September 25, 2026 close the book stood at $100,309 against a 4.6% gain for the S&P 500 since June 9. ETF Rotation ($26,109) and Core Blend ($26,098) tracked the index, the Options Desk ($25,450) trailed it, and Alpha Stocks ($22,651), the sleeve that leans hardest on AI judgment, lagged it by 14 points. That gap is why the memory layer exists.
+
+Four months and one market regime make a starter archive. The same pipeline pointed at a firm with decades of graded research is where these statistics become meaningful.
+
+## Responsible by design
+
+* Paper trading by default. Live trading needs an explicit switch and is refused while positions or orders are open.
+* Position caps of 18% per name and 35% per sector, volatility aware stops, a daily circuit breaker, a soft tier that halves new sizes, and a kill switch that diagnoses sector, market or stock picking failure before it halts.
+* Memory reviews never place orders.
+* Every review is written to a tamper evident audit chain.
+
+## Tests
+
+```bash
+python tests/test_memory.py      # 63 checks, the memory layer
+python tests/test_firm.py        # 1,104 checks, the trading engine
+python tests/test_week_sim.py    # 53 checks, a simulated trading week plus live mode plumbing
 ```
 
-## The firm structure
+## Repository map
 
-| Layer | What it does |
-|---|---|
-| Quant screen | **Full-market sweep: every listed US common stock (~10k symbols, NYSE/NASDAQ/AMEX)** ranked on momentum/trend/quality with a RISK-ADJUSTED tie-break (momentum/vol). Tradability floor: price >= $1, 60d MEDIAN $ volume >= $500k. Quality gates on research slots: all tiers reject vol > 150% ann. and 12m return <= -80% (squeeze/death-spiral junk); the small tier also needs mcap >= $300M and price >= $5. Tiered slots: 3 large (>=10B), 3 mid (2-10B), 3 small. Cached daily (`SCAN_CACHE_HOURS`) |
-| Research floor | 5 desks (fundamental, technical, sentiment, macro, quant) — each sees ONLY its lens's evidence (`analysts._DESK_VIEWS`) so disagreement means something. Claude Opus on your CLI subscription. **Held names (and the underlyings of open calls) are re-underwritten every cycle** — a decayed thesis gets a fresh verdict, not just a mechanical stop |
-| Debate room | Bull vs Bear vs Base argue every candidate adversarially (full depth: 3 separate calls; standard depth: debate+judge folded into ONE call — A/B-validated equal quality at 2/3 the cost) |
-| PM judge | Issues the binding verdict: rating, conviction, target weight, calls-suitability. FIRM-MEMORY lessons go to the judge ONLY (echo-chamber guard) |
-| Risk desk | Per-sleeve daily breakers (% of day-start equity, vol-widened) + drawdown kill switches with diagnosis; position/sector/correlation caps; **firm-wide caps across sleeves** (10% per single name, 25% per diversified ETF); entry price-drift guard (skip past max(3%, 0.75 sigma) from thesis price); earnings guard (no entries <=1 day to a report); vol-aware sizing. **Caps are LEARNABLE inside hard bounds** (`CAP_BOUNDS`, `risk.tuned_cap`) — the review re-tunes them with evidence |
-| Execution desk | Public.com SDK (same key/account as market-analysis scalper); honest paper fills (equities cross 5bps/side, options cross half the half-spread + $0.65/contract), paper buys respect market hours, **dividends credited on ex-date**, split-adjusted positions (no phantom -50% stops) |
-| Exit monitor | TWO loops while the app runs (session-gated — no overnight API burn): calls desk ticks ~1s via Public.com batch quotes; stock/ETF sleeves sweep every 60s. Public-quotes-first marks, yfinance fallback |
-| Cash equitization | Alpha parks idle cash above a 70% invested floor in SPY (to 90% target) — a SPY-benchmarked book must never lose to its index by sitting in cash. Sold automatically to fund conviction buys; stands down whenever the sleeve is de-risking |
-| The Bench (watchlist) | Near-miss names + PM HOLDs (with the judge's own "what would change my mind" trigger) tracked across cycles; promoted into full research the moment their setup completes (quant +5pts or HOLD re-check after 3 days, max 3/cycle, 21-day expiry) |
-| Firm memory (learning) | Every closed trade carries its ENTRY verdict, research depth, desk scores, and **SPY-relative excess return over its own holding window** (state/ledger.json); after every 5+ closes, Opus reviews with a benchmark scoreboard, a CAPS AUDIT (forward outcome of every blocked entry), and a REGRET AUDIT (committee BUYs never owned) under an ambition mandate — beating SPY is the floor. Output: <=12 falsifiable lessons (soft 120-day expiry), bench tuning, and cap tuning, all hard-bounded |
+* `firm/` the engine and the memory layer (`memory_*.py`)
+* `data/memory/` the archive, prices, playbook and recorded demo reviews
+* `dashboard/` the cockpit (`index.html`) and the memory console (`memory.html`)
+* `tests/` the regression suites
+* `docs/` the engine documentation and audit history
 
-## The four sleeves ($25k paper each)
+## Sources and credits
 
-1. **Alpha Stocks** — concentrated 8-name stock book from PM verdicts. Exits: vol-aware hard stop (base -12%), trail that stays armed once a position has EVER been green, SELL verdicts. Idle cash equitized into SPY.
-2. **Core Blend** — 55% fixed core (VOO/QQQ/GLD) + 45% conviction-stock satellites.
-3. **Calls Desk** — long calls only, STRONG_BUY + suitable_for_calls + conviction ≥ 70. **Exit ladder designed by the Opus exit strategist per trade** (`firm/exits.py`): it weighs DTE/theta, underlying volatility, conviction, and premium, then sets SL, TP tiers, scale-out sizes, and the trailing ramp — clamped to hard guardrails (SL 1-15%, TP1 3-30%, etc.). Falls back to the proven scalper default (SL -2 | TP1 +5 sell 50% | TP2 +60 | TP3 +100, trails 5/15/20) if the CLI is unavailable.
-4. **ETF Rotation** — monthly dual momentum: top-3 of 17 ETFs by blended 3m/6m momentum, cash filter to BIL when nothing beats T-bills.
+* Playbook chapters are written in our own words from the author's Wall Street Prep Sell Side Equity Research Certification notes and a Morgan State University DCF lesson series (April 2026). No course text is reproduced.
+* Chapter 8 summarizes Anna Yartseva, The Alchemy of Multibagger Stocks, CAFE working paper 33, Birmingham City University, 2025 (CC BY NC SA).
+* T. Rowe Price facts come from its press release of September 10, 2026.
+* Research and reviews run on Claude through the Claude Code CLI. Built with FastAPI, scikit learn, NumPy and yfinance.
 
-## When it runs (automation)
+Nothing here is investment advice. Past results do not promise future results.
 
-Six Windows scheduled tasks are registered — **S4U logon: they run whether or
-not you are logged in** — all with StartWhenAvailable so a missed run fires as
-soon as the PC can. The three market tasks are also network-gated
-(RunOnlyIfNetworkAvailable): offline at trigger time, Windows defers them
-until connectivity returns.
-
-- **"LochRaven Premarket Scan"** — weekdays 8:30 AM: refreshes the full-market scan with overnight data (8:30 is when CPI/jobs data drops) so the 9:45 cycle trades fresh. Never trades.
-- **"LochRaven Firm Cycle"** — weekdays 9:45 AM: full research + trade cycle at the depth saved in settings. Research deadline is SELF-TUNING (1.75x the worst observed normal run per depth, per-candidate normalized, clamped to floors/150 min). Delegates into the running app when it's up (single-writer safety).
-- **"LochRaven Postmarket Wrap"** — weekdays 4:30 PM: final exit sweep after the close + dividend accrual + official EOD P&L per sleeve to the journal. Never buys.
-- **"LochRaven Exit Monitor"** — every 15 minutes: sweeps TP/SL/trailing exits. Skips itself when the app (or a headless cycle) is already covering exits.
-- **"LochRaven Keepalive"** — every 5 minutes + at boot: if the dashboard app died, restarts it and VERIFIES the restart took (journals `keepalive_restart`). Also serves the `/api/restart` graceful code reload.
-- **"LochRaven Self-Test"** — Sundays 6 PM: runs BOTH test suites unattended (sandboxed, safe beside the live app), journals `self_test`, raises a dashboard alert on failure — environment drift is caught within a week.
-
-Boot resilience: `LochRavenAutostart.cmd` in the user Startup folder relaunches the app at every login. Outage resilience: a cycle that produces ZERO verdicts (internet died mid-run) is NOT stamped as done — the health desk retries it within 30 min of connectivity returning (`health.internet_up` probe), and a missed EOD wrap self-books on reconnect (`health.eod_catchup`). Missed 9:45 cycles are also caught up in-app when research is >26h stale on a weekday.
-
-Manage tasks: `schtasks /Query /TN "LochRaven Firm Cycle"`, `/Change /DISABLE`, `/Delete`. The PC must be on (logged in NOT required).
-
-## Account care as the portfolio grows (health desk)
-
-While the app runs, a health sweep every 30 min (`firm/health.py`, surfaced in the dashboard "Desk Health" panel and `/api/health`):
-
-- **Self-checks** — cycle freshness, market-scan freshness, monitor heartbeat, risk halts, Claude CLI, broker connectivity. Failures are journaled as `health_warning`.
-- **Capital rebalance** — weekly: if any sleeve's share of firm equity leaves the 12-40% band, idle CASH migrates from oversized sleeves to undersized ones (positions are never force-sold). Winners fund the next opportunity instead of concentrating risk.
-- **Live reconciliation** — live mode only: internal books vs the real Public.com account; drift (manual trades, fill mismatches) is flagged on the dashboard and journaled, never silently "fixed".
-- **Per-sleeve drawdown kill switches** — alpha 22%, core 20%, calls 15%, rotation 20% — tuned per mandate so a normal correction doesn't permanently halt a long-horizon book.
-- **Journal rotation** — journal.jsonl trims itself past 3 MB so years of running never bloat state.
-
-## Modes
-
-- **PAPER (default)** — real quotes, simulated fills, full P&L tracking. Prove it here first.
-- **LIVE** — real orders to the Public.com brokerage account configured in market-analysis/credentials.py. Toggle in the dashboard (asks for confirmation).
-
-## Research depth (Opus calls per candidate)
-
-- `fast` = 1 · `standard` = 3 · `full` = 9. Set in dashboard or `--depth`.
-- ~9 candidates per cycle clear the quant screen (6 stocks + 3 ETFs).
-
-## Backtests (5y vs SPY, as of build date)
-
-- ETF Rotation (exact mechanical replay): **27.4% CAGR vs SPY 20.2%, Sharpe 1.32, MaxDD -17%**
-- Alpha momentum floor (without the Opus layer): **69.3% CAGR, Sharpe 1.73, MaxDD -32%** — momentum had an exceptional semis run in this window; do not extrapolate
-- Calls backtest is a labeled 3x-leverage proxy, not real options P&L
-
-## Live-mode contract (hardened 2026-06-09, three independent audits)
-
-- **Fills are confirmed, never assumed**: live orders become PENDING (cash reserved); `settle_pending()` polls Public and books only actual fills at actual average prices. Partial fills book the filled part, refund the rest. Phantom positions are impossible.
-- **Market-hours gate**: live orders route only 9:30-16:00 ET on trading days (NYSE holiday calendar in `firm/market_hours.py`). An after-hours "trigger" waits and re-evaluates at the open.
-- **Mode isolation**: switching paper<->live is refused while any positions/pending orders exist; positions are tagged with their opening mode and can never be closed by the other mode's orders (protects the scalper's shares in the shared account). Entering live re-seeds sleeve capital from REAL buying power x `live_pct_of_bp`.
-- **Reconciliation halts, not just flags**: books-vs-broker drift in the dangerous direction (tracked but not held) auto-halts the owning sleeve. `RECONCILE_IGNORE_SYMBOLS` in config excludes the scalper's instruments.
-- **Exit-failure escalation**: 3 consecutive failed live exits (expired key, broker down) halt the sleeve loudly instead of silently retrying into a falling price.
-- **Mark-anomaly guard**: a >50% one-sweep price dislocation (split, bad print) must persist a second sweep before any stop/TP may act on it.
-- **Corruption can never erase the book**: every state save keeps an atomic .bak; corrupt files restore from backup; double-corruption halts the sleeve instead of quietly trading a fresh $25k default.
-- **Watchdog coverage**: hung equity monitor, hung calls monitor (with open options), or a cycle stuck "running" >3h all trigger self-restart via the 5-min keepalive.
-
-## Regression suite
-
-Two fully-offline suites in sandboxed state dirs — run BOTH after ANY code change:
-
-- `py -3.11 tests\test_firm.py` — 132 regression checks covering every safety property above
-- `py -3.11 tests\test_week_sim.py` — 50-check week-in-the-life simulator: 5 scripted trading days (buys, gaps, stops, SELL exits, breaker trips, the learning review, rotation) plus the full LIVE-mode plumbing against a mock broker (pending orders, partial fills, exit chasing, mode-flip guards). **Run this before any live flip.**
-
-The "LochRaven Self-Test" task re-runs both every Sunday unattended and alerts on failure. Full change history: `docs/AUDIT-2026-06-10.md` (10 hardening rounds, 90+ findings fixed).
-
-## Honest expectations
-
-No system can guarantee beating the S&P 500. This firm gives you an
-institutional *process* — multi-perspective research, adversarial debate,
-strict risk control, and momentum tilts that have historically carried
-positive alpha — plus full measurement against SPY so you always know the
-truth. Backtests replay the mechanical core only; past performance does not
-promise future results. Run paper until the equity curves earn your trust.
-
-## Files
-
-- `config.py` — universe, sleeves, ladders, risk limits
-- `firm/` — data_engine, brain (Claude CLI), analysts, debate, risk, broker, sleeves, monitor, cycle, backtest, state
-- `state/` — sleeve states, settings, research log, journal.jsonl
-- `app.py` — FastAPI server + background exit monitor (port 8420)
+Copyright 2026 Patrick Kamdem. All rights reserved.

@@ -382,9 +382,26 @@ def get_knowledge_index() -> KnowledgeIndex:
         return _kindex["index"]
 
 
+def _is_lesson(p: Passage) -> bool:
+    return p.id.startswith("lessons#")
+
+
 def knowledge_block(query: str, k: int = 3) -> tuple[str, list[Passage]]:
-    """The FIRM PLAYBOOK section of a prompt, passages cited as [K#]."""
-    found = [p for p, _ in get_knowledge_index().search(query, k=k)]
+    """The FIRM PLAYBOOK section of a prompt, passages cited as [K#].
+
+    Source quota. At least one methodology passage (how the firm analyzes) and at
+    most two distilled lessons, so a review always applies the research method
+    and not only the firm's recent trade record.
+    """
+    ranked = [p for p, _ in get_knowledge_index().search(query, k=max(k * 6, 12))]
+    method = [p for p in ranked if not _is_lesson(p)]
+    found: list[Passage] = method[:1]
+    for p in ranked:
+        if len(found) >= k:
+            break
+        if p in found or (_is_lesson(p) and sum(_is_lesson(x) for x in found) >= 2):
+            continue
+        found.append(p)
     if not found:
         return "", []
     lines = ["FIRM PLAYBOOK. Retrieved passages from this firm's research methodology and its "

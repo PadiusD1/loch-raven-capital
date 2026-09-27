@@ -1,0 +1,14 @@
+{
+ "ticker": "MU",
+ "asof": "2026-09-26",
+ "verdict": {
+  "rating": "HOLD",
+  "conviction": 55,
+  "thesis": "The 8/17 BUY was a momentum-and-revisions ride into a 9/23 print that has passed with no post-print evidence on file, leaving no dated catalyst. The 9/18 lessons strip its quality reinforcement [K2] \u2014 MU's quality-led BUYs failed [P2][P3] \u2014 and demote 96.9 revisions to a tiebreaker [K3]. Surviving momentum is visible consensus, not a variant view: this call's 'right' was +0.2% vs SPY [P1], and the same pairing trailed SPY 40.3% in CRDO [P5]. No kill trigger is evidenced, so HOLD, not SELL.",
+  "bear_risk": "A DRAM/HBM contract-pricing rollover would turn 96.9 revisions into cuts and expose 6.5x forward as roughly 25x realized, in a 110%-vol name whose assumed -25% overnight gap needs a +33% rebound just to break even.",
+  "watch_trigger": "Pull the 9/23 post-print record now: a confirmed beat-and-raise with a close above $1,020, revisions still above 75 and price over the 50-DMA re-opens the BUY, while any close below the 50-DMA, a peer DRAM/HBM contract-price rollover or a negative revisions turn exits the position.",
+  "memory_note": "Memory weakened the BUY rather than confirming it: [P1]'s 'right' was only +0.2% vs SPY (beta, not edge), [P2][P3] validate the [K2] quality strip on MU itself, and [P5] shows the same momentum-plus-revisions pairing gave no floor, cutting the rating to HOLD and conviction from 61 to 55."
+ },
+ "recorded_at": "2026-09-26",
+ "prompt_chars": 7170
+}

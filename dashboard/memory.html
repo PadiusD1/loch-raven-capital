@@ -183,6 +183,10 @@
       <div id="ft"><div class="skel"></div></div>
 
       <h3>Search the memory</h3>
+      <div class="seg" role="group" aria-label="Search source" style="margin-top:10px">
+        <button id="s-memos" class="on" data-src="memos">Decisions</button>
+        <button id="s-playbook" data-src="playbook">Playbook</button>
+      </div>
       <div class="search"><input id="q" placeholder="cash burn ahead of a financing, momentum leader overbought ..." aria-label="Search"></div>
       <div id="hits"></div>
 
@@ -205,8 +209,8 @@ async function api(path, opts) {
   return r.json();
 }
 
-document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('.seg button').forEach(x => x.classList.remove('on'));
+document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('[data-mode]').forEach(x => x.classList.remove('on'));
   b.classList.add('on'); mode = b.dataset.mode;
 }));
 
@@ -243,7 +247,8 @@ async function loadEval() {
     $('eval').innerHTML = `<div class="bars">` + rows.map(([n, r]) =>
       bar(`${n} <span class="faint mono">n=${r.n}</span>`, r.hit_rate, 1, r.hit_rate >= .5 ? '' : 'dn', `${rate(r.hit_rate)} · ${pct(r.mean_score_20d)}`)).join('') +
       `</div><div class="headline">${esc(e.headline || '')}</div>
-      <div class="note">Walk forward over every graded BUY and SELL. Each call only sees memos written before it and outcomes known before it. The veto rule was fixed in advance. In this sample, following the memory mechanically would not have helped, so it informs the committee and never overrules it.</div>`;
+      <div class="note">${esc(e.sensitivity_summary || '')}</div>
+      <div class="note">Walk forward over every graded BUY and SELL, retrieving ${e.method ? e.method.k : 6} precedents the way the live committee does. Each call only sees memos written before it and outcomes known before it. The veto rule was fixed in advance. Following the memory mechanically would not have helped, so it informs the committee and never overrules it.</div>`;
     animateBars($('eval'));
   } catch (err) { $('eval').innerHTML = `<div class="err">${esc(err.message)}</div>`; }
 }
@@ -256,7 +261,7 @@ async function loadFinetune() {
       <tr><th>Set</th><th>Train</th><th>Test</th></tr>
       <tr><td>SFT, proven right only</td><td>${c.sft_train}</td><td>${c.sft_test}</td></tr>
       <tr><td>KTO, labeled by outcome</td><td>${c.kto_train} <span class="faint">(${f.card.kto_train_desirable} good)</span></td><td>${c.kto_test} <span class="faint">(${f.card.kto_test_desirable} good)</span></td></tr>
-      <tr><td>Reward labels</td><td colspan="2">${c.rewards}</td></tr></table>
+      <tr><td>Reward labels</td><td colspan="2">${c.rewards.toLocaleString()}</td></tr></table>
       <div class="note">Split at ${esc(f.card.split_date)}. Leaked rows ${f.card.leakage_rows.length}. Rows in both splits ${f.card.train_test_overlap.length}.</div>
       <button id="export">Export training files</button> <span class="note" id="export-msg"></span>`;
     $('export').addEventListener('click', async () => {
@@ -361,11 +366,25 @@ function precedentsHtml(r) {
 }
 
 let qTimer = null;
+let searchSrc = 'memos';
+document.querySelectorAll('[data-src]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('[data-src]').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); searchSrc = b.dataset.src;
+  $('q').placeholder = searchSrc === 'playbook' ? 'how do we value a stable company, when to downgrade ...' : 'cash burn ahead of a financing, momentum leader overbought ...';
+  $('q').dispatchEvent(new Event('input'));
+}));
 $('q').addEventListener('input', () => {
   clearTimeout(qTimer);
   qTimer = setTimeout(async () => {
     const q = $('q').value.trim();
     if (q.length < 3) { $('hits').innerHTML = ''; return; }
+    if (searchSrc === 'playbook') {
+      try {
+        const r = await api('/api/memory/playbook?k=4&q=' + encodeURIComponent(q));
+        $('hits').innerHTML = r.hits.map(p => `<div class="s-hit reveal"><div class="p-meta"><b style="color:var(--txt)">${esc(p.chapter)}</b><span>${esc(p.section)}</span></div><div class="p-head dim">${esc(p.text.length > 300 ? p.text.slice(0, 297) + '...' : p.text)}</div></div>`).join('') || '<div class="note">No matches.</div>';
+      } catch (err) { $('hits').innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+      return;
+    }
     try {
       const r = await api('/api/memory/search?k=6&q=' + encodeURIComponent(q));
       $('hits').innerHTML = r.hits.map(p => `<div class="s-hit reveal"><div class="p-meta"><span>${esc(p.asof)}</span><b style="color:var(--txt)">${esc(p.ticker)}</b><span class="rating r-${esc(p.rating)}">${esc(p.rating)}</span><span>${p.outcome_visible && p.outcome ? esc((p.outcome.label || '').toUpperCase()) + ' ' + pct(p.outcome.excess_20d) : ''}</span></div><div class="p-head">${esc(p.headline)}</div></div>`).join('') || '<div class="note">No matches.</div>';

@@ -1,0 +1,14 @@
+{
+ "ticker": "QQQ",
+ "asof": "2026-09-26",
+ "verdict": {
+  "rating": "HOLD",
+  "conviction": 46,
+  "thesis": "QQQ remains a consensus, single-factor momentum/duration expression with no variant view, no dated catalyst (the 9/1-9/4 macro prints have passed) and no material fundamental change, so no re-rate [K1]. With SPY 1m negative and zero leading sectors, momentum credit is halved on both sides and any directional call needs a non-momentum pillar [K2]; none exists. Memory confirms no edge: graded QQQ HOLDs averaged -0.5% vs SPY [P2][P3][P4], and a price-repair pillar like QQQ's upgrade trigger failed within two weeks on SOXX [P6].",
+  "bear_risk": "An oil-led inflation impulse from the unresolved US/Iran strikes (WTI $86-90 pushing toward $100 per the 8/31 file) hardens the rate path and gaps this duration-sensitive, AI-concentrated index lower overnight on unchanged fundamentals while the correlated semis leg is already broken [P6], a loss that lands below any stop and can be contained only by size, not stop width [K3].",
+  "watch_trigger": "Upgrade to BUY only if QQQ reclaims and holds ~735 above its 50-DMA with 3m relative strength back toward zero AND a non-momentum pillar appears (populated forward EPS/valuation showing above-consensus earnings, or a dated catalyst) [K2]; move to SELL if the oil-led rate impulse materializes (WTI through $100, hardening the rate path) and QQQ confirms by losing its 200-DMA.",
+  "memory_note": "Memory strengthens the HOLD and rewrites the upgrade path: graded QQQ HOLDs averaged -0.5% vs SPY (n=3, noise, so no edge either way) [P2][P3][P4], and SOXX's 8/17 BUY on the same price-repair pillar the 8/31 QQQ trigger relied on was falsified within two weeks [P6], so price repair alone can no longer earn an upgrade and conviction is trimmed 48\u219246."
+ },
+ "recorded_at": "2026-09-26",
+ "prompt_chars": 7164
+}

@@ -121,9 +121,11 @@ def check_policy(verdict: dict) -> dict:
 
 def review(verdict: dict, hits: list, evidence: str, asof: str, n_passages: int = 0) -> dict:
     text = " ".join(str(verdict.get(k) or "") for k in ("thesis", "bear_risk", "watch_trigger", "memory_note"))
+    # The verdict's own conviction is not a claim about the company.
+    own = f" {verdict.get('conviction')} {verdict.get('target_weight_pct') or ''}"
     checks = [
         check_citations(text, len(hits), n_passages),
-        check_numbers(text, evidence),
+        check_numbers(text, evidence + own),
         check_point_in_time(hits, asof),
         check_policy(verdict),
         _check("human_sign_off", "pass",

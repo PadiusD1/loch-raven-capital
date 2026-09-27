@@ -185,6 +185,21 @@ def export(split: str = DEFAULT_SPLIT, out_dir: Path | None = None) -> dict:
 
 
 def preview(split: str = DEFAULT_SPLIT, n: int = 2) -> dict:
-    built = build(split)
-    return {"card": built["card"],
-            "samples": {k: v[:n] for k, v in built["datasets"].items() if k in ("sft_train", "kto_train")}}
+    """Counts come from a fast build without retrieval context (the counts are
+    identical), and only the sample rows carry their full RAFT context."""
+    built = build(split, with_context=False)
+    card = dict(built["card"], format="RAFT, retrieval augmented fine tuning")
+    memos = {m.id: m for m in archive.load_memos()}
+    samples = {}
+    for name in ("sft_train", "kto_train"):
+        rows = []
+        for r in built["datasets"][name][:n]:
+            m = memos[r["metadata"]["memo_id"]]
+            if name == "kto_train":
+                rows.append({**r, "prompt": _prompt(m, _context(m))})
+            else:
+                msgs = [dict(x) for x in r["messages"]]
+                msgs[1]["content"] = _prompt(m, _context(m))
+                rows.append({**r, "messages": msgs})
+        samples[name] = rows
+    return {"card": card, "samples": samples}

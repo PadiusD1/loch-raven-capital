@@ -1,4 +1,4 @@
-# Secrets — never commit (2026-06-14 audit A12)
+﻿# Secrets â€” never commit (2026-06-14 audit A12)
 fmp_key.txt
 fred_key.txt
 .env
@@ -16,7 +16,7 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 
-# Street Research drops are licensed documents — never commit them
+# Street Research drops are licensed documents â€” never commit them
 research_docs/inbox/
 *.env
 !.env.example
@@ -36,5 +36,4 @@ data/*.db
 # Local tooling
 .claude/
 data/memory/finetune/
-data/memory/eval_report.json
 

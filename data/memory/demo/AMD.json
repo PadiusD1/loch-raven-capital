@@ -1,0 +1,14 @@
+{
+ "ticker": "AMD",
+ "asof": "2026-09-26",
+ "verdict": {
+  "rating": "HOLD",
+  "conviction": 52,
+  "thesis": "Fundamentals are intact; the BUY's edge isn't. The filed Q2 inflection (+50% revenue, 53.8% gross margin) and the Helios story are consensus-owned, 19.3x sales leaves no margin of safety, and the leadership leg that justified buying early lagged SPY 4.6 pts [P1]. Our post-print 'filed inflection' BUYs are 0-for-3 [P1][P3][P5]: a reported quarter isn't a catalyst. Upside must come from beating $13.92 forward EPS, not re-rating [K1]; that test is dated 11/3. Keep the starter and 200-day kill line as a documented no-add HOLD [K3].",
+  "bear_risk": "On 11/3 Helios ramps at sub-50% gross margin with opex stepping up again and a Data Center guide below the 70-80% framing, exposing the $13.92 forward EPS against a $3.01 TTM base and de-rating a 19.3x-sales, maximally-long-consensus name in a single session.",
+  "watch_trigger": "Re-rate to BUY and build toward full weight after the print if 11/3 holds gross margin at or above 50% through the first Helios revenue quarter with a Data Center guide at 70-80%+; exit the starter on a decisive weekly close below the 200-day or a sub-50% gross-margin print.",
+  "memory_note": "Memory weakened the view: the 8/5 BUY itself lagged SPY 4.6 pts [P1] and the post-print 'filed inflection' template is 0-for-3 [P1][P3][P5], stripping the leadership leg and the BUY label, but overlapping, semis-heavy windows (effective n near 3) make it a conviction trim from 58 to 52, not grounds to exit without a fundamental break."
+ },
+ "recorded_at": "2026-09-26",
+ "prompt_chars": 7574
+}

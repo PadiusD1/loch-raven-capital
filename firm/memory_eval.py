@@ -32,7 +32,10 @@ def _summary(rows: list[dict]) -> dict:
             "mean_score_20d": round(sum(scores) / len(rows), 2)}
 
 
-def walk_forward(k: int = 8, threshold: float = 0.0, min_precedents: int = 3) -> dict:
+def walk_forward(k: int | None = None, threshold: float = 0.0, min_precedents: int = 3) -> dict:
+    """k defaults to config.MEMORY_K, the number of precedents the live committee sees."""
+    import config
+    k = int(k or getattr(config, "MEMORY_K", 6))
     memos = archive.load_memos()
     index = rag.get_index()
     rows: list[dict] = []
@@ -86,6 +89,23 @@ def cached_report(refresh: bool = False) -> dict:
         except ValueError:
             pass
     report = walk_forward()
+    # Sensitivity. The same test at other retrieval depths, so a reader can see
+    # whether the headline survives a change of setting or is noise.
+    sens = []
+    for k in (5, 8, 10, 12):
+        r = walk_forward(k=k)
+        sens.append({"k": k, "kept": r["memory_kept"], "vetoed": r["memory_vetoed"]})
+    sens.append({"k": report["method"]["k"], "kept": report["memory_kept"], "vetoed": report["memory_vetoed"]})
+    sens.sort(key=lambda s: s["k"])
+    report["sensitivity"] = sens
+    kept = [s["kept"]["hit_rate"] for s in sens if s["kept"]["n"]]
+    vet = [s["vetoed"]["hit_rate"] for s in sens if s["vetoed"]["n"]]
+    if kept and vet:
+        report["sensitivity_summary"] = (
+            f"Across retrieval depths {sens[0]['k']} to {sens[-1]['k']}, calls the memory supported were right "
+            f"{min(kept) * 100:.0f}% to {max(kept) * 100:.0f}% of the time and calls it warned against "
+            f"{min(vet) * 100:.0f}% to {max(vet) * 100:.0f}%. In no setting did following the memory clearly "
+            f"beat ignoring it.")
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_suffix(".tmp")
     tmp.write_text(json.dumps(report, indent=1), encoding="utf-8")
