@@ -1,0 +1,84 @@
+# Firm Memory, Distilled Lessons
+
+The committee distilled these 12 lessons from its own graded record on 2026-09-18.
+Each lesson and its evidence are reproduced verbatim from the firm's lessons file.
+
+1. WHEN the committee writes a BUY, THEN it must carry a written pre-mortem naming why the market is on the other side plus one pillar that is NOT visible strength (momentum rank, screen rank, quality rank), and be sized at half a normal clip until calibration un-inverts — the likely cause is a judge that buys already-priced visible strength at the top of extended names, not a sell-side edge, so do NOT respond by flipping signs to SELL.
+
+   Evidence: rating_calibration inverted=true (buy-side median fwd excess -0.6%, n=28, vs sell-side +2.7%, n=26) and realized BUY-rated trades are -$1,112.62 (n=38) vs HOLD-rated +$434.47 (n=7), but by MEAN BUY -2.8% still beats SELL -4.7% and BUY correct_pct 42.9% ~= SELL 42.3%, and the entire card is flagged provisional on a failing 'eod mark-to-close' health check — so the inversion is real enough to halve size and demand a pre-mortem, not to invert the sign.
+
+   Distilled: 2026-09-18
+
+2. WHEN an open position is +8% or better with its thesis intact (no NAMED guidance cut, margin break or balance-sheet event), THEN do not let the give-back ratchet book it at 35% and do not default to HOLD-no-add — book only at a 45% give-back or on a named fundamental break, and take the add-on-strength, because the firm currently caps its winners at ~+9% while paying out -12% to -15.5% on its stops, which is negative expectancy at a 32.6% win rate.
+
+   Evidence: ratchet exits (n=5, +$845.82) booked MPC at '+8.7% held of a +13.4% peak' and CON at '+8.6% of +13.4%' with avg post-exit excess +2.57%, and MPC/PSX/CON then appear in missed_adds at +15.3 / +13.3 / +9.5 pts of forward excess, while the 14 hard stops cost -$3,047.59 and the 'target' bucket (n=4, +$2,231.76) showed +19.74% of post-exit excess still on the table after the ladder finished.
+
+   Distilled: 2026-09-18
+
+3. WHEN the judge's final conviction lands in the 60-69 band, THEN the name gets at most a half clip or stays HOLD, and a full clip requires 70+ PLUS a dated catalyst — 70+ is a necessary, not sufficient, condition.
+
+   Evidence: by_conviction 60-69 is n=33 with 9 wins and -$1,640.62 versus 70-79 at n=11, 6 wins (54.5%) and +$1,071.09, though that band's profit is concentrated in two names (GEO and IOVA call lots) while CARE at 72 lost -$116.71, CRS at 70 lost -$242.74 and VAC at 71 lost -$594.80 on the call and -$62.01 on the equity.
+
+   Distilled: 2026-09-18
+
+4. WHEN a BUY's pillars lean on a high quality rank (>70), an 'elite compounder' / high-ROIC narrative, or a top-decile screen score, THEN strip that pillar entirely and re-rate on the remaining evidence — quality is ANTI-predictive in this firm's book and must never be paid up for.
+
+   Evidence: by_factor quality is n=35 with high-half excess -6.53% vs low-half +9.63% (edge -16.16 pts) and factor_predictiveness quality is -2.0 pts over n=251; every high-quality name lost — CRDO (100) -9.0% then -34.4% post-exit, MU (100) -14.5%, TXN (96) -16.2%, CARE (87) -10.1%, CRS (82) -12.5%, ATEN (72) -11.0% — while IOVA (quality 36) returned +27.5% on the equity and GEO (58) +65.4% on the calls.
+
+   Distilled: 2026-09-18
+
+5. WHEN the PM wants to close a position on thesis doubt rather than a stop, a trail, or a NAMED material fundamental change (guidance cut, margin break, balance-sheet event), THEN hold to the stop — this is still the most expensive discretionary habit in the ledger.
+
+   Evidence: all 9 'other' (PM verdict SELL) exits were losers totalling -$936.76 while their avg post-exit excess was POSITIVE +4.07% at 21 sessions: HPE was sold at -8.7% in both sleeves then returned +21.14% (+17.74 excess), MU was sold at -14.5% then +14.37% (+10.96), and PBI +3.83 in both sleeves.
+
+   Distilled: 2026-09-18
+
+6. WHEN the latest regime snapshot shows SPY 1m return at or below zero or ANY sector tagged lagging — which is the live state today (SPY 1m -0.63%, Industrials and Utilities lagging, ZERO leading sectors) — THEN halve all momentum- and screen-rank-derived conviction credit and require a non-momentum pillar, because the entire momentum edge was learned inside one up-trending tape and the screen is not monotone with outcomes.
+
+   Evidence: the realized momentum edge of +33.38 pts (n=36) comes entirely from trades dated 2026-06-09 to 2026-09-17 in a tape where SPY rose +3.43%, while across 279 verdicts momentum's edge is -1.6 pts at tie_fraction 0.68; screen_predictiveness inverts (top band 88.4-100, n=50, +0.4% / 52.0% win vs the LOW band 27.6-79.9, n=29, +3.8% / 62.1%); leading_sector_entry is +$413.93 on n=8 vs other_entry -$104.22 on n=44 (a tiebreaker at best); and geopolitical_news_value remains unusable with 265 event-period rows against only 14 quiet ones.
+
+   Distilled: 2026-09-18
+
+7. WHEN a cycle ends with more than ~80% of candidates rated HOLD at conviction in the 44-63 band, THEN the committee must either take a HALF-CLIP starter in its single top-ranked name with a written kill line, or record the specific missing evidence that keeps it out — abstention is discipline only if it is documented, because parked capital is the firm's default, not its choice.
+
+   Evidence: 225 of 279 graded rows (80.6%) are HOLD, the bench made 218 promotions at a 0.0% promotion-to-BUY rate, alpha_stocks sits 31.4% parked while returning -6.44% vs SPY +3.43%, and 8 names rated HOLD/SELL at conviction 46-59 (PLSE, BAND, BUUU, CLYM, ETON, SLS, TWST) then beat SPY by 32.5-36.1 pts — but the HOLD bucket's own mean is only -0.6% and its 52.9% correct_pct is the firm's BEST rating, so the fix is a documented starter clip, never blanket buying the bench.
+
+   Distilled: 2026-09-18
+
+8. WHEN the calls desk finds its one proven setup — a PRIMARY FILING catalyst (10-Q line item, formal guidance change) dated inside the contract's life, momentum intact, a liquid strike with real OI — THEN deploy a full clip and run the TP1/TP2/runner ladder rather than a token one, because this sleeve's deployed capital is the firm's best and it is almost entirely idle.
+
+   Evidence: calls_only returned +2.64% while 94.7% of the sleeve sat parked in SPY (n=9 lots, 6 wins, +$808.53); GEO (+$1,559 across three lots) and IOVA (+$708) both rested on primary filings — GEO's 10-Q showing 15.8% revenue against 43.7% operating income, IOVA's FY26 guidance formally under upward review — versus HPE's -$527.58 call, which had no filing catalyst at all.
+
+   Distilled: 2026-09-18
+
+9. WHEN a candidate's 30-day annualized vol exceeds ~60% or it will be held overnight into a print, THEN cut the clip so a full gap-through of the DESIGNED stop still fits the per-name risk budget — do not widen the stop, because the stop engine is sound and gap risk is a sizing problem no monitor cadence can fix.
+
+   Evidence: stop_slippage intraday is n=14 at avg -0.04% (worst -2.34%, engine fine) against gap_at_open n=6 at avg -3.14% with FLXS realizing -24.7% on a 15% design (-9.7 slip), CNC -15.51% on 10% and DVA -15.13% on 12%; post-exit excess is negative in both regimes with real sample (high-vol n=12 at -4.79%, mid n=18 at -1.48%), so exits were right and only the high-vol stop is tightened, with low-vol (n=2) too thin to tune.
+
+   Distilled: 2026-09-18
+
+10. WHEN a ticker is already held in ANY sleeve or as options, or when more than two new names would enter the same day all carrying momentum ~100, THEN net them against ONE firm-wide name/driver limit (options at delta-notional) and cut each clip to a third — correlated exposure is one position in a drawdown regardless of how many tickets it holds.
+
+   Evidence: HPE ran simultaneously as alpha equity (-$100.67), core equity (-$177.40) and a call lot (-$527.58) on one thesis for -$805.65, PBI doubled (-$79.60 / -$137.27), OSCR doubled (-$74.20 / -$67.78) and VAC stacked equity (-$62.01) on a call (-$594.80); the 2026-08-14 cohort (IOVA, CRDO, VAC plus two call lots) and the 2026-07-17 cohort both entered together, and etf_rotation held SMH/XLK/IWM — all tech beta — at ~$8.1-8.4k each while tripping its daily breaker on 5 of 14 sessions (-$1,361.17 against an $872.84 limit on 6/23).
+
+   Distilled: 2026-09-18
+
+11. WHEN a candidate's news packet is aggregator-only or empty, THEN treat the headline as zero evidence and cap conviction at the 60-69 half-clip band; WHEN a TRUSTED wire/desk source covers it, treat that as a mild positive on the name's forward excess and as catalyst/risk CONTEXT only — never as directional confirmation, and never as a thesis pillar unless it is a primary filing restated as a quantified estimate change.
+
+   Evidence: news_value shows trusted n=67 at +3.3% avg forward excess versus aggregator n=158 at -2.6% and blind n=54 at -2.6% (a ~5.9pt spread that revises the prior 'no tier separates' lesson), yet trusted has the WORST directional accuracy at 44.8% vs 51.9% and 55.6% — the tier identifies names that MOVE, not the direction — while both of the firm's biggest winners (GEO, IOVA) cited filings, not headlines.
+
+   Distilled: 2026-09-18
+
+12. WHEN two candidates have comparable momentum, THEN break the tie on RISING ESTIMATE REVISIONS (>75) and never on a low multiple, because value has no measured edge here and paying up for cheapness is not a pillar.
+
+   Evidence: by_factor value is n=35 with edge -1.95 pts (high-half +0.63% vs low-half +2.57%) and factor_predictiveness value is -0.7 pts over n=219 at a tie_fraction of 0.86, while revisions is the only other factor with a positive realized edge (+5.64 pts, n=25, high-half +7.8%) and the most discriminating verdict split (tie_fraction 0.26) — but its verdict edge is a flat -0.3 pts over n=244, so it is a tiebreaker only, not a pillar.
+
+   Distilled: 2026-09-18
+
+## Distillation record
+
+- Distilled at: 2026-09-18T10:07:23.830698+00:00
+- Verdicts reviewed as of: 2026-09-18T20:01:55.450734+00:00
+- Reviewed through: 56
+- cap_tuning_applied: {"MOMENTUM_LANE_MOM_MIN": 76.0, "MAX_ENTRY_DRIFT_PCT": 2.5, "PROFIT_RATCHET_GIVEBACK_PCT": 45.0}
+- stop_tuning_applied: {"trail_sigma_mult": 2.8, "high": {"stop_sigma_mult": 2.3}}

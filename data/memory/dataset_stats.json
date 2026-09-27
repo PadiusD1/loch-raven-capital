@@ -1,0 +1,58 @@
+{
+  "n_memos": 1794,
+  "n_tickers": 255,
+  "date_range": {
+    "start": "2026-06-09",
+    "end": "2026-09-23"
+  },
+  "counts_by_rating": {
+    "BUY": 219,
+    "HOLD": 1487,
+    "SELL": 83,
+    "STRONG_SELL": 5
+  },
+  "counts_by_label": {
+    "neutral": 1146,
+    "pending": 384,
+    "right": 109,
+    "wrong": 155
+  },
+  "n_scored_20d": 1410,
+  "n_pending": 377,
+  "n_no_price": 7,
+  "directional_20d": {
+    "overall": {
+      "n": 264,
+      "hit_rate": 0.4129,
+      "mean_score_20d": -3.13
+    },
+    "by_conviction": {
+      "lt_60": {
+        "n": 44,
+        "hit_rate": 0.4773,
+        "mean_score_20d": 0.62
+      },
+      "60_69": {
+        "n": 188,
+        "hit_rate": 0.3723,
+        "mean_score_20d": -4.62
+      },
+      "70_79": {
+        "n": 26,
+        "hit_rate": 0.5,
+        "mean_score_20d": -2.13
+      },
+      "80_plus": {
+        "n": 6,
+        "hit_rate": 0.8333,
+        "mean_score_20d": 11.8
+      }
+    }
+  },
+  "prices_through": "2026-09-25",
+  "build": {
+    "excluded_degraded": 118,
+    "source_entries": 1912,
+    "tickers_without_prices": []
+  }
+}
