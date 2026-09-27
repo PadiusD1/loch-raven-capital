@@ -3,8 +3,9 @@
 Built at hackUMBC 2026 (T. Rowe Price NextGen Finance track).
 
 One call gathers the name's latest committee file, the most similar precedents
-(point in time, with outcomes only where knowable) and the firm's distilled
-lessons, asks Claude for a verdict that cites every precedent it relies on,
+(point in time, with outcomes only where knowable) and the most relevant firm
+playbook passages (methodology and distilled lessons), asks Claude for a
+verdict that cites every precedent [P#] and passage [K#] it relies on,
 then runs the deterministic guardrails and appends the whole exchange to the
 hash chained audit log.
 
@@ -23,13 +24,6 @@ from firm import memory_rag as rag
 VERDICT_KEYS = ("rating", "conviction", "thesis", "bear_risk", "watch_trigger", "memory_note")
 
 
-def _lessons_excerpt(limit: int = 1800) -> str:
-    text = archive.lessons_text()
-    if not text:
-        return ""
-    return "FIRM LESSONS (distilled from closed trades).\n" + text[:limit] + "\n\n"
-
-
 def build_prompt(ticker: str, asof: str | None = None, k: int = 6) -> dict:
     t = (ticker or "").upper().strip()
     asof = asof or date.today().isoformat()
@@ -38,26 +32,28 @@ def build_prompt(ticker: str, asof: str | None = None, k: int = 6) -> dict:
     query = latest.text() if latest else t
     direction = latest.direction if latest else 0
     block, hits, signal = rag.precedent_block(query, ticker=t, asof=asof, direction=direction, k=k)
+    kblock, passages = rag.knowledge_block(query, k=3)
     current = ("No prior committee file on this name." if latest is None else
                f"LATEST COMMITTEE FILE ({latest.asof}). Rating {latest.rating}, conviction "
                f"{latest.conviction}. Thesis. {latest.thesis}\nBiggest risk named. {latest.bear_risk}\n"
                f"What would change the view. {latest.watch_trigger}")
     prompt = (
-        _lessons_excerpt()
+        kblock
         + block
         + f"TICKER {t}. Review date {asof}.\n{current}\n\n"
         "You are the portfolio manager re-reviewing this name with the firm's memory in front of you. "
-        "Decide whether the precedents strengthen, weaken or do not change the latest view. Use only "
-        "the facts above. Do not invent figures. Cite precedents inline as [P#] wherever they inform "
-        "the thesis or the risk. HOLD is a legitimate verdict.\n"
+        "Apply the firm playbook where it fits, and decide whether the precedents strengthen, weaken "
+        "or do not change the latest view. Use only the facts above. Do not invent figures. Cite "
+        "precedents inline as [P#] and playbook passages as [K#] wherever they inform the thesis or "
+        "the risk. HOLD is a legitimate verdict.\n"
         "End your reply with exactly one JSON code block with keys rating (STRONG_BUY, BUY, HOLD, SELL "
-        "or STRONG_SELL), conviction (0 to 100), thesis (at most 90 words, with [P#] citations), "
-        "bear_risk (one sentence), watch_trigger (one sentence), memory_note (one sentence on what the "
-        "memory changed)."
+        "or STRONG_SELL), conviction (0 to 100), thesis (at most 90 words, with [P#] and [K#] "
+        "citations), bear_risk (one sentence), watch_trigger (one sentence), memory_note (one sentence "
+        "on what the memory changed)."
     )
-    evidence = "\n".join([block, current, archive.lessons_text()[:1800]])
+    evidence = "\n".join([kblock, block, current])
     return {"ticker": t, "asof": asof, "prompt": prompt, "hits": hits, "signal": signal,
-            "latest": latest, "evidence": evidence}
+            "passages": passages, "latest": latest, "evidence": evidence}
 
 
 def _clean_verdict(raw: dict | None) -> dict | None:
@@ -111,15 +107,18 @@ def run(ticker: str, asof: str | None = None, mode: str = "replay", record: bool
     if verdict is None:
         return {"ok": False, "ticker": ctx["ticker"], "asof": ctx["asof"],
                 "error": "no verdict. Use live mode with the claude CLI signed in, or pick a recorded ticker.",
-                "precedents": [h.public() for h in ctx["hits"]], "signal": ctx["signal"]}
-    review = guard.review(verdict, ctx["hits"], ctx["evidence"], ctx["asof"])
+                "precedents": [h.public() for h in ctx["hits"]], "signal": ctx["signal"],
+                "passages": [p.public() for p in ctx["passages"]]}
+    review = guard.review(verdict, ctx["hits"], ctx["evidence"], ctx["asof"], len(ctx["passages"]))
     entry = guard.audit_append({
         "kind": "memory_review", "ticker": ctx["ticker"], "asof": ctx["asof"], "source": source,
-        "precedent_ids": [h.memo.id for h in ctx["hits"]], "verdict": verdict,
+        "precedent_ids": [h.memo.id for h in ctx["hits"]],
+        "passage_ids": [p.id for p in ctx["passages"]], "verdict": verdict,
         "guardrails": review["status"]})
     return {"ok": True, "ticker": ctx["ticker"], "asof": ctx["asof"], "source": source,
             "verdict": verdict, "guardrails": review, "signal": ctx["signal"],
             "precedents": [h.public() for h in ctx["hits"]],
+            "passages": [p.public() for p in ctx["passages"]],
             "latest": ctx["latest"].public() if ctx["latest"] else None,
             "audit": {"hash": entry["hash"], "prev": entry["prev"]},
             "prompt_chars": len(ctx["prompt"])}

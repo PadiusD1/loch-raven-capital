@@ -26,6 +26,7 @@ from pathlib import Path
 import config
 
 CITE_RE = re.compile(r"\[P(\d{1,2})\]")
+KCITE_RE = re.compile(r"\[K(\d{1,2})\]")
 NUM_RE = re.compile(r"(?<![A-Za-z0-9_.])\$?\d[\d,]*(?:\.\d+)?%?")
 VALID_RATINGS = frozenset({"STRONG_BUY", "BUY", "HOLD", "SELL", "STRONG_SELL"})
 AUDIT_PATH = Path(getattr(config, "STATE_DIR", Path("state"))) / "memory_audit.jsonl"
@@ -36,16 +37,20 @@ def _check(name: str, status: str, detail: str, **extra) -> dict:
     return {"name": name, "status": status, "detail": detail, **extra}
 
 
-def check_citations(text: str, n_precedents: int) -> dict:
+def check_citations(text: str, n_precedents: int, n_passages: int = 0) -> dict:
     cited = sorted({int(x) for x in CITE_RE.findall(text or "")})
-    invalid = [c for c in cited if c < 1 or c > n_precedents]
+    kcited = sorted({int(x) for x in KCITE_RE.findall(text or "")})
+    invalid = [f"P{c}" for c in cited if c < 1 or c > n_precedents]
+    invalid += [f"K{c}" for c in kcited if c < 1 or c > n_passages]
     if invalid:
-        return _check("citations", "fail", f"cites precedents it was never shown {invalid}",
-                      cited=cited, invalid=invalid)
-    if not cited:
-        return _check("citations", "warn", "no precedent cited, the verdict rests on the live data only",
-                      cited=[], invalid=[])
-    return _check("citations", "pass", f"{len(cited)} precedents cited, all real", cited=cited, invalid=[])
+        return _check("citations", "fail", f"cites sources it was never shown {invalid}",
+                      cited=cited, kcited=kcited, invalid=invalid)
+    if not cited and not kcited:
+        return _check("citations", "warn", "nothing cited, the verdict rests on the live data only",
+                      cited=[], kcited=[], invalid=[])
+    return _check("citations", "pass",
+                  f"{len(cited)} precedents and {len(kcited)} playbook passages cited, all real",
+                  cited=cited, kcited=kcited, invalid=[])
 
 
 def _as_number(tok: str) -> float | None:
@@ -114,10 +119,10 @@ def check_policy(verdict: dict) -> dict:
     return _check("policy", "pass", "rating, conviction and size inside firm limits")
 
 
-def review(verdict: dict, hits: list, evidence: str, asof: str) -> dict:
-    text = " ".join(str(verdict.get(k) or "") for k in ("thesis", "bear_risk", "memory_note"))
+def review(verdict: dict, hits: list, evidence: str, asof: str, n_passages: int = 0) -> dict:
+    text = " ".join(str(verdict.get(k) or "") for k in ("thesis", "bear_risk", "watch_trigger", "memory_note"))
     checks = [
-        check_citations(text, len(hits)),
+        check_citations(text, len(hits), n_passages),
         check_numbers(text, evidence),
         check_point_in_time(hits, asof),
         check_policy(verdict),

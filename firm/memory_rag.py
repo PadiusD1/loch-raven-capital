@@ -255,6 +255,146 @@ def precedent_block(query: str, *, ticker: str, asof: str, direction: int = 0,
     return "\n".join(lines) + "\n\n", hits, signal
 
 
+# Firm playbook ----------------------------------------------------------------
+# The second kind of institutional memory. Precedents record WHAT the firm
+# decided and what happened. The playbook records HOW the firm analyzes, the
+# research methodology (financial statements, thesis work, comps, DCF, risk
+# policy) plus the lessons the firm distilled from its own graded trades. For a
+# firm with decades of research this is the house view, the style guide and the
+# valuation manual. Here it is the author's own certification notes, rewritten.
+
+PLAYBOOK_DIR = archive.MEMORY_DIR / "playbook"
+
+
+@dataclass(frozen=True)
+class Passage:
+    id: str
+    chapter: str
+    section: str
+    source: str
+    text: str
+
+    def public(self) -> dict:
+        return {"id": self.id, "chapter": self.chapter, "section": self.section,
+                "source": self.source, "text": self.text}
+
+
+def _split_markdown(path) -> list[Passage]:
+    lines = path.read_text(encoding="utf-8").splitlines()
+    chapter, source, out = path.stem, "", []
+    section, buf = None, []
+
+    def flush():
+        if section and buf:
+            body = " ".join(" ".join(buf).split())
+            out.append(Passage(id=f"{path.stem}#{len(out) + 1}", chapter=chapter,
+                               section=section, source=source, text=body))
+
+    for line in lines:
+        if line.startswith("# "):
+            chapter = line[2:].strip()
+        elif line.startswith("## "):
+            flush()
+            section, buf = line[3:].strip(), []
+        elif section is None and line.strip() and not source:
+            source = line.strip()
+        elif section is not None:
+            buf.append(line.strip())
+    flush()
+    return out
+
+
+def _lesson_passages() -> list[Passage]:
+    text = archive.lessons_text()
+    out = []
+    for block in re.split(r"\n(?=\d+\.\s)", text):
+        m = re.match(r"(\d+)\.\s+(.*)", block.strip(), re.DOTALL)
+        if not m:
+            continue
+        body = " ".join(m.group(2).split())
+        out.append(Passage(id=f"lessons#{m.group(1)}", chapter="Firm lessons distilled from graded trades",
+                           section=f"Lesson {m.group(1)}", source="Loch Raven learning review, 2026-09-18",
+                           text=body))
+    return out
+
+
+def load_playbook() -> tuple[Passage, ...]:
+    passages: list[Passage] = []
+    if PLAYBOOK_DIR.is_dir():
+        for p in sorted(PLAYBOOK_DIR.glob("*.md")):
+            passages.extend(_split_markdown(p))
+    passages.extend(_lesson_passages())
+    return tuple(passages)
+
+
+class KnowledgeIndex:
+    """BM25 plus TF IDF cosine over playbook passages, fused by reciprocal rank."""
+
+    def __init__(self, passages: tuple[Passage, ...]):
+        self.passages = passages
+        texts = [f"{p.chapter} {p.section} {p.section} {p.text}" for p in passages]
+        self.doc_len = np.array([len(tokenize(t)) for t in texts], dtype=np.float64)
+        self.avg_len = float(self.doc_len.mean()) if len(texts) else 1.0
+        self.tf = [Counter(tokenize(t)) for t in texts]
+        df = Counter(term for c in self.tf for term in c)
+        n = max(len(texts), 1)
+        self.idf = {t: math.log(1.0 + (n - d + 0.5) / (d + 0.5)) for t, d in df.items()}
+        self.vectorizer = None
+        if len(texts) >= 3:
+            from sklearn.feature_extraction.text import TfidfVectorizer
+            self.vectorizer = TfidfVectorizer(sublinear_tf=True, ngram_range=(1, 2), stop_words="english")
+            self.matrix = self.vectorizer.fit_transform(texts)
+
+    def search(self, query: str, k: int = 3) -> list[tuple[Passage, float]]:
+        if not self.passages:
+            return []
+        q = set(tokenize(query))
+        bm = np.zeros(len(self.passages))
+        for i, tf in enumerate(self.tf):
+            for term in q & tf.keys():
+                f = tf[term]
+                bm[i] += self.idf[term] * f * (BM25_K1 + 1) / (
+                    f + BM25_K1 * (1 - BM25_B + BM25_B * self.doc_len[i] / self.avg_len))
+        if self.vectorizer is not None:
+            cos = (self.matrix @ self.vectorizer.transform([query]).T).toarray().ravel()
+        else:
+            cos = np.zeros(len(self.passages))
+        r_bm = np.empty(len(bm), dtype=int)
+        r_bm[np.argsort(-bm, kind="stable")] = np.arange(1, len(bm) + 1)
+        r_cos = np.empty(len(cos), dtype=int)
+        r_cos[np.argsort(-cos, kind="stable")] = np.arange(1, len(cos) + 1)
+        fused = 1.0 / (RRF_K + r_bm) + 1.0 / (RRF_K + r_cos)
+        fused[(bm <= 0) & (cos <= 0.02)] = 0.0
+        order = [i for i in np.argsort(-fused, kind="stable") if fused[i] > 0][:k]
+        return [(self.passages[i], float(fused[i])) for i in order]
+
+
+_kindex: dict = {"key": None, "index": None}
+
+
+def get_knowledge_index() -> KnowledgeIndex:
+    passages = load_playbook()
+    key = tuple(p.id for p in passages)
+    with _index_lock:
+        if _kindex["key"] != key or _kindex["index"] is None:
+            _kindex["index"] = KnowledgeIndex(passages)
+            _kindex["key"] = key
+        return _kindex["index"]
+
+
+def knowledge_block(query: str, k: int = 3) -> tuple[str, list[Passage]]:
+    """The FIRM PLAYBOOK section of a prompt, passages cited as [K#]."""
+    found = [p for p, _ in get_knowledge_index().search(query, k=k)]
+    if not found:
+        return "", []
+    lines = ["FIRM PLAYBOOK. Retrieved passages from this firm's research methodology and its "
+             "distilled lessons. When a passage shapes your analysis, cite it inline as [K#]."]
+    for i, p in enumerate(found, 1):
+        body = p.text if len(p.text) <= 900 else p.text[:897].rstrip() + "..."
+        lines.append(f"[K{i}] {p.chapter}, {p.section}. {body}")
+    return "\n".join(lines) + "\n\n", found
+
+
 def query_from_research(packet: dict, research: dict | None) -> str:
     """Build a retrieval query from a live data packet and the desk reports."""
     parts: list[str] = [str(packet.get("ticker") or "")]

@@ -608,10 +608,11 @@ def _precedent_note(packet: dict, research: dict | None) -> str:
         from firm import memory_rag
         today = datetime.now(timezone.utc).date().isoformat()
         query = memory_rag.query_from_research(packet, research)
+        kblock, _passages = memory_rag.knowledge_block(query, k=2)
         block, _hits, _signal = memory_rag.precedent_block(
             query, ticker=str(packet.get("ticker") or ""), asof=today,
             k=int(getattr(config, "MEMORY_K", 6)))
-        return block
+        return kblock + block
     except Exception:
         return ""
 
