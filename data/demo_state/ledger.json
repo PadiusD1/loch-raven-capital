@@ -1,0 +1,3852 @@
+{
+  "trades": [
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "TXN",
+      "symbol": "TXN",
+      "instrument": "equity",
+      "entry": 287.16,
+      "exit": 282.7685,
+      "pnl": -21.96,
+      "exit_reason": "trailing stop -15.1% from peak",
+      "closed_at": "2026-06-29T13:57:39.214078+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 90,
+        "degraded": true,
+        "thesis": "Degraded mode: quant composite only."
+      },
+      "desk_scores": {
+        "fundamental": 100,
+        "technical": 100,
+        "sentiment": 100,
+        "macro": 100,
+        "quant": 100
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 0.35,
+      "excess_ret_pct": -1.88,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 2.74,
+          "excess_pct": 1.83
+        },
+        "10": {
+          "ret_pct": 7.03,
+          "excess_pct": 5.57
+        },
+        "21": {
+          "ret_pct": -4.97,
+          "excess_pct": -3.41
+        }
+      },
+      "post_exit_excess_pct": -3.41,
+      "post_exit_ret_pct": -4.97,
+      "post_exit_horizon_sessions": 21,
+      "vol_ann": 60.6,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "MU",
+      "symbol": "MU",
+      "instrument": "equity",
+      "entry": 908.31,
+      "exit": 1049.0102,
+      "pnl": 140.7,
+      "exit_reason": "trailing stop -15.2% from peak",
+      "closed_at": "2026-06-29T14:05:58.006574+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 62,
+        "degraded": false,
+        "thesis": "MU is the firm's strongest momentum signal (93 screen, 100 momentum factor, +205 3M relative strength, above both SMAs with RSI 63), but it is a momentum-only black box: every fundamental field is nul"
+      },
+      "desk_scores": {
+        "fundamental": -35,
+        "technical": 62,
+        "sentiment": -20,
+        "macro": -28,
+        "quant": 38
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 0.35,
+      "excess_ret_pct": 15.14,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -18.05,
+          "excess_pct": -18.96
+        },
+        "10": {
+          "ret_pct": -14.15,
+          "excess_pct": -15.61
+        },
+        "21": {
+          "ret_pct": -35.46,
+          "excess_pct": -33.91
+        }
+      },
+      "post_exit_excess_pct": -33.91,
+      "post_exit_ret_pct": -35.46,
+      "post_exit_horizon_sessions": 21,
+      "vol_ann": 123.7,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "AMAT",
+      "symbol": "AMAT",
+      "instrument": "equity",
+      "entry": 494.26,
+      "exit": 605.5571,
+      "opened_at": "2026-06-09T19:11:02.576494+00:00",
+      "quantity": 4.0,
+      "cost": 1977.04,
+      "pnl": 445.19,
+      "exit_reason": "trailing stop -18.0% from peak",
+      "closed_at": "2026-07-02T14:53:47.272489+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 66,
+        "degraded": false,
+        "thesis": "AMAT is a genuinely top-decile quality/momentum business on a real AI-fab-capex tailwind, and I will not sell a validated leader I already hold +31% on a 2.7% wobble. But the add-to-winner test fails:"
+      },
+      "desk_scores": {
+        "fundamental": -20,
+        "technical": 65,
+        "sentiment": -35,
+        "macro": -25,
+        "quant": 45
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 2.02,
+      "excess_ret_pct": 20.49,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -0.09,
+          "excess_pct": -1.46
+        },
+        "10": {
+          "ret_pct": -12.17,
+          "excess_pct": -11.97
+        },
+        "21": {
+          "ret_pct": -14.07,
+          "excess_pct": -15.8
+        }
+      },
+      "post_exit_excess_pct": -15.8,
+      "post_exit_ret_pct": -14.07,
+      "post_exit_horizon_sessions": 21,
+      "vol_ann": 93.0,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "etf_rotation",
+      "ticker": "EEM",
+      "symbol": "EEM",
+      "instrument": "equity",
+      "entry": 65.77,
+      "exit": 67.2813,
+      "opened_at": "2026-06-09T19:11:03.529633+00:00",
+      "quantity": 126.0,
+      "cost": 8287.02,
+      "pnl": 190.42,
+      "exit_reason": "rotation exit (rank fell, mom 17.87)",
+      "closed_at": "2026-07-06T05:15:09.947430+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 62,
+        "degraded": false,
+        "thesis": "EEM owns a genuinely strong, broad, multi-timeframe uptrend (+45% 12m, above rising 50/200-DMA, +6.81 rel-strength vs SPY) that has paused into a non-overbought RSI 48.6 \u2014 a constructive structure I d"
+      },
+      "desk_scores": {
+        "fundamental": 8,
+        "technical": 58,
+        "sentiment": 14,
+        "macro": 40,
+        "quant": 58
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 1.31,
+      "excess_ret_pct": 0.99,
+      "reentry_after_stop": false,
+      "strategy": "dual_momentum",
+      "momentum_score": null,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -4.54,
+          "excess_pct": -4.26
+        },
+        "10": {
+          "ret_pct": -5.93,
+          "excess_pct": -4.71
+        },
+        "21": {
+          "ret_pct": -2.32,
+          "excess_pct": -4.99
+        }
+      },
+      "post_exit_excess_pct": -4.99,
+      "post_exit_ret_pct": -2.32,
+      "post_exit_horizon_sessions": 21,
+      "vol_ann": 38.5,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "AMAT",
+      "symbol": "AMAT",
+      "instrument": "equity",
+      "entry": 495.28,
+      "exit": 551.2242,
+      "opened_at": "2026-06-09T19:00:59.256037+00:00",
+      "quantity": 2,
+      "cost": 990.56,
+      "pnl": 111.89,
+      "exit_reason": "trailing stop -15.7% from peak",
+      "closed_at": "2026-07-07T13:30:00.943923+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 60,
+        "degraded": false,
+        "thesis": "AMAT is a genuinely elite franchise (39.7% ROE, 31.9% op margin, D/E 0.30) and a confirmed momentum leader the firm already owns up 24.3%, so the uptrend and quality argue firmly against selling. But "
+      },
+      "desk_scores": {
+        "fundamental": -22,
+        "technical": 55,
+        "sentiment": 12,
+        "macro": -18,
+        "quant": 42
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 2.19,
+      "excess_ret_pct": 9.1,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 7.43,
+          "excess_pct": 6.88
+        },
+        "10": {
+          "ret_pct": 1.81,
+          "excess_pct": 1.74
+        },
+        "21": {
+          "ret_pct": -3.65,
+          "excess_pct": -6.61
+        }
+      },
+      "post_exit_excess_pct": -6.61,
+      "post_exit_ret_pct": -3.65,
+      "post_exit_horizon_sessions": 21,
+      "vol_ann": 95.5,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "PRSU",
+      "symbol": "PRSU",
+      "instrument": "equity",
+      "entry": 54.5723,
+      "exit": 39.0755,
+      "opened_at": "2026-07-10T15:39:22.988080+00:00",
+      "quantity": 43.0,
+      "cost": 2346.61,
+      "pnl": -666.36,
+      "exit_reason": "hard stop -28.4%",
+      "closed_at": "2026-07-14T13:30:10.514357+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 60,
+        "degraded": false,
+        "thesis": "PRSU is an under-the-radar momentum leader in a clean, low-volatility uptrend (+65% 6m, +17 RS vs SPY, above rising 50/200-DMA) with 37% revenue growth and a modest balance sheet (D/E 0.37). The varia"
+      },
+      "desk_scores": {
+        "fundamental": -32,
+        "technical": 62,
+        "sentiment": 8,
+        "macro": -35,
+        "quant": 46
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 98.0,
+        "value": 48.0,
+        "quality": 54.0,
+        "size": {
+          "mkt_cap_b": 1.5,
+          "bucket": "small"
+        }
+      },
+      "spy_ret_pct": -0.59,
+      "excess_ret_pct": -27.8,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Consumer Cyclical",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 1.06,
+          "excess_pct": 1.53
+        },
+        "10": {
+          "ret_pct": 3.57,
+          "excess_pct": 5.07
+        },
+        "21": {
+          "ret_pct": -10.11,
+          "excess_pct": -12.86
+        }
+      },
+      "post_exit_excess_pct": -12.86,
+      "post_exit_ret_pct": -10.11,
+      "post_exit_horizon_sessions": 21,
+      "mark_artifact": true,
+      "mark_artifact_evidence": {
+        "exit_price": 39.0755,
+        "real_low": 51.68,
+        "real_high": 53.21,
+        "session": "2026-07-14",
+        "pct_outside": -24.39,
+        "cause": "one-sided-bid mark from equity_quotes_public (fixed 2026-07-28)"
+      },
+      "vol_ann": 27.2,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "MU",
+      "symbol": "MU",
+      "instrument": "equity",
+      "entry": 1030.8602,
+      "exit": 848.6804,
+      "opened_at": "2026-07-02T14:21:05.972293+00:00",
+      "quantity": 0.9871,
+      "cost": 1017.56,
+      "pnl": -179.83,
+      "exit_reason": "hard stop -17.6%",
+      "closed_at": "2026-07-16T16:11:50.298410+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 70,
+        "degraded": false,
+        "thesis": "Micron is a confirmed momentum + quality market leader whose thesis just strengthened via a genuine beat-and-raise, still trading at 7.1x forward earnings with 66.6% ROE and a near-net-cash balance sh"
+      },
+      "desk_scores": {
+        "fundamental": 68,
+        "technical": 64,
+        "sentiment": 22,
+        "macro": 12,
+        "quant": 70
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 100
+      },
+      "spy_ret_pct": 1.02,
+      "excess_ret_pct": -18.69,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 16.06,
+          "excess_pct": 17.73
+        },
+        "10": {
+          "ret_pct": 2.52,
+          "excess_pct": 3.72
+        },
+        "21": {
+          "ret_pct": 13.88,
+          "excess_pct": 10.47
+        }
+      },
+      "post_exit_excess_pct": 10.47,
+      "post_exit_ret_pct": 13.88,
+      "post_exit_horizon_sessions": 21,
+      "vol_ann": 116.8,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "AMD",
+      "symbol": "AMD",
+      "instrument": "equity",
+      "entry": 466.26,
+      "exit": 481.5691,
+      "opened_at": "2026-06-09T19:00:59.256037+00:00",
+      "quantity": 2,
+      "cost": 932.52,
+      "pnl": 30.62,
+      "exit_reason": "trailing stop -15.8% from peak",
+      "closed_at": "2026-07-17T13:30:30.585010+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 62,
+        "degraded": false,
+        "thesis": "AMD is a genuinely accelerating AI-datacenter compounder (37.8% revenue, 91% EPS growth, fortress balance sheet D/E 0.06, $7.2B FCF) that we already own at +7.4% with an intact primary uptrend above r"
+      },
+      "desk_scores": {
+        "fundamental": 10,
+        "technical": 38,
+        "sentiment": -12,
+        "macro": -35,
+        "quant": 52
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 0.93,
+      "excess_ret_pct": 2.36,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 5.28,
+          "excess_pct": 5.87
+        },
+        "10": {
+          "ret_pct": -3.96,
+          "excess_pct": -4.46
+        },
+        "21": {
+          "ret_pct": 2.07,
+          "excess_pct": -1.89
+        }
+      },
+      "post_exit_excess_pct": -1.89,
+      "post_exit_ret_pct": 2.07,
+      "post_exit_horizon_sessions": 21,
+      "vol_ann": 82.2,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "CAT",
+      "symbol": "CAT",
+      "instrument": "equity",
+      "entry": 914.41,
+      "exit": 841.559,
+      "opened_at": "2026-06-09T19:00:59.256037+00:00",
+      "quantity": 1,
+      "cost": 914.41,
+      "pnl": -72.85,
+      "exit_reason": "trailing stop -15.8% from peak",
+      "closed_at": "2026-07-17T13:30:30.614493+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 61,
+        "degraded": false,
+        "thesis": "CAT is a wide-moat momentum leader (momentum 77.2, revisions 85.2, above a rising 200-day, +38% 6m, +6.6 rel-strength) the firm already owns and should KEEP \u2014 the primary uptrend and accelerating fund"
+      },
+      "desk_scores": {
+        "fundamental": -12,
+        "technical": 14,
+        "sentiment": 8,
+        "macro": -18,
+        "quant": 42
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 0.93,
+      "excess_ret_pct": -8.89,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 1.15,
+          "excess_pct": 1.73
+        },
+        "10": {
+          "ret_pct": -7.27,
+          "excess_pct": -7.77
+        },
+        "21": {
+          "ret_pct": 0.34,
+          "excess_pct": -3.61
+        }
+      },
+      "post_exit_excess_pct": -3.61,
+      "post_exit_ret_pct": 0.34,
+      "post_exit_horizon_sessions": 21,
+      "vol_ann": 52.8,
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "STRZ",
+      "symbol": "STRZ",
+      "instrument": "equity",
+      "entry": 26.3982,
+      "exit": 22.4887,
+      "opened_at": "2026-07-21T14:26:20.898700+00:00",
+      "quantity": 43.0,
+      "cost": 1135.12,
+      "pnl": -168.11,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-07-22T13:04:01.130631+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 67,
+        "degraded": false,
+        "thesis": "STRZ is a distressed, levered premium-TV spin priced as a melting ice cube (0.35x sales, below stated book) where earnings revisions (79) and maxed momentum (100) say estimates are being marked up aga"
+      },
+      "desk_scores": {
+        "fundamental": -30,
+        "technical": 50,
+        "sentiment": 6,
+        "macro": -42,
+        "quant": 42
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 60.0,
+        "quality": 30.0,
+        "size": {
+          "mkt_cap_b": 0.45,
+          "bucket": "small"
+        },
+        "revisions": 79.1
+      },
+      "spy_ret_pct": 0.14,
+      "excess_ret_pct": -14.95,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Communication Services",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "mark_artifact": true,
+      "mark_artifact_evidence": {
+        "exit_price": 22.4887,
+        "real_low": 25.98,
+        "real_high": 27.65,
+        "session": "2026-07-22",
+        "pct_outside": -13.44,
+        "cause": "one-sided-bid mark from equity_quotes_public (fixed 2026-07-28)"
+      },
+      "vol_ann": 59.3,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -0.34,
+          "excess_pct": 2.06
+        },
+        "10": {
+          "ret_pct": 0.15,
+          "excess_pct": -2.84
+        },
+        "21": {
+          "ret_pct": 0.23,
+          "excess_pct": -1.8
+        }
+      },
+      "post_exit_excess_pct": -1.8,
+      "post_exit_ret_pct": 0.23,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "ASTH",
+      "symbol": "ASTH",
+      "instrument": "equity",
+      "entry": 45.7979,
+      "exit": 42.4087,
+      "opened_at": "2026-07-10T15:39:22.381385+00:00",
+      "quantity": 17.0,
+      "cost": 778.56,
+      "pnl": -57.62,
+      "exit_reason": "trailing stop -15.0% from peak",
+      "closed_at": "2026-07-22T19:21:11.590730+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 63,
+        "degraded": false,
+        "thesis": "ASTH is a value-based-care compounder that is a top-decile confirmed momentum leader (factor 100, +62% 3m, +51 relative strength, above rising 50/200-DMA) priced at 13.4x forward on 55.6% revenue grow"
+      },
+      "desk_scores": {
+        "fundamental": 42,
+        "technical": 58,
+        "sentiment": 8,
+        "macro": 12,
+        "quant": 58
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 61.0,
+        "size": {
+          "mkt_cap_b": 2.27,
+          "bucket": "mid"
+        }
+      },
+      "spy_ret_pct": -0.92,
+      "excess_ret_pct": -6.48,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann": 47.7,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -12.95,
+          "excess_pct": -10.55
+        },
+        "10": {
+          "ret_pct": -14.57,
+          "excess_pct": -17.56
+        },
+        "21": {
+          "ret_pct": -7.63,
+          "excess_pct": -9.66
+        }
+      },
+      "post_exit_excess_pct": -9.66,
+      "post_exit_ret_pct": -7.63,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "FLXS",
+      "symbol": "FLXS",
+      "instrument": "equity",
+      "entry": 73.8869,
+      "exit": 73.3732,
+      "opened_at": "2026-07-17T14:21:21.352006+00:00",
+      "quantity": 21.0,
+      "cost": 1551.62,
+      "pnl": -10.79,
+      "exit_reason": "trailing stop -24.7% from peak",
+      "closed_at": "2026-07-23T13:30:44.059712+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 61,
+        "degraded": false,
+        "thesis": "FLXS is the rare cheap-AND-rising small-cap \u2014 top-decile momentum with genuine quality (18.1% ROE from margins not leverage, ~7.3% FCF yield, 0.29x D/E) \u2014 and the variant view is that furniture demand"
+      },
+      "desk_scores": {
+        "fundamental": -18,
+        "technical": 46,
+        "sentiment": -22,
+        "macro": -35,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 78.0,
+        "quality": 74.0,
+        "size": {
+          "mkt_cap_b": 0.3,
+          "bucket": "small"
+        },
+        "revisions": 44.7
+      },
+      "spy_ret_pct": -0.64,
+      "excess_ret_pct": -0.06,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Consumer Cyclical",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann": 39.7,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -1.62,
+          "excess_pct": -2.1
+        },
+        "10": {
+          "ret_pct": 2.26,
+          "excess_pct": -1.85
+        },
+        "21": {
+          "ret_pct": 8.25,
+          "excess_pct": 4.51
+        }
+      },
+      "post_exit_excess_pct": 4.51,
+      "post_exit_ret_pct": 8.25,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "ASTH",
+      "symbol": "ASTH",
+      "instrument": "equity",
+      "entry": 45.7979,
+      "exit": 40.8796,
+      "opened_at": "2026-07-10T15:39:22.699662+00:00",
+      "quantity": 51.0,
+      "cost": 2335.69,
+      "pnl": -250.83,
+      "exit_reason": "trailing stop -18.1% from peak",
+      "closed_at": "2026-07-23T13:40:03.358412+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 63,
+        "degraded": false,
+        "thesis": "ASTH is a value-based-care compounder that is a top-decile confirmed momentum leader (factor 100, +62% 3m, +51 relative strength, above rising 50/200-DMA) priced at 13.4x forward on 55.6% revenue grow"
+      },
+      "desk_scores": {
+        "fundamental": 42,
+        "technical": 58,
+        "sentiment": 8,
+        "macro": 12,
+        "quant": 58
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 61.0,
+        "size": {
+          "mkt_cap_b": 2.27,
+          "bucket": "mid"
+        }
+      },
+      "spy_ret_pct": -2.17,
+      "excess_ret_pct": -8.57,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann": 48.3,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -10.51,
+          "excess_pct": -10.99
+        },
+        "10": {
+          "ret_pct": -16.74,
+          "excess_pct": -20.85
+        },
+        "21": {
+          "ret_pct": -4.0,
+          "excess_pct": -7.73
+        }
+      },
+      "post_exit_excess_pct": -7.73,
+      "post_exit_ret_pct": -4.0,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "DAVE",
+      "symbol": "DAVE",
+      "instrument": "equity",
+      "entry": 452.8463,
+      "exit": 397.9109,
+      "opened_at": "2026-07-20T16:17:25.737100+00:00",
+      "quantity": 2.0,
+      "cost": 905.69,
+      "pnl": -109.87,
+      "exit_reason": "hard stop -12.1%",
+      "closed_at": "2026-07-23T14:32:20.863562+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 65,
+        "degraded": false,
+        "thesis": "DAVE is a rare profitable-at-scale consumer fintech (47% rev growth, 37% net margin, positive FCF, 104% EPS growth) trading at an undemanding ~21.5x forward earnings, with the two mid-cycle-leading fa"
+      },
+      "desk_scores": {
+        "fundamental": 30,
+        "technical": 52,
+        "sentiment": -25,
+        "macro": -18,
+        "quant": 62
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 52.0,
+        "quality": 74.0,
+        "size": {
+          "mkt_cap_b": 5.75,
+          "bucket": "mid"
+        },
+        "revisions": 75.1
+      },
+      "spy_ret_pct": -0.28,
+      "excess_ret_pct": -11.86,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann": 62.5,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -7.57,
+          "excess_pct": -8.05
+        },
+        "10": {
+          "ret_pct": -10.6,
+          "excess_pct": -14.72
+        },
+        "21": {
+          "ret_pct": -13.18,
+          "excess_pct": -16.92
+        }
+      },
+      "post_exit_excess_pct": -16.92,
+      "post_exit_ret_pct": -13.18,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "HPE",
+      "symbol": "HPE260731C00050000",
+      "instrument": "option",
+      "entry": 1.8005,
+      "exit": 1.4948,
+      "opened_at": "2026-07-23T14:18:55.745625+00:00",
+      "quantity": 11.0,
+      "cost": 1980.55,
+      "pnl": -336.27,
+      "exit_reason": "hard SL -15.0%",
+      "closed_at": "2026-07-23T15:05:06.342094+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 67,
+        "degraded": false,
+        "thesis": "HPE is a moat-light hardware/AI-server business the market prices as a commodity box-maker while it re-rates into a higher-margin Juniper-driven networking mix, and the factor evidence \u2014 cheap (12.2x "
+      },
+      "desk_scores": {
+        "fundamental": 28,
+        "technical": 62,
+        "sentiment": 8,
+        "macro": -18,
+        "quant": 52
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 84.0,
+        "quality": 61.0,
+        "size": {
+          "mkt_cap_b": 64.5,
+          "bucket": "large"
+        },
+        "revisions": 91.8
+      },
+      "spy_ret_pct": 0.0,
+      "excess_ret_pct": -16.98,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann": 60.3,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -1.05,
+          "excess_pct": -1.53
+        },
+        "10": {
+          "ret_pct": 10.05,
+          "excess_pct": 5.94
+        },
+        "21": {
+          "ret_pct": 12.2,
+          "excess_pct": 8.46
+        }
+      },
+      "post_exit_excess_pct": 8.46,
+      "post_exit_ret_pct": 12.2,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "INNV",
+      "symbol": "INNV",
+      "instrument": "equity",
+      "entry": 11.7808,
+      "exit": 10.2049,
+      "opened_at": "2026-07-17T14:21:20.646965+00:00",
+      "quantity": 167.0,
+      "cost": 1967.39,
+      "pnl": -263.18,
+      "exit_reason": "hard stop -13.3%",
+      "closed_at": "2026-07-23T20:37:24.665583+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 63,
+        "degraded": false,
+        "thesis": "INNV is a top-decile momentum leader (factor 100, screen 99.2, +34 RS vs SPY, above rising 50/200-DMA) in a LEADING defensive Healthcare sector during a risk-off tape \u2014 the single most reliable setup "
+      },
+      "desk_scores": {
+        "fundamental": -32,
+        "technical": 62,
+        "sentiment": -34,
+        "macro": 24,
+        "quant": 60
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 54.0,
+        "quality": 41.0,
+        "size": {
+          "mkt_cap_b": 1.58,
+          "bucket": "small"
+        },
+        "revisions": 65.0
+      },
+      "spy_ret_pct": -0.69,
+      "excess_ret_pct": -12.69,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "mark_artifact": true,
+      "mark_artifact_evidence": {
+        "exit_price": 10.2049,
+        "real_low": 10.93,
+        "real_high": 11.63,
+        "session": "2026-07-23",
+        "pct_outside": -6.63,
+        "cause": "one-sided-bid mark from equity_quotes_public (fixed 2026-07-28)"
+      },
+      "vol_ann": 60.9,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 3.66,
+          "excess_pct": 3.19
+        },
+        "10": {
+          "ret_pct": -1.88,
+          "excess_pct": -5.99
+        },
+        "21": {
+          "ret_pct": -2.06,
+          "excess_pct": -5.79
+        }
+      },
+      "post_exit_excess_pct": -5.79,
+      "post_exit_ret_pct": -2.06,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "PRSU",
+      "symbol": "PRSU",
+      "instrument": "equity",
+      "entry": 53.0065,
+      "exit": 37.5112,
+      "opened_at": "2026-07-17T14:21:20.973711+00:00",
+      "quantity": 27.0,
+      "cost": 1431.18,
+      "pnl": -418.37,
+      "exit_reason": "hard stop -29.2%",
+      "closed_at": "2026-07-23T20:37:24.994138+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 63,
+        "degraded": false,
+        "thesis": "PRSU is a confirmed top-decile momentum/revisions leader (99.9/94.7) growing revenue 37% and outperforming a risk-off market \u2014 the hardest tell of real accumulation \u2014 now offering a far better entry t"
+      },
+      "desk_scores": {
+        "fundamental": -18,
+        "technical": 45,
+        "sentiment": 12,
+        "macro": -38,
+        "quant": 60
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 99.9,
+        "value": 48.0,
+        "quality": 54.0,
+        "size": {
+          "mkt_cap_b": 1.46,
+          "bucket": "small"
+        },
+        "revisions": 94.7
+      },
+      "spy_ret_pct": -0.69,
+      "excess_ret_pct": -28.55,
+      "reentry_after_stop": true,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Consumer Cyclical",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "mark_artifact": true,
+      "mark_artifact_evidence": {
+        "exit_price": 37.5112,
+        "real_low": 50.6,
+        "real_high": 51.98,
+        "session": "2026-07-23",
+        "pct_outside": -25.87,
+        "cause": "one-sided-bid mark from equity_quotes_public (fixed 2026-07-28)"
+      },
+      "vol_ann": 26.9,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -0.87,
+          "excess_pct": -1.35
+        },
+        "10": {
+          "ret_pct": -7.58,
+          "excess_pct": -11.7
+        },
+        "21": {
+          "ret_pct": -5.33,
+          "excess_pct": -9.06
+        }
+      },
+      "post_exit_excess_pct": -9.06,
+      "post_exit_ret_pct": -5.33,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "OSCR",
+      "symbol": "OSCR",
+      "instrument": "equity",
+      "entry": 32.081,
+      "exit": 28.1759,
+      "opened_at": "2026-07-02T14:21:07.079393+00:00",
+      "quantity": 19.0,
+      "cost": 609.54,
+      "pnl": -74.2,
+      "exit_reason": "hard stop -12.1%",
+      "closed_at": "2026-07-25T11:09:14.191962+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 61,
+        "degraded": false,
+        "thesis": "OSCR is a validated momentum leader in a LEADING sector, trading cheap on real cash flow (~17% FCF yield, 0.73x sales, 21.6x forward P/E) against triple-digit EPS growth, with a fresh favorable risk-a"
+      },
+      "desk_scores": {
+        "fundamental": 42,
+        "technical": 66,
+        "sentiment": 20,
+        "macro": 38,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 64.0,
+        "quality": 53.0
+      },
+      "spy_ret_pct": -0.79,
+      "excess_ret_pct": -11.39,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "vol_ann": 54.8,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 8.47,
+          "excess_pct": 5.95
+        },
+        "10": {
+          "ret_pct": -2.36,
+          "excess_pct": -6.96
+        },
+        "21": {
+          "ret_pct": 9.14,
+          "excess_pct": 5.51
+        }
+      },
+      "post_exit_excess_pct": 5.51,
+      "post_exit_ret_pct": 9.14,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "CON",
+      "symbol": "CON",
+      "instrument": "equity",
+      "entry": 31.8909,
+      "exit": 31.5942,
+      "opened_at": "2026-07-16T17:31:55.547769+00:00",
+      "quantity": 28.0,
+      "cost": 892.95,
+      "pnl": -8.31,
+      "exit_reason": "trailing stop -16.7% from peak",
+      "closed_at": "2026-07-25T11:12:49.835830+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 66,
+        "degraded": false,
+        "thesis": "CON is a differentiated momentum+value+quality name (factor stack 100/64/66) in an explicitly LEADING Healthcare sector, trading 19x forward against 29% EPS growth with $143M of real FCF \u2014 an undemand"
+      },
+      "desk_scores": {
+        "fundamental": 32,
+        "technical": 58,
+        "sentiment": 12,
+        "macro": 30,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 64.0,
+        "quality": 66.0,
+        "size": {
+          "mkt_cap_b": 4.11,
+          "bucket": "mid"
+        }
+      },
+      "spy_ret_pct": -1.57,
+      "excess_ret_pct": 0.64,
+      "reentry_after_stop": false,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "vol_ann": 24.4,
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -0.6,
+          "excess_pct": -3.11
+        },
+        "10": {
+          "ret_pct": 6.93,
+          "excess_pct": 2.34
+        },
+        "21": {
+          "ret_pct": 9.26,
+          "excess_pct": 5.63
+        }
+      },
+      "post_exit_excess_pct": 5.63,
+      "post_exit_ret_pct": 9.26,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "ATEX",
+      "symbol": "ATEX",
+      "instrument": "equity",
+      "entry": 104.2671,
+      "exit": 94.6976,
+      "opened_at": "2026-07-21T14:26:25.632200+00:00",
+      "quantity": 10.0,
+      "cost": 1042.67,
+      "pnl": -95.7,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-07-27T13:49:09.250063+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 66,
+        "degraded": false,
+        "thesis": "Anterix is a debt-free owner of scarce nationwide 900MHz spectrum in a leading Utilities end-market \u2014 a hard-asset floor the null-data packet can't quantify \u2014 riding a best-in-class, orderly uptrend ("
+      },
+      "desk_scores": {
+        "fundamental": -18,
+        "technical": 58,
+        "sentiment": -25,
+        "macro": -22,
+        "quant": 35
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": null,
+        "quality": null,
+        "size": {
+          "mkt_cap_b": null,
+          "bucket": null
+        },
+        "revisions": null
+      },
+      "spy_ret_pct": -0.88,
+      "excess_ret_pct": -8.29,
+      "reentry_after_stop": false,
+      "vol_ann": 77.6,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Communication Services",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 2.02,
+          "excess_pct": -0.5
+        },
+        "10": {
+          "ret_pct": -1.03,
+          "excess_pct": -5.63
+        },
+        "21": {
+          "ret_pct": -1.48,
+          "excess_pct": -5.11
+        }
+      },
+      "post_exit_excess_pct": -5.11,
+      "post_exit_ret_pct": -1.48,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "HPE",
+      "symbol": "HPE260807C00049500",
+      "instrument": "option",
+      "entry": 2.3046,
+      "exit": 1.7184,
+      "opened_at": "2026-07-27T13:49:31.308747+00:00",
+      "quantity": 9.0,
+      "cost": 2074.14,
+      "pnl": -527.58,
+      "exit_reason": "hard SL -15.4%",
+      "closed_at": "2026-07-27T14:08:35.645932+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 69,
+        "degraded": false,
+        "thesis": "HPE is owned for a cash-earnings-versus-GAAP wedge: $3.836B of free cash flow on a $63.2B market cap is ~2.4x GAAP net income with no receivables or inventory tell, so the $1.07 trailing EPS the marke"
+      },
+      "desk_scores": {
+        "fundamental": -10,
+        "technical": 48,
+        "sentiment": -12,
+        "macro": -12,
+        "quant": 40
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 92.0,
+        "quality": 61.0,
+        "size": {
+          "mkt_cap_b": 63.15,
+          "bucket": "large"
+        },
+        "revisions": 91.8
+      },
+      "spy_ret_pct": 0.0,
+      "excess_ret_pct": -25.44,
+      "reentry_after_stop": false,
+      "vol_ann": 57.2,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 4.25,
+          "excess_pct": 1.74
+        },
+        "10": {
+          "ret_pct": 13.47,
+          "excess_pct": 8.88
+        },
+        "21": {
+          "ret_pct": 10.89,
+          "excess_pct": 7.27
+        }
+      },
+      "post_exit_excess_pct": 7.27,
+      "post_exit_ret_pct": 10.89,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "ALKS",
+      "symbol": "ALKS",
+      "instrument": "equity",
+      "entry": 51.7809,
+      "exit": 50.3698,
+      "opened_at": "2026-07-17T13:30:30.489989+00:00",
+      "quantity": 27.0,
+      "cost": 1398.08,
+      "pnl": -38.1,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-07-28T13:22:25.412779+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 62,
+        "degraded": false,
+        "thesis": "ALKS is a top-decile momentum leader (factor 100, +49.7 RS, above rising 50/200-DMA) in a market-leading Healthcare sector, backed by real 28% revenue growth and positive $141M FCF \u2014 the firm systemat"
+      },
+      "desk_scores": {
+        "fundamental": -15,
+        "technical": -62,
+        "sentiment": -10,
+        "macro": -12,
+        "quant": -38
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": -0.57,
+      "excess_ret_pct": -2.15,
+      "reentry_after_stop": false,
+      "vol_ann": 40.2,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -1.64,
+          "excess_pct": -5.76
+        },
+        "10": {
+          "ret_pct": -2.9,
+          "excess_pct": -7.11
+        },
+        "21": {
+          "ret_pct": -2.65,
+          "excess_pct": -6.06
+        }
+      },
+      "post_exit_excess_pct": -6.06,
+      "post_exit_ret_pct": -2.65,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "MU",
+      "symbol": "MU",
+      "instrument": "equity",
+      "entry": 989.9647,
+      "exit": 847.546,
+      "opened_at": "2026-07-23T14:18:06.535656+00:00",
+      "quantity": 0.8674,
+      "cost": 858.7,
+      "pnl": -123.53,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-07-28T13:22:25.412779+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 67,
+        "degraded": false,
+        "thesis": "MU is a near-debt-free DRAM/HBM oligopolist (80% op margin, 66% ROE, D/E 0.06, $7.6B FCF) with an exceptional and coherent factor stack (momentum 100, quality 100, revisions 96.8, value 82) and an int"
+      },
+      "desk_scores": {
+        "fundamental": 38,
+        "technical": 62,
+        "sentiment": -8,
+        "macro": -30,
+        "quant": 60
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 82.0,
+        "quality": 100,
+        "size": {
+          "mkt_cap_b": 1116.7,
+          "bucket": "mega"
+        },
+        "revisions": 96.8
+      },
+      "spy_ret_pct": 0.12,
+      "excess_ret_pct": -14.5,
+      "reentry_after_stop": false,
+      "vol_ann": 107.2,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 8.79,
+          "excess_pct": 4.68
+        },
+        "10": {
+          "ret_pct": 4.25,
+          "excess_pct": 0.04
+        },
+        "21": {
+          "ret_pct": 14.37,
+          "excess_pct": 10.96
+        }
+      },
+      "post_exit_excess_pct": 10.96,
+      "post_exit_ret_pct": 14.37,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "CNC",
+      "symbol": "CNC",
+      "instrument": "equity",
+      "entry": 68.3091,
+      "exit": 57.7111,
+      "opened_at": "2026-07-02T14:21:06.543374+00:00",
+      "quantity": 17.0,
+      "cost": 1161.25,
+      "pnl": -180.17,
+      "exit_reason": "hard stop -15.5%",
+      "closed_at": "2026-07-28T13:30:32.081941+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 63,
+        "degraded": false,
+        "thesis": "CNC is a cheap, cash-generative managed-care recovery (~20% FCF yield, 15.2x fwd, PEG 1.24) that is now the top-ranked name in the screen on maxed momentum and strong value, inside the #1 leading sect"
+      },
+      "desk_scores": {
+        "fundamental": 28,
+        "technical": 72,
+        "sentiment": 48,
+        "macro": 40,
+        "quant": 60
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 78.0,
+        "quality": 41.0
+      },
+      "spy_ret_pct": -0.77,
+      "excess_ret_pct": -14.74,
+      "reentry_after_stop": false,
+      "vol_ann": 39.3,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 0.25,
+          "excess_pct": -3.86
+        },
+        "10": {
+          "ret_pct": 3.85,
+          "excess_pct": -0.36
+        },
+        "21": {
+          "ret_pct": 2.44,
+          "excess_pct": -0.96
+        }
+      },
+      "post_exit_excess_pct": -0.96,
+      "post_exit_ret_pct": 2.44,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "ATEN",
+      "symbol": "ATEN",
+      "instrument": "equity",
+      "entry": 35.8779,
+      "exit": 31.4493,
+      "opened_at": "2026-07-22T14:05:32.547313+00:00",
+      "quantity": 45.0,
+      "cost": 1614.51,
+      "pnl": -199.29,
+      "exit_reason": "hard stop -12.3%",
+      "closed_at": "2026-07-28T14:09:53.333234+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 69,
+        "degraded": false,
+        "thesis": "ATEN is a high-quality, cash-generative small-cap security/ADC compounder (21% ROE, 17% op margin, 29% EPS growth outrunning 13% revenue growth) in an intact, elite-quality uptrend (+113.8% 6m against"
+      },
+      "desk_scores": {
+        "fundamental": -8,
+        "technical": 60,
+        "sentiment": -12,
+        "macro": -38,
+        "quant": 64
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 42.0,
+        "quality": 72.0,
+        "size": {
+          "mkt_cap_b": 2.59,
+          "bucket": "mid"
+        },
+        "revisions": 83.3
+      },
+      "spy_ret_pct": -1.36,
+      "excess_ret_pct": -10.99,
+      "reentry_after_stop": false,
+      "vol_ann": 33.9,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -1.98,
+          "excess_pct": -6.09
+        },
+        "10": {
+          "ret_pct": -12.23,
+          "excess_pct": -16.43
+        },
+        "21": {
+          "ret_pct": -17.16,
+          "excess_pct": -20.56
+        }
+      },
+      "post_exit_excess_pct": -20.56,
+      "post_exit_ret_pct": -17.16,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "HPE",
+      "symbol": "HPE",
+      "instrument": "equity",
+      "entry": 48.8744,
+      "exit": 44.8476,
+      "opened_at": "2026-07-23T14:18:05.308387+00:00",
+      "quantity": 25.0,
+      "cost": 1221.86,
+      "pnl": -100.67,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-07-28T15:25:39.412161+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 67,
+        "degraded": false,
+        "thesis": "HPE is a moat-light hardware/AI-server business the market prices as a commodity box-maker while it re-rates into a higher-margin Juniper-driven networking mix, and the factor evidence \u2014 cheap (12.2x "
+      },
+      "desk_scores": {
+        "fundamental": 28,
+        "technical": 62,
+        "sentiment": 8,
+        "macro": -18,
+        "quant": 52
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 84.0,
+        "quality": 61.0,
+        "size": {
+          "mkt_cap_b": 64.5,
+          "bucket": "large"
+        },
+        "revisions": 91.8
+      },
+      "spy_ret_pct": 0.44,
+      "excess_ret_pct": -8.68,
+      "reentry_after_stop": false,
+      "vol_ann": 75.1,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 14.92,
+          "excess_pct": 10.8
+        },
+        "10": {
+          "ret_pct": 19.96,
+          "excess_pct": 15.75
+        },
+        "21": {
+          "ret_pct": 21.14,
+          "excess_pct": 17.74
+        }
+      },
+      "post_exit_excess_pct": 17.74,
+      "post_exit_ret_pct": 21.14,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "OSCR",
+      "symbol": "OSCR",
+      "instrument": "equity",
+      "entry": 30.6853,
+      "exit": 29.8051,
+      "opened_at": "2026-07-10T16:50:46.008597+00:00",
+      "quantity": 77.0,
+      "cost": 2362.77,
+      "pnl": -67.78,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-07-28T15:25:39.619380+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 63,
+        "degraded": false,
+        "thesis": "OSCR is a momentum-confirmed profitability inflection where consensus is still anchored to its legacy loss-making-ACA-insurer identity and under-crediting the operating-margin turn (+52.6% revenue, ~1"
+      },
+      "desk_scores": {
+        "fundamental": 28,
+        "technical": 68,
+        "sentiment": -12,
+        "macro": -12,
+        "quant": 52
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 64.0,
+        "quality": 53.0,
+        "size": {
+          "mkt_cap_b": 9.25,
+          "bucket": "mid"
+        }
+      },
+      "spy_ret_pct": -1.79,
+      "excess_ret_pct": -1.08,
+      "reentry_after_stop": false,
+      "vol_ann": 60.2,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -3.25,
+          "excess_pct": -7.36
+        },
+        "10": {
+          "ret_pct": -10.45,
+          "excess_pct": -14.65
+        },
+        "21": {
+          "ret_pct": -0.51,
+          "excess_pct": -3.91
+        }
+      },
+      "post_exit_excess_pct": -3.91,
+      "post_exit_ret_pct": -0.51,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "HPE",
+      "symbol": "HPE",
+      "instrument": "equity",
+      "entry": 48.8894,
+      "exit": 44.8576,
+      "opened_at": "2026-07-23T14:18:06.899551+00:00",
+      "quantity": 44.0,
+      "cost": 2151.13,
+      "pnl": -177.4,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-07-28T15:25:39.619380+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 67,
+        "degraded": false,
+        "thesis": "HPE is a moat-light hardware/AI-server business the market prices as a commodity box-maker while it re-rates into a higher-margin Juniper-driven networking mix, and the factor evidence \u2014 cheap (12.2x "
+      },
+      "desk_scores": {
+        "fundamental": 28,
+        "technical": 62,
+        "sentiment": 8,
+        "macro": -18,
+        "quant": 52
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 84.0,
+        "quality": 61.0,
+        "size": {
+          "mkt_cap_b": 64.5,
+          "bucket": "large"
+        },
+        "revisions": 91.8
+      },
+      "spy_ret_pct": 0.44,
+      "excess_ret_pct": -8.69,
+      "reentry_after_stop": false,
+      "vol_ann": 75.1,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 14.92,
+          "excess_pct": 10.8
+        },
+        "10": {
+          "ret_pct": 19.96,
+          "excess_pct": 15.75
+        },
+        "21": {
+          "ret_pct": 21.14,
+          "excess_pct": 17.74
+        }
+      },
+      "post_exit_excess_pct": 17.74,
+      "post_exit_ret_pct": 21.14,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "CRS",
+      "symbol": "CRS",
+      "instrument": "equity",
+      "entry": 607.9538,
+      "exit": 527.0413,
+      "opened_at": "2026-07-27T13:30:21.149537+00:00",
+      "quantity": 3.0,
+      "cost": 1823.86,
+      "pnl": -242.74,
+      "exit_reason": "hard stop -13.3%",
+      "closed_at": "2026-07-29T16:03:43.519911+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 70,
+        "degraded": false,
+        "thesis": "CRS is a supply-constrained specialty-alloy producer whose earnings power is inflecting structurally rather than cyclically: 11.6% revenue growth converting to 47.3% EPS growth is operating leverage o"
+      },
+      "desk_scores": {
+        "fundamental": -28,
+        "technical": 47,
+        "sentiment": -5,
+        "macro": -12,
+        "quant": 58
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 36.0,
+        "quality": 82.0,
+        "size": {
+          "mkt_cap_b": 29.99,
+          "bucket": "large"
+        },
+        "revisions": 78.8
+      },
+      "spy_ret_pct": -0.79,
+      "excess_ret_pct": -12.52,
+      "reentry_after_stop": false,
+      "vol_ann": 41.8,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 7.5,
+          "excess_pct": 1.97
+        },
+        "10": {
+          "ret_pct": -0.37,
+          "excess_pct": -6.27
+        },
+        "21": {
+          "ret_pct": -7.51,
+          "excess_pct": -13.22
+        }
+      },
+      "post_exit_excess_pct": -13.22,
+      "post_exit_ret_pct": -7.51,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "TXN",
+      "symbol": "TXN",
+      "instrument": "equity",
+      "entry": 286.13,
+      "exit": 270.0649,
+      "opened_at": "2026-06-09T19:11:02.576494+00:00",
+      "quantity": 7.0,
+      "cost": 2002.91,
+      "pnl": -112.46,
+      "exit_reason": "trailing stop -18.9% from peak",
+      "closed_at": "2026-07-29T16:03:44.357841+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 62,
+        "degraded": false,
+        "thesis": "TXN is a genuinely elite compounder (ROIC ~25% vs ~8-9% WACC, durable catalog/300mm/direct-channel moat, ROE from 31% net margin rather than the 2.1x equity multiplier) that just printed a real operat"
+      },
+      "desk_scores": {
+        "fundamental": 18,
+        "technical": -8,
+        "sentiment": 26,
+        "macro": -32,
+        "quant": 20
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": -0.26,
+      "excess_ret_pct": -5.36,
+      "reentry_after_stop": false,
+      "vol_ann": 54.2,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 2.89,
+          "excess_pct": -2.64
+        },
+        "10": {
+          "ret_pct": 2.47,
+          "excess_pct": -3.43
+        },
+        "21": {
+          "ret_pct": -1.25,
+          "excess_pct": -6.96
+        }
+      },
+      "post_exit_excess_pct": -6.96,
+      "post_exit_ret_pct": -1.25,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "etf_rotation",
+      "ticker": "XLK",
+      "symbol": "XLK",
+      "instrument": "equity",
+      "entry": 179.5001,
+      "exit": 176.5416,
+      "opened_at": "2026-06-09T19:11:03.529633+00:00",
+      "quantity": 46.0,
+      "cost": 8257.0,
+      "pnl": -136.09,
+      "exit_reason": "rotation exit (rank fell, mom 14.88)",
+      "closed_at": "2026-08-03T14:47:33.758148+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 57,
+        "degraded": false,
+        "thesis": "XLK is a still-owned holding whose longer-horizon uptrend (above rising 200-DMA, +38% 12m, +10.4 3m relative strength) remains intact but whose near-term momentum has clearly cooled \u2014 50-DMA lost, RSI"
+      },
+      "desk_scores": {
+        "fundamental": -12,
+        "technical": 18,
+        "sentiment": -10,
+        "macro": -20,
+        "quant": 10
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 2.67,
+      "excess_ret_pct": -4.32,
+      "reentry_after_stop": false,
+      "vol_ann": 34.0,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 4.65,
+          "excess_pct": 2.62
+        },
+        "10": {
+          "ret_pct": 6.9,
+          "excess_pct": 4.92
+        },
+        "21": {
+          "ret_pct": 3.12,
+          "excess_pct": 2.58
+        }
+      },
+      "post_exit_excess_pct": 2.58,
+      "post_exit_ret_pct": 3.12,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "etf_rotation",
+      "ticker": "IWM",
+      "symbol": "IWM",
+      "instrument": "equity",
+      "entry": 299.1445,
+      "exit": 295.2573,
+      "opened_at": "2026-07-06T14:35:19.902997+00:00",
+      "quantity": 28.0,
+      "cost": 8376.05,
+      "pnl": -108.84,
+      "exit_reason": "rotation exit (rank fell, mom 8.02)",
+      "closed_at": "2026-08-03T14:47:33.758148+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 57,
+        "degraded": false,
+        "thesis": "IWM is small-cap index beta in a still-intact but decelerating uptrend, held by the firm at a slight loss. The 'add on strength' bar is not met \u2014 there is no strengthening fundamental thesis (it is an"
+      },
+      "desk_scores": {
+        "fundamental": 8,
+        "technical": 55,
+        "sentiment": 20,
+        "macro": 5,
+        "quant": 40
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 0.47,
+      "excess_ret_pct": -1.77,
+      "reentry_after_stop": false,
+      "vol_ann": 13.3,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "dual_momentum",
+      "momentum_score": 20.0,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 1.27,
+          "excess_pct": -0.76
+        },
+        "10": {
+          "ret_pct": 2.65,
+          "excess_pct": 0.67
+        },
+        "21": {
+          "ret_pct": -0.75,
+          "excess_pct": -1.29
+        }
+      },
+      "post_exit_excess_pct": -1.29,
+      "post_exit_ret_pct": -0.75,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "DVA",
+      "symbol": "DVA",
+      "instrument": "equity",
+      "entry": 236.2,
+      "exit": 200.4597,
+      "opened_at": "2026-07-17T13:30:30.385113+00:00",
+      "quantity": 5.0,
+      "cost": 1181.0,
+      "pnl": -178.7,
+      "exit_reason": "hard stop -15.1%",
+      "closed_at": "2026-08-05T13:30:23.280765+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 62,
+        "degraded": false,
+        "thesis": "DaVita is an entrenched efficient-scale dialysis duopoly throwing off ~$1B FCF (~6.6% yield) at 13.7x forward / 0.72 PEG, whose buyback engine converts 6% revenue into fast per-share compounding \u2014 a l"
+      },
+      "desk_scores": {
+        "fundamental": 8,
+        "technical": 12,
+        "sentiment": -22,
+        "macro": 4,
+        "quant": 18
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 4.44,
+      "excess_ret_pct": -19.57,
+      "reentry_after_stop": false,
+      "vol_ann": 55.4,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -3.81,
+          "excess_pct": -4.16
+        },
+        "10": {
+          "ret_pct": -4.78,
+          "excess_pct": -4.91
+        },
+        "21": {
+          "ret_pct": -3.73,
+          "excess_pct": -4.16
+        }
+      },
+      "post_exit_excess_pct": -4.16,
+      "post_exit_ret_pct": -3.73,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "etf_rotation",
+      "ticker": "SMH",
+      "symbol": "SMH",
+      "instrument": "equity",
+      "entry": 583.71,
+      "exit": 583.643,
+      "opened_at": "2026-06-09T19:11:03.529633+00:00",
+      "quantity": 14.0,
+      "cost": 8171.94,
+      "pnl": -0.94,
+      "exit_reason": "profit ratchet: +0.0% held of a +14.9% peak (give-back cap 35%)",
+      "closed_at": "2026-08-05T13:49:36.762824+00:00",
+      "verdict": {
+        "rating": "SELL",
+        "conviction": 62,
+        "degraded": false,
+        "thesis": "SMH's primary trend is intact but its leadership is decaying \u2014 +92.9% 12m collapses to +9.3% 3m and -13.1% 1m, price is below the 50-DMA, and RSI 42.1 is mid-correction rather than washed out \u2014 while "
+      },
+      "desk_scores": {
+        "fundamental": -15,
+        "technical": 34,
+        "sentiment": -14,
+        "macro": -46,
+        "quant": 24
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 5.51,
+      "excess_ret_pct": -5.52,
+      "reentry_after_stop": false,
+      "vol_ann": 53.1,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 2.66,
+          "excess_pct": 2.31
+        },
+        "10": {
+          "ret_pct": -1.4,
+          "excess_pct": -1.53
+        },
+        "21": {
+          "ret_pct": -3.0,
+          "excess_pct": -3.44
+        }
+      },
+      "post_exit_excess_pct": -3.44,
+      "post_exit_ret_pct": -3.0,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "CRWD",
+      "symbol": "CRWD",
+      "instrument": "equity",
+      "entry": 187.5637,
+      "exit": 203.883,
+      "opened_at": "2026-07-27T13:30:23.369252+00:00",
+      "quantity": 9.0,
+      "cost": 1688.07,
+      "pnl": 146.87,
+      "exit_reason": "profit ratchet: +8.8% held of a +16.6% peak (give-back cap 35%)",
+      "closed_at": "2026-08-06T13:30:14.614411+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 68,
+        "degraded": false,
+        "thesis": "CRWD is a real compounder \u2014 25.6% revenue growth, ~38% FCF margin on $1.93B, D/E 0.18, a switching-cost and threat-graph moat a funded rival could not erode in five years \u2014 that just gave back 9.6% on"
+      },
+      "desk_scores": {
+        "fundamental": -22,
+        "technical": 45,
+        "sentiment": -12,
+        "macro": -35,
+        "quant": 24
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 18.0,
+        "quality": 50.0,
+        "size": {
+          "mkt_cap_b": 186.63,
+          "bucket": "large"
+        },
+        "revisions": 86.4
+      },
+      "spy_ret_pct": 4.25,
+      "excess_ret_pct": 4.45,
+      "reentry_after_stop": false,
+      "vol_ann": 55.0,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 8.75,
+          "excess_pct": 7.53
+        },
+        "10": {
+          "ret_pct": -8.22,
+          "excess_pct": -7.45
+        },
+        "21": {
+          "ret_pct": 2.75,
+          "excess_pct": 2.54
+        }
+      },
+      "post_exit_excess_pct": 2.54,
+      "post_exit_ret_pct": 2.75,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "PBI",
+      "symbol": "PBI",
+      "instrument": "equity",
+      "entry": 17.8702,
+      "exit": 16.6067,
+      "opened_at": "2026-07-09T19:32:45.142149+00:00",
+      "quantity": 63.0,
+      "cost": 1125.82,
+      "pnl": -79.6,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-08-12T20:28:06.476139+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 63,
+        "degraded": false,
+        "thesis": "PBI is a restructured legacy franchise generating a ~10.7% FCF yield (FCF > net income = clean earnings) at fwd P/E ~10, with a rare value-92/momentum-100 double confirming the fundamental re-rate via"
+      },
+      "desk_scores": {
+        "fundamental": 26,
+        "technical": 58,
+        "sentiment": -8,
+        "macro": 8,
+        "quant": 60
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 92.0,
+        "quality": 56.0,
+        "size": {
+          "mkt_cap_b": 2.39,
+          "bucket": "mid"
+        }
+      },
+      "spy_ret_pct": 2.76,
+      "excess_ret_pct": -9.83,
+      "reentry_after_stop": false,
+      "vol_ann": 32.5,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -2.41,
+          "excess_pct": -2.19
+        },
+        "10": {
+          "ret_pct": 2.47,
+          "excess_pct": 3.3
+        },
+        "21": {
+          "ret_pct": 2.77,
+          "excess_pct": 3.83
+        }
+      },
+      "post_exit_excess_pct": 3.83,
+      "post_exit_ret_pct": 2.77,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "CARE",
+      "symbol": "CARE",
+      "instrument": "equity",
+      "entry": 34.1321,
+      "exit": 32.2189,
+      "opened_at": "2026-07-27T13:30:20.028845+00:00",
+      "quantity": 61.0,
+      "cost": 2082.06,
+      "pnl": -116.71,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-08-12T20:28:06.478144+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 72,
+        "degraded": false,
+        "thesis": "CARE's normalized earnings power is understated, not overstated: forward EPS of $2.57 is ~$57M on $4.8B of assets \u2014 a ~1.19% ROA above peer median \u2014 and the unimpressive ~11.3% ROE is a denominator ar"
+      },
+      "desk_scores": {
+        "fundamental": -25,
+        "technical": 62,
+        "sentiment": -14,
+        "macro": -28,
+        "quant": 45
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 66.0,
+        "quality": 87.0,
+        "size": {
+          "mkt_cap_b": 0.76,
+          "bucket": "small"
+        },
+        "revisions": 25.2
+      },
+      "spy_ret_pct": 4.52,
+      "excess_ret_pct": -10.12,
+      "reentry_after_stop": false,
+      "vol_ann": 27.7,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Financial Services",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -4.36,
+          "excess_pct": -4.14
+        },
+        "10": {
+          "ret_pct": -2.63,
+          "excess_pct": -1.8
+        },
+        "21": {
+          "ret_pct": -3.43,
+          "excess_pct": -2.37
+        }
+      },
+      "post_exit_excess_pct": -2.37,
+      "post_exit_ret_pct": -3.43,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "PBI",
+      "symbol": "PBI",
+      "instrument": "equity",
+      "entry": 17.6388,
+      "exit": 16.6067,
+      "opened_at": "2026-07-09T19:32:47.180034+00:00",
+      "quantity": 133.0,
+      "cost": 2345.96,
+      "pnl": -137.27,
+      "exit_reason": "PM verdict SELL",
+      "closed_at": "2026-08-12T20:28:07.877484+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 63,
+        "degraded": false,
+        "thesis": "PBI is a restructured legacy franchise generating a ~10.7% FCF yield (FCF > net income = clean earnings) at fwd P/E ~10, with a rare value-92/momentum-100 double confirming the fundamental re-rate via"
+      },
+      "desk_scores": {
+        "fundamental": 26,
+        "technical": 58,
+        "sentiment": -8,
+        "macro": 8,
+        "quant": 60
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 92.0,
+        "quality": 56.0,
+        "size": {
+          "mkt_cap_b": 2.39,
+          "bucket": "mid"
+        }
+      },
+      "spy_ret_pct": 2.76,
+      "excess_ret_pct": -8.61,
+      "reentry_after_stop": false,
+      "vol_ann": 32.5,
+      "stop_pct": 15.0,
+      "trail_stop_pct": 18.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -2.41,
+          "excess_pct": -2.19
+        },
+        "10": {
+          "ret_pct": 2.47,
+          "excess_pct": 3.3
+        },
+        "21": {
+          "ret_pct": 2.77,
+          "excess_pct": 3.83
+        }
+      },
+      "post_exit_excess_pct": 3.83,
+      "post_exit_ret_pct": 2.77,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "IOVA",
+      "symbol": "IOVA260821C00007000",
+      "instrument": "option",
+      "entry": 0.165,
+      "exit": 0.2025,
+      "opened_at": "2026-08-14T19:24:06.863558+00:00",
+      "quantity": 65,
+      "cost": 1072.5,
+      "pnl": 243.75,
+      "exit_reason": "TP1 +36% sell 60%",
+      "closed_at": "2026-08-14T19:46:07.343645+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 71,
+        "degraded": false,
+        "thesis": "Amtagvi's commercial ramp is running above the sell-side path and the evidence is in primary filings, not news: revenue +65.7%, a Q2 EPS beat, FY26 guidance of $350-370M formally under upward review w"
+      },
+      "desk_scores": {
+        "fundamental": 28,
+        "technical": 58,
+        "sentiment": 45,
+        "macro": 12,
+        "quant": 47
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 48.0,
+        "quality": 36.0,
+        "size": {
+          "mkt_cap_b": 2.97,
+          "bucket": "mid"
+        },
+        "revisions": 95.0
+      },
+      "spy_ret_pct": 0.0,
+      "excess_ret_pct": 22.73,
+      "reentry_after_stop": false,
+      "vol_ann": 154.3,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 18.77,
+          "excess_pct": 20.14
+        },
+        "10": {
+          "ret_pct": 14.76,
+          "excess_pct": 15.66
+        },
+        "21": {
+          "ret_pct": 34.1,
+          "excess_pct": 36.54
+        }
+      },
+      "post_exit_excess_pct": 36.54,
+      "post_exit_ret_pct": 34.1,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "IOVA",
+      "symbol": "IOVA260821C00007000",
+      "instrument": "option",
+      "entry": 0.165,
+      "exit": 0.27,
+      "opened_at": "2026-08-14T19:24:06.863558+00:00",
+      "quantity": 43,
+      "cost": 709.5,
+      "pnl": 451.5,
+      "exit_reason": "TP2 +82% sell all but runner",
+      "closed_at": "2026-08-14T19:49:44.022948+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 71,
+        "degraded": false,
+        "thesis": "Amtagvi's commercial ramp is running above the sell-side path and the evidence is in primary filings, not news: revenue +65.7%, a Q2 EPS beat, FY26 guidance of $350-370M formally under upward review w"
+      },
+      "desk_scores": {
+        "fundamental": 28,
+        "technical": 58,
+        "sentiment": 45,
+        "macro": 12,
+        "quant": 47
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 48.0,
+        "quality": 36.0,
+        "size": {
+          "mkt_cap_b": 2.97,
+          "bucket": "mid"
+        },
+        "revisions": 95.0
+      },
+      "spy_ret_pct": 0.0,
+      "excess_ret_pct": 63.64,
+      "reentry_after_stop": false,
+      "vol_ann": 154.3,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 18.77,
+          "excess_pct": 20.14
+        },
+        "10": {
+          "ret_pct": 14.76,
+          "excess_pct": 15.66
+        },
+        "21": {
+          "ret_pct": 34.1,
+          "excess_pct": 36.54
+        }
+      },
+      "post_exit_excess_pct": 36.54,
+      "post_exit_ret_pct": 34.1,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "GEO",
+      "symbol": "GEO260821C00031000",
+      "instrument": "option",
+      "entry": 0.5625,
+      "exit": 0.6732,
+      "opened_at": "2026-08-14T19:24:05.840579+00:00",
+      "quantity": 33,
+      "cost": 1856.25,
+      "pnl": 365.31,
+      "exit_reason": "TP1 +29% sell 50%",
+      "closed_at": "2026-08-14T19:59:45.267244+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 72,
+        "degraded": false,
+        "thesis": "The market is treating GEO's 2025 contract-win cohort as a completed one-time step, but the 10-Q shows the step is still being climbed: H1 revenue rose 15.8% while operating income rose 43.7% and D&A "
+      },
+      "desk_scores": {
+        "fundamental": 38,
+        "technical": 55,
+        "sentiment": 22,
+        "macro": 18,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 58.0,
+        "size": {
+          "mkt_cap_b": 4.03,
+          "bucket": "mid"
+        },
+        "revisions": 64.4
+      },
+      "spy_ret_pct": 0.0,
+      "excess_ret_pct": 19.68,
+      "reentry_after_stop": false,
+      "vol_ann": 30.8,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 4.77,
+          "excess_pct": 6.14
+        },
+        "10": {
+          "ret_pct": 3.4,
+          "excess_pct": 4.3
+        },
+        "21": {
+          "ret_pct": 0.13,
+          "excess_pct": 2.57
+        }
+      },
+      "post_exit_excess_pct": 2.57,
+      "post_exit_ret_pct": 0.13,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "GEO",
+      "symbol": "GEO260821C00031000",
+      "instrument": "option",
+      "entry": 0.5625,
+      "exit": 0.9285,
+      "opened_at": "2026-08-14T19:24:05.840579+00:00",
+      "quantity": 32,
+      "cost": 1800.0,
+      "pnl": 1171.2,
+      "exit_reason": "TP2 +78% sell all but runner",
+      "closed_at": "2026-08-17T17:49:27.561200+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 72,
+        "degraded": false,
+        "thesis": "The market is treating GEO's 2025 contract-win cohort as a completed one-time step, but the 10-Q shows the step is still being climbed: H1 revenue rose 15.8% while operating income rose 43.7% and D&A "
+      },
+      "desk_scores": {
+        "fundamental": 38,
+        "technical": 55,
+        "sentiment": 22,
+        "macro": 18,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 58.0,
+        "size": {
+          "mkt_cap_b": 4.03,
+          "bucket": "mid"
+        },
+        "revisions": 64.4
+      },
+      "spy_ret_pct": -0.36,
+      "excess_ret_pct": 65.43,
+      "reentry_after_stop": false,
+      "vol_ann": 30.3,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 3.31,
+          "excess_pct": 4.5
+        },
+        "10": {
+          "ret_pct": -1.99,
+          "excess_pct": -1.26
+        },
+        "21": {
+          "ret_pct": 0.9,
+          "excess_pct": 3.31
+        }
+      },
+      "post_exit_excess_pct": 3.31,
+      "post_exit_ret_pct": 0.9,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "VAC",
+      "symbol": "VAC260821C00125000",
+      "instrument": "option",
+      "entry": 1.8566,
+      "exit": 0.667,
+      "opened_at": "2026-08-14T19:24:07.983482+00:00",
+      "quantity": 5.0,
+      "cost": 928.3,
+      "pnl": -594.8,
+      "exit_reason": "catastrophe stop -52.9% premium",
+      "closed_at": "2026-08-17T17:49:27.563202+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 71,
+        "degraded": false,
+        "thesis": "The market is still pricing MVW as a GAAP-loss-making levered timeshare lender (trailing EPS -$9.57, ROE -14.7%) while the operating business inflected and management raised every FY26 line on 2026-08"
+      },
+      "desk_scores": {
+        "fundamental": 22,
+        "technical": 58,
+        "sentiment": 32,
+        "macro": 12,
+        "quant": 44
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 31.0,
+        "size": {
+          "mkt_cap_b": 4.19,
+          "bucket": "mid"
+        },
+        "revisions": 78.3
+      },
+      "spy_ret_pct": -0.36,
+      "excess_ret_pct": -63.71,
+      "reentry_after_stop": false,
+      "vol_ann": 80.6,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Consumer Cyclical",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -4.29,
+          "excess_pct": -3.09
+        },
+        "10": {
+          "ret_pct": -17.07,
+          "excess_pct": -16.34
+        },
+        "21": {
+          "ret_pct": -14.41,
+          "excess_pct": -12.0
+        }
+      },
+      "post_exit_excess_pct": -12.0,
+      "post_exit_ret_pct": -14.41,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "GEO",
+      "symbol": "GEO260821C00031000",
+      "instrument": "option",
+      "entry": 0.5625,
+      "exit": 0.7892,
+      "opened_at": "2026-08-14T19:24:05.840579+00:00",
+      "quantity": 1.0,
+      "cost": 56.25,
+      "pnl": 22.67,
+      "exit_reason": "trail -15.0% from peak",
+      "closed_at": "2026-08-17T18:05:39.822136+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 72,
+        "degraded": false,
+        "thesis": "The market is treating GEO's 2025 contract-win cohort as a completed one-time step, but the 10-Q shows the step is still being climbed: H1 revenue rose 15.8% while operating income rose 43.7% and D&A "
+      },
+      "desk_scores": {
+        "fundamental": 38,
+        "technical": 55,
+        "sentiment": 22,
+        "macro": 18,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 58.0,
+        "size": {
+          "mkt_cap_b": 4.03,
+          "bucket": "mid"
+        },
+        "revisions": 64.4
+      },
+      "spy_ret_pct": -0.39,
+      "excess_ret_pct": 40.69,
+      "reentry_after_stop": false,
+      "vol_ann": 30.3,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 3.31,
+          "excess_pct": 4.5
+        },
+        "10": {
+          "ret_pct": -1.99,
+          "excess_pct": -1.26
+        },
+        "21": {
+          "ret_pct": 0.9,
+          "excess_pct": 3.31
+        }
+      },
+      "post_exit_excess_pct": 3.31,
+      "post_exit_ret_pct": 0.9,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "calls_only",
+      "ticker": "IOVA",
+      "symbol": "IOVA260821C00007000",
+      "instrument": "option",
+      "entry": 0.165,
+      "exit": 0.2925,
+      "opened_at": "2026-08-14T19:24:06.863558+00:00",
+      "quantity": 1.0,
+      "cost": 16.5,
+      "pnl": 12.75,
+      "exit_reason": "trail -18.8% from peak",
+      "closed_at": "2026-08-17T18:49:38.654552+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 71,
+        "degraded": false,
+        "thesis": "Amtagvi's commercial ramp is running above the sell-side path and the evidence is in primary filings, not news: revenue +65.7%, a Q2 EPS beat, FY26 guidance of $350-370M formally under upward review w"
+      },
+      "desk_scores": {
+        "fundamental": 28,
+        "technical": 58,
+        "sentiment": 45,
+        "macro": 12,
+        "quant": 47
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 48.0,
+        "quality": 36.0,
+        "size": {
+          "mkt_cap_b": 2.97,
+          "bucket": "mid"
+        },
+        "revisions": 95.0
+      },
+      "spy_ret_pct": -0.39,
+      "excess_ret_pct": 77.66,
+      "reentry_after_stop": false,
+      "vol_ann": 153.7,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 13.52,
+          "excess_pct": 14.71
+        },
+        "10": {
+          "ret_pct": 15.07,
+          "excess_pct": 15.8
+        },
+        "21": {
+          "ret_pct": 39.01,
+          "excess_pct": 41.42
+        }
+      },
+      "post_exit_excess_pct": 41.42,
+      "post_exit_ret_pct": 39.01,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "CON",
+      "symbol": "CON",
+      "instrument": "equity",
+      "entry": 31.8909,
+      "exit": 34.6027,
+      "opened_at": "2026-07-16T17:31:55.898055+00:00",
+      "quantity": 71.0,
+      "cost": 2264.25,
+      "pnl": 192.54,
+      "exit_reason": "profit ratchet: +8.6% held of a +13.4% peak (give-back cap 35%)",
+      "closed_at": "2026-08-19T19:44:52.252835+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 66,
+        "degraded": false,
+        "thesis": "CON is a differentiated momentum+value+quality name (factor stack 100/64/66) in an explicitly LEADING Healthcare sector, trading 19x forward against 29% EPS growth with $143M of real FCF \u2014 an undemand"
+      },
+      "desk_scores": {
+        "fundamental": 32,
+        "technical": 58,
+        "sentiment": 12,
+        "macro": 30,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 64.0,
+        "quality": 66.0,
+        "size": {
+          "mkt_cap_b": 4.11,
+          "bucket": "mid"
+        }
+      },
+      "spy_ret_pct": 2.53,
+      "excess_ret_pct": 5.97,
+      "reentry_after_stop": false,
+      "vol_ann": 25.2,
+      "stop_pct": 15.0,
+      "trail_stop_pct": 18.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 0.7,
+          "excess_pct": 1.09
+        },
+        "10": {
+          "ret_pct": -1.95,
+          "excess_pct": -1.44
+        },
+        "21": {
+          "ret_pct": 2.2,
+          "excess_pct": 3.16
+        }
+      },
+      "post_exit_excess_pct": 3.16,
+      "post_exit_ret_pct": 2.2,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "IOVA",
+      "symbol": "IOVA",
+      "instrument": "equity",
+      "entry": 6.616,
+      "exit": 8.3508,
+      "opened_at": "2026-08-14T16:15:16.758767+00:00",
+      "quantity": 134.0,
+      "cost": 886.54,
+      "pnl": 232.46,
+      "exit_reason": "profit ratchet: +26.3% held of a +41.4% peak (give-back cap 35%)",
+      "closed_at": "2026-08-21T16:05:31.787862+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 64,
+        "degraded": false,
+        "thesis": "Iovance is a commercial ramp whose operating leverage is now visible in primary filings: revenue +65.7%, FY26 guidance of $350-370M under explicit upward review, gross margin expanding on internal man"
+      },
+      "desk_scores": {
+        "fundamental": 22,
+        "technical": 58,
+        "sentiment": 30,
+        "macro": 18,
+        "quant": 40
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 48.0,
+        "quality": 36.0,
+        "size": {
+          "mkt_cap_b": 2.95,
+          "bucket": "mid"
+        },
+        "revisions": 95.0
+      },
+      "spy_ret_pct": -1.26,
+      "excess_ret_pct": 27.48,
+      "reentry_after_stop": false,
+      "vol_ann": 121.6,
+      "stop_pct": 19.1,
+      "trail_stop_pct": 20.6,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -3.38,
+          "excess_pct": -3.85
+        },
+        "10": {
+          "ret_pct": 6.03,
+          "excess_pct": 5.45
+        },
+        "21": {
+          "ret_pct": 28.35,
+          "excess_pct": 27.1
+        }
+      },
+      "post_exit_excess_pct": 27.1,
+      "post_exit_ret_pct": 28.35,
+      "post_exit_horizon_sessions": 21
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "CRDO",
+      "symbol": "CRDO",
+      "instrument": "equity",
+      "entry": 257.2035,
+      "exit": 231.6441,
+      "opened_at": "2026-08-14T19:22:53.871207+00:00",
+      "quantity": 0.8739,
+      "cost": 224.77,
+      "pnl": -22.34,
+      "exit_reason": "trailing stop -19.0% from peak",
+      "closed_at": "2026-08-28T21:22:30.271653+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 65,
+        "degraded": false,
+        "thesis": "CRDO is bought on the single factor pairing this firm's own measured evidence shows is forward-predictive \u2014 top-half momentum (100) alongside positive estimate revisions (78) \u2014 with the pillar load-be"
+      },
+      "desk_scores": {
+        "fundamental": 24,
+        "technical": 58,
+        "sentiment": 14,
+        "macro": 42,
+        "quant": 46
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 34.0,
+        "quality": 100,
+        "size": {
+          "mkt_cap_b": 47.96,
+          "bucket": "large"
+        },
+        "revisions": 78.0
+      },
+      "spy_ret_pct": -0.9,
+      "excess_ret_pct": -9.04,
+      "reentry_after_stop": false,
+      "vol_ann": 104.1,
+      "stop_pct": 16.4,
+      "trail_stop_pct": 17.7,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -26.72,
+          "excess_pct": -26.82
+        },
+        "10": {
+          "ret_pct": -35.51,
+          "excess_pct": -34.41
+        }
+      },
+      "post_exit_excess_pct": -34.41,
+      "post_exit_ret_pct": -35.51,
+      "post_exit_horizon_sessions": 10
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "VAC",
+      "symbol": "VAC",
+      "instrument": "equity",
+      "entry": 121.2206,
+      "exit": 105.7171,
+      "opened_at": "2026-08-14T19:22:53.014839+00:00",
+      "quantity": 4.0,
+      "cost": 484.88,
+      "pnl": -62.01,
+      "exit_reason": "hard stop -12.7%",
+      "closed_at": "2026-08-31T17:33:53.384890+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 71,
+        "degraded": false,
+        "thesis": "The market is still pricing MVW as a GAAP-loss-making levered timeshare lender (trailing EPS -$9.57, ROE -14.7%) while the operating business inflected and management raised every FY26 line on 2026-08"
+      },
+      "desk_scores": {
+        "fundamental": 22,
+        "technical": 58,
+        "sentiment": 32,
+        "macro": 12,
+        "quant": 44
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 31.0,
+        "size": {
+          "mkt_cap_b": 4.19,
+          "bucket": "mid"
+        },
+        "revisions": 78.3
+      },
+      "spy_ret_pct": -1.4,
+      "excess_ret_pct": -11.39,
+      "reentry_after_stop": false,
+      "vol_ann": 64.4,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Consumer Cyclical",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -1.77,
+          "excess_pct": -1.63
+        },
+        "10": {
+          "ret_pct": -2.98,
+          "excess_pct": -1.72
+        }
+      },
+      "post_exit_excess_pct": -1.72,
+      "post_exit_ret_pct": -2.98,
+      "post_exit_horizon_sessions": 10
+    },
+    {
+      "sleeve": "etf_rotation",
+      "ticker": "XLV",
+      "symbol": "XLV",
+      "instrument": "equity",
+      "entry": 161.7859,
+      "exit": 170.4497,
+      "opened_at": "2026-08-03T14:47:33.758148+00:00",
+      "quantity": 50.0,
+      "cost": 8089.3,
+      "pnl": 433.19,
+      "exit_reason": "rotation exit (rank fell, mom 11.39)",
+      "closed_at": "2026-08-31T18:28:58.240959+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 44,
+        "degraded": false,
+        "thesis": "XLV is a working low-volatility sector sleeve whose primary trend is confirmed on both timeframes and whose +14.14 three-month relative strength marks genuine rotation leadership, and the risk profile"
+      },
+      "desk_scores": {
+        "fundamental": 6,
+        "technical": 46,
+        "sentiment": 16,
+        "macro": 28,
+        "quant": 40
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 1.16,
+      "excess_ret_pct": 4.2,
+      "reentry_after_stop": false,
+      "vol_ann": 18.8,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "dual_momentum",
+      "momentum_score": 9.21,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": -2.0,
+          "excess_pct": -1.86
+        },
+        "10": {
+          "ret_pct": -1.69,
+          "excess_pct": -0.43
+        }
+      },
+      "post_exit_excess_pct": -0.43,
+      "post_exit_ret_pct": -1.69,
+      "post_exit_horizon_sessions": 10
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "CSCO",
+      "symbol": "CSCO",
+      "instrument": "equity",
+      "entry": 119.99,
+      "exit": 107.921,
+      "opened_at": "2026-06-09T19:00:59.256037+00:00",
+      "quantity": 9,
+      "cost": 1079.91,
+      "pnl": -108.62,
+      "exit_reason": "hard stop -10.0%",
+      "closed_at": "2026-09-03T13:49:34.853091+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 51,
+        "degraded": false,
+        "thesis": "CSCO is fairly-priced quality caught in a relative-strength drawdown, not a broken thesis: the -14.16% three-month slide has no verified fundamental event behind it (recent_earnings empty, the sole co"
+      },
+      "desk_scores": {
+        "fundamental": -15,
+        "technical": -22,
+        "sentiment": -28,
+        "macro": -22,
+        "quant": 22
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 4.68,
+      "excess_ret_pct": -14.73,
+      "reentry_after_stop": false,
+      "vol_ann": 34.9,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit",
+      "post_exit": {
+        "5": {
+          "ret_pct": 3.24,
+          "excess_pct": 4.39
+        },
+        "10": {
+          "ret_pct": 0.83,
+          "excess_pct": 2.31
+        }
+      },
+      "post_exit_excess_pct": 2.31,
+      "post_exit_ret_pct": 0.83,
+      "post_exit_horizon_sessions": 10
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "TXN",
+      "symbol": "TXN",
+      "instrument": "equity",
+      "entry": 283.7618,
+      "exit": 249.3653,
+      "opened_at": "2026-07-27T13:49:09.807701+00:00",
+      "quantity": 3.0,
+      "cost": 851.29,
+      "pnl": -103.19,
+      "exit_reason": "hard stop -12.1%",
+      "closed_at": "2026-09-03T13:53:36.508575+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 62,
+        "degraded": false,
+        "thesis": "TXN's Q2 print confirms a structural, not merely cyclical, step in earnings power: gross margin 61.4% vs 57.9% y/y and 42.3% operating margin reflect 300mm die-cost advantage plus absorption of the de"
+      },
+      "desk_scores": {
+        "fundamental": 14,
+        "technical": -12,
+        "sentiment": 24,
+        "macro": -32,
+        "quant": 18
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 67.3,
+        "value": 40.0,
+        "quality": 96.0,
+        "size": {
+          "mkt_cap_b": 258.93,
+          "bucket": "mega"
+        },
+        "revisions": 85.7
+      },
+      "spy_ret_pct": 4.12,
+      "excess_ret_pct": -16.24,
+      "reentry_after_stop": false,
+      "vol_ann": 50.3,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Technology",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 5.86,
+          "excess_pct": 7.01
+        },
+        "10": {
+          "ret_pct": 5.05,
+          "excess_pct": 6.53
+        }
+      },
+      "post_exit_excess_pct": 6.53,
+      "post_exit_ret_pct": 5.05,
+      "post_exit_horizon_sessions": 10
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "MPC",
+      "symbol": "MPC",
+      "instrument": "equity",
+      "entry": 351.1355,
+      "exit": 381.5741,
+      "opened_at": "2026-08-13T16:29:23.231186+00:00",
+      "quantity": 3.0,
+      "cost": 1053.41,
+      "pnl": 91.32,
+      "exit_reason": "profit ratchet: +8.7% held of a +13.4% peak (give-back cap 35%)",
+      "closed_at": "2026-09-04T13:31:10.634063+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 60,
+        "degraded": false,
+        "thesis": "MPC's own stated upgrade condition fired: a verified +27.1% EPS beat with record $8.5B adjusted EBITDA, 108% 1H R&M capture and 100% USGC utilization, and the tape held and extended into the following"
+      },
+      "desk_scores": {
+        "fundamental": 22,
+        "technical": 58,
+        "sentiment": 28,
+        "macro": 38,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 80.0,
+        "quality": 76.0,
+        "size": {
+          "mkt_cap_b": 97.8,
+          "bucket": "large"
+        },
+        "revisions": 56.3
+      },
+      "spy_ret_pct": -0.73,
+      "excess_ret_pct": 9.4,
+      "reentry_after_stop": false,
+      "vol_ann": 37.1,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Energy",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 1.94,
+          "excess_pct": 3.15
+        },
+        "10": {
+          "ret_pct": 3.47,
+          "excess_pct": 2.79
+        }
+      },
+      "post_exit_excess_pct": 2.79,
+      "post_exit_ret_pct": 3.47,
+      "post_exit_horizon_sessions": 10
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "MPC",
+      "symbol": "MPC",
+      "instrument": "equity",
+      "entry": 351.1355,
+      "exit": 381.5741,
+      "opened_at": "2026-08-13T16:29:23.641119+00:00",
+      "quantity": 6.0,
+      "cost": 2106.81,
+      "pnl": 182.63,
+      "exit_reason": "profit ratchet: +8.7% held of a +13.4% peak (give-back cap 35%)",
+      "closed_at": "2026-09-04T13:31:11.587616+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 60,
+        "degraded": false,
+        "thesis": "MPC's own stated upgrade condition fired: a verified +27.1% EPS beat with record $8.5B adjusted EBITDA, 108% 1H R&M capture and 100% USGC utilization, and the tape held and extended into the following"
+      },
+      "desk_scores": {
+        "fundamental": 22,
+        "technical": 58,
+        "sentiment": 28,
+        "macro": 38,
+        "quant": 55
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 80.0,
+        "quality": 76.0,
+        "size": {
+          "mkt_cap_b": 97.8,
+          "bucket": "large"
+        },
+        "revisions": 56.3
+      },
+      "spy_ret_pct": -0.73,
+      "excess_ret_pct": 9.4,
+      "reentry_after_stop": false,
+      "vol_ann": 37.1,
+      "stop_pct": 15.0,
+      "trail_stop_pct": 18.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Energy",
+      "sector_tailwind": true,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": 1.94,
+          "excess_pct": 3.15
+        },
+        "10": {
+          "ret_pct": 3.47,
+          "excess_pct": 2.79
+        }
+      },
+      "post_exit_excess_pct": 2.79,
+      "post_exit_ret_pct": 3.47,
+      "post_exit_horizon_sessions": 10
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "XHR",
+      "symbol": "XHR",
+      "instrument": "equity",
+      "entry": 20.3902,
+      "exit": 17.926,
+      "opened_at": "2026-08-04T19:40:00.993429+00:00",
+      "quantity": 61.0,
+      "cost": 1243.8,
+      "pnl": -150.32,
+      "exit_reason": "hard stop -12.0%",
+      "closed_at": "2026-09-04T19:11:05.661689+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 64,
+        "degraded": false,
+        "thesis": "XHR's GAAP print is structurally uninformative \u2014 $1.14B of accumulated depreciation on $3.56B gross property makes the -$0.14 EPS and -0.6% ROE artifacts \u2014 while the same 8-K raised every metric that "
+      },
+      "desk_scores": {
+        "fundamental": 14,
+        "technical": 44,
+        "sentiment": 14,
+        "macro": -32,
+        "quant": 32
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 98.9,
+        "value": 54.0,
+        "quality": 35.0,
+        "size": {
+          "mkt_cap_b": 2.01,
+          "bucket": "mid"
+        },
+        "revisions": 86.4
+      },
+      "spy_ret_pct": -0.2,
+      "excess_ret_pct": -11.88,
+      "reentry_after_stop": false,
+      "vol_ann": 30.1,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Real Estate",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "post_exit": {
+        "5": {
+          "ret_pct": -1.78,
+          "excess_pct": -0.57
+        },
+        "10": {
+          "ret_pct": -0.61,
+          "excess_pct": -1.29
+        }
+      },
+      "post_exit_excess_pct": -1.29,
+      "post_exit_ret_pct": -0.61,
+      "post_exit_horizon_sessions": 10
+    },
+    {
+      "sleeve": "etf_rotation",
+      "ticker": "XLE",
+      "symbol": "XLE",
+      "instrument": "equity",
+      "entry": 58.9845,
+      "exit": 63.5982,
+      "opened_at": "2026-08-03T14:47:33.758148+00:00",
+      "quantity": 137.0,
+      "cost": 8080.88,
+      "pnl": 632.08,
+      "exit_reason": "profit ratchet: +7.9% held of a +12.2% peak (give-back cap 35%)",
+      "closed_at": "2026-09-17T13:18:52.348410+00:00",
+      "verdict": {
+        "rating": "HOLD",
+        "conviction": 46,
+        "degraded": false,
+        "thesis": "KEEP the 137-share rotation clip, do not add. The primary trend is genuinely intact \u2014 above rising 50- and 200-DMA, 12-1 momentum ~+33.6% independent of the spike, +9.75pts of 3m relative strength, an"
+      },
+      "desk_scores": {
+        "fundamental": -10,
+        "technical": 58,
+        "sentiment": 14,
+        "macro": 32,
+        "quant": 40
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": -0.48,
+      "excess_ret_pct": 8.3,
+      "reentry_after_stop": false,
+      "vol_ann": 22.2,
+      "stop_pct": null,
+      "trail_stop_pct": null,
+      "strategy": "dual_momentum",
+      "momentum_score": 10.04,
+      "sector": "",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "ETON",
+      "symbol": "ETON",
+      "instrument": "equity",
+      "entry": 59.2796,
+      "exit": 53.983,
+      "opened_at": "2026-08-14T19:22:52.483472+00:00",
+      "quantity": 10.0,
+      "cost": 592.8,
+      "pnl": -52.97,
+      "exit_reason": "trailing stop -18.6% from peak",
+      "closed_at": "2026-09-18T20:27:44.787586+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 72,
+        "degraded": false,
+        "thesis": "Eton has crossed from a story about an inflection to a filed one: Q2 revenue of $37.6M (+99%), 67.6% gross margin, and an H1 swing to roughly $13.1M of net income funded by retained earnings rather th"
+      },
+      "desk_scores": {
+        "fundamental": 14,
+        "technical": 62,
+        "sentiment": 26,
+        "macro": 8,
+        "quant": 66
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 34.0,
+        "quality": 91.0,
+        "size": {
+          "mkt_cap_b": 1.59,
+          "bucket": "small"
+        },
+        "revisions": 93.2
+      },
+      "spy_ret_pct": -1.89,
+      "excess_ret_pct": -7.05,
+      "reentry_after_stop": false,
+      "vol_ann": 97.9,
+      "stop_pct": 15.4,
+      "trail_stop_pct": 16.6,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper"
+    },
+    {
+      "sleeve": "core_blend",
+      "ticker": "ETON",
+      "symbol": "ETON",
+      "instrument": "equity",
+      "entry": 61.4807,
+      "exit": 53.983,
+      "opened_at": "2026-08-20T14:39:39.873053+00:00",
+      "quantity": 36.0,
+      "cost": 2213.31,
+      "pnl": -269.92,
+      "exit_reason": "trailing stop -18.6% from peak",
+      "closed_at": "2026-09-18T20:27:45.077185+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 60,
+        "degraded": false,
+        "thesis": "Eton's Q2 10-Q is a verifiable operating-leverage inflection, not a narrative: product sales $37,589K vs $18,928K with COGS of only $12,176K (gross margin ~63%\u219267.6%) and a 35.8% operating margin mean"
+      },
+      "desk_scores": {
+        "fundamental": 8,
+        "technical": 58,
+        "sentiment": 22,
+        "macro": 14,
+        "quant": 42
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 44.0,
+        "quality": 91.0,
+        "size": {
+          "mkt_cap_b": 1.75,
+          "bucket": "small"
+        },
+        "revisions": 95.6
+      },
+      "spy_ret_pct": -0.12,
+      "excess_ret_pct": -12.08,
+      "reentry_after_stop": false,
+      "vol_ann": 104.2,
+      "stop_pct": 16.4,
+      "trail_stop_pct": 18.3,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": true,
+      "mode": "paper"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "MSM",
+      "symbol": "MSM",
+      "instrument": "equity",
+      "entry": 124.6323,
+      "exit": 106.7066,
+      "opened_at": "2026-07-17T14:21:20.226133+00:00",
+      "quantity": 18.0,
+      "cost": 2243.38,
+      "pnl": -322.66,
+      "exit_reason": "hard stop -14.3%",
+      "closed_at": "2026-09-22T12:32:32.782848+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 65,
+        "degraded": false,
+        "thesis": "MSM is a top-decile quant momentum leader (score 96.1, momentum 100) in an intact uptrend above rising 50/200-day SMAs, with best-in-class return-to-risk (+50% 6M on 26.7% vol, -11.9% 2Y max DD) and r"
+      },
+      "desk_scores": {
+        "fundamental": -28,
+        "technical": 58,
+        "sentiment": -12,
+        "macro": -22,
+        "quant": 62
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 56.0,
+        "quality": 74.0,
+        "size": {
+          "mkt_cap_b": 6.99,
+          "bucket": "mid"
+        },
+        "revisions": 69.9
+      },
+      "spy_ret_pct": 4.32,
+      "excess_ret_pct": -18.71,
+      "reentry_after_stop": false,
+      "vol_ann": 26.7,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "ARMK",
+      "symbol": "ARMK",
+      "instrument": "equity",
+      "entry": 58.5943,
+      "exit": 50.7246,
+      "opened_at": "2026-07-17T13:30:30.444770+00:00",
+      "quantity": 24.0,
+      "cost": 1406.26,
+      "pnl": -188.87,
+      "exit_reason": "hard stop -13.4%",
+      "closed_at": "2026-09-22T12:44:41.486218+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 64,
+        "degraded": false,
+        "thesis": "ARMK is a market-confirmed momentum leader (factor 100, quant 98.9, +22.6% relative strength, above rising 50/200-DMA, orderly 27.4% vol) that is value-supported rather than priced-for-perfection (val"
+      },
+      "desk_scores": {
+        "fundamental": -6,
+        "technical": 28,
+        "sentiment": 44,
+        "macro": -32,
+        "quant": 9
+      },
+      "depth": "",
+      "factors": {},
+      "spy_ret_pct": 4.32,
+      "excess_ret_pct": -17.75,
+      "reentry_after_stop": false,
+      "vol_ann": 32.2,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Industrials",
+      "sector_tailwind": false,
+      "mode": "paper",
+      "vol_ann_source": "backfilled_30d_to_exit"
+    },
+    {
+      "sleeve": "alpha_stocks",
+      "ticker": "OSCR",
+      "symbol": "OSCR",
+      "instrument": "equity",
+      "entry": 32.6763,
+      "exit": 29.2903,
+      "opened_at": "2026-08-14T19:22:53.458685+00:00",
+      "quantity": 13.0,
+      "cost": 424.79,
+      "pnl": -44.02,
+      "exit_reason": "trailing stop -15.0% from peak",
+      "closed_at": "2026-09-22T15:39:29.308603+00:00",
+      "verdict": {
+        "rating": "BUY",
+        "conviction": 69,
+        "degraded": false,
+        "thesis": "Own OSCR because the evidence direction is improving on the two factors this firm has measured as actually predictive \u2014 top-decile momentum and positive estimate revisions \u2014 anchored to a hard-filed +"
+      },
+      "desk_scores": {
+        "fundamental": 12,
+        "technical": 45,
+        "sentiment": 8,
+        "macro": 6,
+        "quant": 52
+      },
+      "depth": "full",
+      "factors": {
+        "momentum": 100,
+        "value": 72.0,
+        "quality": 85.0,
+        "size": {
+          "mkt_cap_b": 10.04,
+          "bucket": "large"
+        },
+        "revisions": 69.6
+      },
+      "spy_ret_pct": -0.23,
+      "excess_ret_pct": -10.14,
+      "reentry_after_stop": false,
+      "vol_ann": 74.0,
+      "stop_pct": 12.0,
+      "trail_stop_pct": 15.0,
+      "strategy": "",
+      "momentum_score": null,
+      "sector": "Healthcare",
+      "sector_tailwind": false,
+      "mode": "paper"
+    }
+  ],
+  "seen": [
+    "7c920e4b2932",
+    "53aee06bdf79",
+    "09326255f0a9",
+    "2a6b3d51bee2",
+    "153db622aa69",
+    "cddec944df04",
+    "8f05a3e2d9ae",
+    "66b3ce9b744f",
+    "b27cbb0eb5a5",
+    "ec8c452914df",
+    "63cfd5d0dc63",
+    "6d5f031a6d7a",
+    "cbf52121d692",
+    "c3cfb79cf81c",
+    "f1302869b1f3",
+    "371d9aebebd8",
+    "c480fb38d1fd",
+    "237edc58ee10",
+    "d6409e4492c8",
+    "07e1fc1410fe",
+    "4a302dde9a70",
+    "702cedfd389f",
+    "3dbdcf11f6d0",
+    "0f7c9427ce81",
+    "7348d818b951",
+    "9b4c03798c0b",
+    "d810f2cbb435",
+    "05e78cbc238d",
+    "1c779f1d459b",
+    "1d505b4c7ccc",
+    "6bc959a1011b",
+    "d3637e17272c",
+    "50347a4fe477",
+    "593c194e60a5",
+    "67e35c450979",
+    "c87d8acfdae6",
+    "543b2348e144",
+    "0b1c478954af",
+    "cbc2b33a821e",
+    "beb0d6d07aab",
+    "3d9b95ec4c3c",
+    "edbd5fc7f3db",
+    "e1ab6cf22afa",
+    "ec441e1a837c",
+    "0a7fdff655d9",
+    "4f1fc12788fb",
+    "f66c73f3ea75",
+    "7acc62bb7957",
+    "1b3b70b4d4bd",
+    "04965876857c",
+    "e6b8111243af",
+    "7a27c66fbcbb",
+    "4392977ca2a6",
+    "b5e0aa2f33ff",
+    "d2f1e8a3330c",
+    "30f85a28fd50",
+    "7d7b9443e5cf",
+    "f0fe6452508e",
+    "1937c26494f7",
+    "2e0604fd21ff",
+    "a2a501397ec2",
+    "b2ff624f06cb",
+    "a7d1fc1d3557",
+    "9b2e25b6b7f7",
+    "7e3aa4bc0cc5",
+    "9c5926f30d13",
+    "5e05c4cb0cc5",
+    "fb76e492ef2c",
+    "70b43a39708d",
+    "7d86da234575",
+    "d792139158b9",
+    "3a9beab2e153",
+    "c03553bec7f7",
+    "a854b931ac82",
+    "ed617a5686cf",
+    "c95ac4b2e3bf",
+    "deeb0976d77f",
+    "351a194c20f0",
+    "7dc9902da10c",
+    "d57f172ca07b",
+    "13b7911f687b",
+    "3b7766eee8c0",
+    "48e1222c3544",
+    "183dbfb5a203",
+    "3bf0b08f7e06",
+    "27c8697ed37c",
+    "79e888e09f4f",
+    "7efa6813f0c3",
+    "6bfca02dcf97",
+    "a3da1cfb6994",
+    "866ce310e40e",
+    "2b47241e8bc4",
+    "460c884f6e14",
+    "012c3f6b627b",
+    "587965a88bdb",
+    "0ddb375d7673",
+    "3f14a1b984d2",
+    "2958ac3b92a6",
+    "9e4c53738bfc",
+    "ad8b5645f4b7",
+    "6fac724fdecc",
+    "a667d6ad5378",
+    "9d747984df07",
+    "5bf2a0bac7f0",
+    "c95b5f6649f2",
+    "b5644932270b",
+    "c4bf12a8a19e",
+    "36e54185a4d2",
+    "df7b4c534923",
+    "04137930ba03",
+    "c68695fe7c79",
+    "e1c3391dfef6",
+    "201db70d755e",
+    "6a287e89d30c"
+  ],
+  "total_recorded": 61
+}

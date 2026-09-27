@@ -1,0 +1,22 @@
+{
+  "decay_drop_pts": 6.0,
+  "max_age_days": 45.0,
+  "bench": {
+    "stop_reclaim_pct": 7.0,
+    "decay_drop_pts": 11.0
+  },
+  "bench_updated": "2026-08-17T20:56:24.649073+00:00",
+  "caps": {
+    "MOMENTUM_LANE_MOM_MIN": 76.0,
+    "MAX_ENTRY_DRIFT_PCT": 2.5,
+    "PROFIT_RATCHET_GIVEBACK_PCT": 45.0
+  },
+  "caps_updated": "2026-09-18T10:07:23.696993+00:00",
+  "stops": {
+    "trail_sigma_mult": 2.8,
+    "high": {
+      "stop_sigma_mult": 2.3
+    }
+  },
+  "stops_updated": "2026-09-18T10:07:23.749284+00:00"
+}

@@ -1257,6 +1257,12 @@ def _start_background_threads() -> None:
     # secret out of trade_executor.py. Say it loudly, once, at startup.
     def _warm_public_client() -> None:
         if not (config.PUBLIC_API_KEY and config.PUBLIC_ACCOUNT_NUMBER):
+            if getattr(config, "DEMO_MODE", False):
+                # Demo mode blanks the broker keys on purpose, so a paper copy can
+                # never reach a live account. That is expected, not an outage, so it
+                # is journaled quietly instead of raised as a red alert.
+                state.journal("public_credentials_blank_in_demo")
+                return
             msg = ("Public.com credentials MISSING — live quotes are impossible, "
                    "so every equity mark falls back to a yfinance daily close, "
                    "which monitor._stale_skip refuses to stop on. Exit "

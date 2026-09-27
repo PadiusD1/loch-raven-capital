@@ -1,0 +1,504 @@
+[
+  {
+    "date": "2026-07-02",
+    "firm_equity": 101776.66,
+    "sleeves": {
+      "alpha_stocks": 25766.26,
+      "core_blend": 25761.07,
+      "calls_only": 25025.25,
+      "etf_rotation": 25224.08
+    }
+  },
+  {
+    "date": "2026-07-03",
+    "firm_equity": 101944.79,
+    "sleeves": {
+      "alpha_stocks": 25783.87,
+      "core_blend": 25781.11,
+      "calls_only": 25163.65,
+      "etf_rotation": 25216.16
+    }
+  },
+  {
+    "date": "2026-07-06",
+    "firm_equity": 103351.61,
+    "sleeves": {
+      "alpha_stocks": 26025.16,
+      "core_blend": 26060.39,
+      "calls_only": 25318.05,
+      "etf_rotation": 25948.01
+    }
+  },
+  {
+    "date": "2026-07-07",
+    "firm_equity": 101772.37,
+    "sleeves": {
+      "alpha_stocks": 25619.82,
+      "core_blend": 25819.85,
+      "calls_only": 25230.53,
+      "etf_rotation": 25102.17
+    }
+  },
+  {
+    "date": "2026-07-09",
+    "firm_equity": 103154.92,
+    "sleeves": {
+      "alpha_stocks": 25906.52,
+      "core_blend": 26091.76,
+      "calls_only": 25363.33,
+      "etf_rotation": 25793.31
+    }
+  },
+  {
+    "date": "2026-07-10",
+    "firm_equity": 103598.92,
+    "sleeves": {
+      "alpha_stocks": 26057.24,
+      "core_blend": 26260.34,
+      "calls_only": 25456.93,
+      "etf_rotation": 25824.41
+    }
+  },
+  {
+    "date": "2026-07-13",
+    "firm_equity": 102451.0,
+    "sleeves": {
+      "alpha_stocks": 25860.58,
+      "core_blend": 26075.24,
+      "calls_only": 25305.25,
+      "etf_rotation": 25209.93
+    }
+  },
+  {
+    "date": "2026-07-14",
+    "firm_equity": 102525.64,
+    "sleeves": {
+      "alpha_stocks": 25973.99,
+      "core_blend": 25591.27,
+      "calls_only": 25426.53,
+      "etf_rotation": 25533.85
+    }
+  },
+  {
+    "date": "2026-07-16",
+    "firm_equity": 100931.14,
+    "sleeves": {
+      "alpha_stocks": 25499.4,
+      "core_blend": 25176.06,
+      "calls_only": 25418.05,
+      "etf_rotation": 24837.63
+    }
+  },
+  {
+    "date": "2026-07-17",
+    "firm_equity": 99886.09,
+    "sleeves": {
+      "alpha_stocks": 25228.02,
+      "core_blend": 24909.21,
+      "calls_only": 25216.13,
+      "etf_rotation": 24532.73
+    }
+  },
+  {
+    "date": "2026-07-20",
+    "firm_equity": 99372.18,
+    "sleeves": {
+      "alpha_stocks": 25021.75,
+      "core_blend": 24826.07,
+      "calls_only": 24993.25,
+      "etf_rotation": 24531.11
+    }
+  },
+  {
+    "date": "2026-07-21",
+    "firm_equity": 101267.14,
+    "sleeves": {
+      "alpha_stocks": 25420.87,
+      "core_blend": 25578.76,
+      "calls_only": 25031.24,
+      "etf_rotation": 25236.27
+    }
+  },
+  {
+    "date": "2026-07-22",
+    "firm_equity": 100558.94,
+    "sleeves": {
+      "alpha_stocks": 24972.15,
+      "core_blend": 25384.83,
+      "calls_only": 25026.53,
+      "etf_rotation": 25175.43
+    }
+  },
+  {
+    "date": "2026-07-23",
+    "firm_equity": 99139.0,
+    "sleeves": {
+      "alpha_stocks": 24295.68,
+      "core_blend": 25291.01,
+      "calls_only": 24599.56,
+      "etf_rotation": 24952.75
+    }
+  },
+  {
+    "date": "2026-07-24",
+    "firm_equity": 98927.82,
+    "sleeves": {
+      "alpha_stocks": 24087.1,
+      "core_blend": 25295.44,
+      "calls_only": 24595.53,
+      "etf_rotation": 24949.75
+    }
+  },
+  {
+    "date": "2026-07-27",
+    "firm_equity": 96954.35,
+    "sleeves": {
+      "alpha_stocks": 23903.05,
+      "core_blend": 24324.87,
+      "calls_only": 24387.3,
+      "etf_rotation": 24339.13
+    }
+  },
+  {
+    "date": "2026-07-28",
+    "firm_equity": 95806.36,
+    "sleeves": {
+      "alpha_stocks": 23442.9,
+      "core_blend": 23771.72,
+      "calls_only": 24652.69,
+      "etf_rotation": 23939.05
+    }
+  },
+  {
+    "date": "2026-07-29",
+    "firm_equity": 94149.75,
+    "sleeves": {
+      "alpha_stocks": 23106.2,
+      "core_blend": 23357.15,
+      "calls_only": 24445.45,
+      "etf_rotation": 23240.95
+    }
+  },
+  {
+    "date": "2026-07-30",
+    "firm_equity": 95845.32,
+    "sleeves": {
+      "alpha_stocks": 23251.89,
+      "core_blend": 23928.27,
+      "calls_only": 24408.45,
+      "etf_rotation": 24256.71
+    }
+  },
+  {
+    "date": "2026-07-31",
+    "firm_equity": 96123.45,
+    "sleeves": {
+      "alpha_stocks": 23365.08,
+      "core_blend": 24161.77,
+      "calls_only": 24369.33,
+      "etf_rotation": 24227.27
+    }
+  },
+  {
+    "date": "2026-08-03",
+    "firm_equity": 96922.3,
+    "sleeves": {
+      "alpha_stocks": 23602.95,
+      "core_blend": 24267.22,
+      "calls_only": 24591.36,
+      "etf_rotation": 24460.77
+    }
+  },
+  {
+    "date": "2026-08-04",
+    "firm_equity": 98328.63,
+    "sleeves": {
+      "alpha_stocks": 23919.27,
+      "core_blend": 24650.68,
+      "calls_only": 24918.4,
+      "etf_rotation": 24840.28
+    }
+  },
+  {
+    "date": "2026-08-05",
+    "firm_equity": 97902.3,
+    "sleeves": {
+      "alpha_stocks": 23652.03,
+      "core_blend": 24496.67,
+      "calls_only": 24865.03,
+      "etf_rotation": 24888.57
+    }
+  },
+  {
+    "date": "2026-08-06",
+    "firm_equity": 97418.86,
+    "sleeves": {
+      "alpha_stocks": 23259.97,
+      "core_blend": 24397.08,
+      "calls_only": 24742.29,
+      "etf_rotation": 25019.52
+    }
+  },
+  {
+    "date": "2026-08-07",
+    "firm_equity": 97656.44,
+    "sleeves": {
+      "alpha_stocks": 23170.22,
+      "core_blend": 24594.91,
+      "calls_only": 24903.45,
+      "etf_rotation": 24987.86
+    }
+  },
+  {
+    "date": "2026-08-11",
+    "firm_equity": 98374.36,
+    "sleeves": {
+      "alpha_stocks": 23219.56,
+      "core_blend": 24610.3,
+      "calls_only": 24967.49,
+      "etf_rotation": 25577.01
+    }
+  },
+  {
+    "date": "2026-08-12",
+    "firm_equity": 98906.73,
+    "sleeves": {
+      "alpha_stocks": 23280.9,
+      "core_blend": 25004.5,
+      "calls_only": 25009.12,
+      "etf_rotation": 25612.21
+    }
+  },
+  {
+    "date": "2026-08-13",
+    "firm_equity": 99170.89,
+    "sleeves": {
+      "alpha_stocks": 23268.33,
+      "core_blend": 25173.2,
+      "calls_only": 25158.01,
+      "etf_rotation": 25571.35
+    }
+  },
+  {
+    "date": "2026-08-14",
+    "firm_equity": 100686.96,
+    "sleeves": {
+      "alpha_stocks": 23483.81,
+      "core_blend": 25178.38,
+      "calls_only": 26365.22,
+      "etf_rotation": 25659.55
+    }
+  },
+  {
+    "date": "2026-08-17",
+    "firm_equity": 101313.76,
+    "sleeves": {
+      "alpha_stocks": 23570.91,
+      "core_blend": 25463.1,
+      "calls_only": 26516.55,
+      "etf_rotation": 25763.2
+    }
+  },
+  {
+    "date": "2026-08-18",
+    "firm_equity": 101010.28,
+    "sleeves": {
+      "alpha_stocks": 23434.53,
+      "core_blend": 25090.5,
+      "calls_only": 26469.34,
+      "etf_rotation": 26015.91
+    },
+    "backfilled": true
+  },
+  {
+    "date": "2026-08-19",
+    "firm_equity": 101489.39,
+    "sleeves": {
+      "alpha_stocks": 23456.25,
+      "core_blend": 25106.72,
+      "calls_only": 26601.26,
+      "etf_rotation": 26325.16
+    }
+  },
+  {
+    "date": "2026-08-20",
+    "firm_equity": 101115.65,
+    "sleeves": {
+      "alpha_stocks": 23502.06,
+      "core_blend": 25028.44,
+      "calls_only": 26402.8,
+      "etf_rotation": 26182.35
+    }
+  },
+  {
+    "date": "2026-08-21",
+    "firm_equity": 101708.33,
+    "sleeves": {
+      "alpha_stocks": 23664.74,
+      "core_blend": 25203.92,
+      "calls_only": 26560.89,
+      "etf_rotation": 26278.78
+    }
+  },
+  {
+    "date": "2026-08-27",
+    "firm_equity": 101511.32,
+    "sleeves": {
+      "alpha_stocks": 23605.86,
+      "core_blend": 25427.76,
+      "calls_only": 26535.87,
+      "etf_rotation": 25941.83
+    }
+  },
+  {
+    "date": "2026-08-28",
+    "firm_equity": 101209.82,
+    "sleeves": {
+      "alpha_stocks": 23490.75,
+      "core_blend": 25295.38,
+      "calls_only": 26449.43,
+      "etf_rotation": 25974.26
+    }
+  },
+  {
+    "date": "2026-08-31",
+    "firm_equity": 101065.75,
+    "sleeves": {
+      "alpha_stocks": 23316.93,
+      "core_blend": 25347.38,
+      "calls_only": 26301.58,
+      "etf_rotation": 26099.86
+    }
+  },
+  {
+    "date": "2026-09-01",
+    "firm_equity": 100880.42,
+    "sleeves": {
+      "alpha_stocks": 23147.74,
+      "core_blend": 25633.05,
+      "calls_only": 26096.86,
+      "etf_rotation": 26002.77
+    }
+  },
+  {
+    "date": "2026-09-02",
+    "firm_equity": 101417.73,
+    "sleeves": {
+      "alpha_stocks": 23296.44,
+      "core_blend": 25795.92,
+      "calls_only": 26211.73,
+      "etf_rotation": 26113.64
+    }
+  },
+  {
+    "date": "2026-09-03",
+    "firm_equity": 101738.03,
+    "sleeves": {
+      "alpha_stocks": 23322.35,
+      "core_blend": 25746.68,
+      "calls_only": 26376.64,
+      "etf_rotation": 26292.36
+    }
+  },
+  {
+    "date": "2026-09-04",
+    "firm_equity": 101729.15,
+    "sleeves": {
+      "alpha_stocks": 23400.55,
+      "core_blend": 25863.43,
+      "calls_only": 26257.23,
+      "etf_rotation": 26207.94
+    }
+  },
+  {
+    "date": "2026-09-09",
+    "firm_equity": 101671.89,
+    "sleeves": {
+      "alpha_stocks": 23375.68,
+      "core_blend": 25817.31,
+      "calls_only": 26257.23,
+      "etf_rotation": 26221.67
+    }
+  },
+  {
+    "date": "2026-09-10",
+    "firm_equity": 100678.21,
+    "sleeves": {
+      "alpha_stocks": 23145.46,
+      "core_blend": 25863.61,
+      "calls_only": 25594.74,
+      "etf_rotation": 26074.4
+    },
+    "backfilled": true
+  },
+  {
+    "date": "2026-09-16",
+    "firm_equity": 100678.21,
+    "sleeves": {
+      "alpha_stocks": 23145.46,
+      "core_blend": 25863.61,
+      "calls_only": 25594.74,
+      "etf_rotation": 26074.4
+    }
+  },
+  {
+    "date": "2026-09-17",
+    "firm_equity": 100794.43,
+    "sleeves": {
+      "alpha_stocks": 23373.35,
+      "core_blend": 25963.44,
+      "calls_only": 25610.09,
+      "etf_rotation": 25847.55
+    }
+  },
+  {
+    "date": "2026-09-18",
+    "firm_equity": 100579.71,
+    "sleeves": {
+      "alpha_stocks": 23269.35,
+      "core_blend": 25897.42,
+      "calls_only": 25494.09,
+      "etf_rotation": 25918.85
+    }
+  },
+  {
+    "date": "2026-09-21",
+    "firm_equity": 100972.24,
+    "sleeves": {
+      "alpha_stocks": 23108.55,
+      "core_blend": 26162.36,
+      "calls_only": 25538.44,
+      "etf_rotation": 26162.89
+    }
+  },
+  {
+    "date": "2026-09-22",
+    "firm_equity": 100373.29,
+    "sleeves": {
+      "alpha_stocks": 22637.29,
+      "core_blend": 25990.56,
+      "calls_only": 25642.51,
+      "etf_rotation": 26102.93
+    }
+  },
+  {
+    "date": "2026-09-23",
+    "firm_equity": 99845.34,
+    "sleeves": {
+      "alpha_stocks": 22561.37,
+      "core_blend": 25789.77,
+      "calls_only": 25473.05,
+      "etf_rotation": 26021.15
+    }
+  },
+  {
+    "date": "2026-09-25",
+    "firm_equity": 100309.02,
+    "sleeves": {
+      "alpha_stocks": 22651.44,
+      "core_blend": 26098.34,
+      "calls_only": 25450.31,
+      "etf_rotation": 26108.93
+    }
+  }
+]
