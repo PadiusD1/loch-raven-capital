@@ -598,6 +598,24 @@ def _judge_guidance() -> str:
     return g
 
 
+def _precedent_note(packet: dict, research: dict | None) -> str:
+    """Institutional Memory (hackUMBC 2026). The most similar past committee
+    decisions and what the market did next, strictly point in time, cited as
+    [P#]. Fail soft. The committee never waits on, or breaks over, its memory."""
+    if not getattr(config, "MEMORY_RAG_ENABLED", True):
+        return ""
+    try:
+        from firm import memory_rag
+        today = datetime.now(timezone.utc).date().isoformat()
+        query = memory_rag.query_from_research(packet, research)
+        block, _hits, _signal = memory_rag.precedent_block(
+            query, ticker=str(packet.get("ticker") or ""), asof=today,
+            k=int(getattr(config, "MEMORY_K", 6)))
+        return block
+    except Exception:
+        return ""
+
+
 def _debate_and_judge_prompt(packet: dict, research: dict) -> str:
     """Standard depth: debate + verdict in ONE call (2026-06-10 audit — the
     separate debate call added no information the judge didn't regenerate;
@@ -612,6 +630,7 @@ def _debate_and_judge_prompt(packet: dict, research: dict) -> str:
             "the desks and the debate, punishes weak evidence, rewards "
             "asymmetric setups, and issues the binding verdict. HOLD is a "
             "legitimate verdict.\n\n" + _judge_guidance()
+            + _precedent_note(packet, research)
             + f"TICKER: {packet['ticker']}\n\n"
             f"{_ctx(packet, research)}\n\n"
             "Reason through the debate briefly in prose first if it helps "
@@ -630,6 +649,7 @@ def _judge_prompt(packet: dict, research: dict, cases: dict) -> str:
             "evidence, reward asymmetric setups, and issue the binding verdict. "
             "Be decisive but honest about uncertainty — HOLD is a legitimate "
             "verdict.\n\n" + _judge_guidance()
+            + _precedent_note(packet, research)
             + f"TICKER: {packet['ticker']}\n\n{_ctx(packet, research)}\n\n"
             f"DEBATE:\n{json.dumps(cases, indent=1, default=str)}\n\n"
             "Weigh the evidence briefly in prose first if it helps (the prose "
@@ -644,6 +664,7 @@ def _fast_prompt(packet: dict) -> str:
             "research desks (fundamental, technical, sentiment, macro, quant), "
             "a bull/bear/base debate, and a PM judge whose mandate is beating "
             "the S&P 500 risk-adjusted.\n\n" + _judge_guidance()
+            + _precedent_note(packet, None)
             + f"DATA PACKET:\n{json.dumps(packet, indent=1, default=str)}\n\n"
             "Argue the desks and the debate briefly in prose FIRST (the prose "
             "is discarded — it is your working space), then END your reply "

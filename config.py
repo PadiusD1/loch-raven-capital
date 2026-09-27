@@ -1662,3 +1662,15 @@ REBALANCE_BAND = (0.12, 0.40)    # sleeve share of firm equity outside this -> r
 HEALTH_INTERVAL_S = 1800         # health desk sweep cadence while app runs
 JOURNAL_MAX_BYTES = 3_000_000    # rotate journal.jsonl past this size
 JOURNAL_KEEP_LINES = 3000
+
+
+# Institutional Memory (built at hackUMBC 2026) -------------------------------
+# Retrieval over the firm's own graded committee decisions in data/memory.
+# The judge prompt gets the most similar past decisions, strictly point in
+# time, and cites them as [P#]. Memory informs the committee. It never
+# overrules it, because the walk forward test (firm/memory_eval.py) shows a
+# mechanical memory veto would not have helped in this sample.
+MEMORY_DIR = BASE_DIR / "data" / "memory"
+MEMORY_RAG_ENABLED = True
+MEMORY_K = 6
+MEMORY_MAX_TARGET_WEIGHT_PCT = 18.0   # same single name cap as alpha_stocks
