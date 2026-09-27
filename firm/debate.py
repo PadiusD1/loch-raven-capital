@@ -5,6 +5,7 @@ positions before the portfolio-manager judge issues the binding verdict
 that the sleeves trade on.
 """
 import json
+import threading
 from datetime import datetime, timezone
 
 import config
@@ -598,6 +599,9 @@ def _judge_guidance() -> str:
     return g
 
 
+_MEM = threading.local()     # what the judge was shown, per research worker thread
+
+
 def _precedent_note(packet: dict, research: dict | None) -> str:
     """Institutional Memory (hackUMBC 2026). The most similar past committee
     decisions and what the market did next, strictly point in time, cited as
@@ -607,11 +611,21 @@ def _precedent_note(packet: dict, research: dict | None) -> str:
     try:
         from firm import memory_rag
         today = datetime.now(timezone.utc).date().isoformat()
+        ticker = str(packet.get("ticker") or "")
         query = memory_rag.query_from_research(packet, research)
-        kblock, _passages = memory_rag.knowledge_block(query, k=2)
-        block, _hits, _signal = memory_rag.precedent_block(
-            query, ticker=str(packet.get("ticker") or ""), asof=today,
-            k=int(getattr(config, "MEMORY_K", 6)))
+        kblock, passages = memory_rag.knowledge_block(query, k=2)
+        block, hits, _signal = memory_rag.precedent_block(
+            query, ticker=ticker, asof=today, k=int(getattr(config, "MEMORY_K", 6)))
+        _MEM.last = {
+            "ticker": ticker,
+            "precedents": [{"id": h.memo.id, "ticker": h.memo.ticker, "asof": h.memo.asof,
+                            "rating": h.memo.rating,
+                            "outcome": h.memo.label if h.outcome_visible else "not yet knowable",
+                            "excess_20d": h.memo.excess_20d if h.outcome_visible else None}
+                           for h in hits],
+            "playbook": [{"id": p.id, "chapter": p.chapter, "section": p.section} for p in passages],
+            "evidence": kblock + block,
+        }
         return kblock + block
     except Exception:
         return ""
@@ -856,7 +870,41 @@ def _single_channel_guard(v: dict, packet: dict) -> dict:
 
 
 def run_debate_and_verdict(packet: dict, research: dict, depth: str = "standard") -> dict:
-    """Returns {"cases": {...}, "verdict": {...}}."""
+    """Returns {"cases": {...}, "verdict": {...}}.
+
+    Institutional Memory (hackUMBC 2026). The precedents and playbook passages
+    the judge was shown are attached to a real verdict as verdict["memory"], so
+    every [P#] and [K#] citation in the thesis can be traced to its source."""
+    _MEM.last = None
+    out = _run_debate_and_verdict(packet, research, depth)
+    try:
+        mem = getattr(_MEM, "last", None)
+        v = out.get("verdict") or {}
+        if mem and mem.get("ticker") == str(packet.get("ticker") or "") and not v.get("degraded"):
+            from firm import memory_guard
+            text = " ".join(str(v.get(k) or "") for k in ("thesis", "bear_risk", "watch_trigger"))
+            evidence = " ".join([mem.get("evidence", ""), json.dumps(packet, default=str),
+                                 json.dumps(research or {}, default=str),
+                                 json.dumps(out.get("cases") or {}, default=str),
+                                 f" {v.get('conviction')} {v.get('target_weight_pct') or ''}"])
+            checks = [memory_guard.check_citations(text, len(mem["precedents"]), len(mem["playbook"])),
+                      memory_guard.check_numbers(text, evidence)]
+            status = ("fail" if any(c["status"] == "fail" for c in checks)
+                      else "warn" if any(c["status"] == "warn" for c in checks) else "pass")
+            v["memory"] = {"precedents": mem["precedents"], "playbook": mem["playbook"],
+                           "checks": {"status": status,
+                                      "detail": [f"{c['name']} {c['status']}, {c['detail']}" for c in checks]}}
+            memory_guard.audit_append({
+                "kind": "committee_verdict", "ticker": mem["ticker"],
+                "precedent_ids": [p["id"] for p in mem["precedents"]],
+                "passage_ids": [p["id"] for p in mem["playbook"]],
+                "rating": v.get("rating"), "conviction": v.get("conviction"), "checks": status})
+    except Exception:
+        pass                      # memory bookkeeping must never break a verdict
+    return out
+
+
+def _run_debate_and_verdict(packet: dict, research: dict, depth: str = "standard") -> dict:
     if not brain.available():
         return {"cases": {}, "verdict": _fallback_verdict(packet, research)}
 

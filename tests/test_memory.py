@@ -114,6 +114,9 @@ check("figures found in the evidence pass", n_ok["status"] == "pass")
 check("an invented figure is flagged", n_bad["status"] == "warn" and "61.4%" in n_bad["ungrounded"])
 check("dates and small counts are not treated as claims",
       guard.check_numbers("Over 20 trading days in 2026.", "")["status"] == "pass")
+small = guard.check_numbers("Margins expanded 18% with a price target of $22.", "no matching figures")
+check("small percentages and dollar figures are still claims", small["status"] == "warn"
+      and "18%" in small["ungrounded"] and "$22" in small["ungrounded"])
 check("policy rejects an unknown rating", guard.check_policy({"rating": "MOON", "conviction": 50})["status"] == "fail")
 check("policy rejects an oversized position",
       guard.check_policy({"rating": "BUY", "conviction": 80, "target_weight_pct": 40})["status"] == "fail")

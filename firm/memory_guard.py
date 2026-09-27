@@ -72,7 +72,10 @@ def check_numbers(text: str, evidence: str) -> dict:
     claims = []
     for tok in NUM_RE.findall(text or ""):
         v = _as_number(tok)
-        if v is None or (float(v).is_integer() and (0 <= v <= 31 or 1990 <= v <= 2100)):
+        if v is None:
+            continue
+        is_measure = tok.endswith("%") or tok.startswith("$")   # 18% or $22 is always a claim
+        if not is_measure and float(v).is_integer() and (0 <= v <= 31 or 1990 <= v <= 2100):
             continue
         claims.append((tok, v))
     ungrounded = []

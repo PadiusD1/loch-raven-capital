@@ -4,7 +4,7 @@ An autonomous AI investment committee with an institutional memory.
 
 Built by Patrick Kamdem (Morgan State University) for the **T. Rowe Price NextGen Finance Innovation Challenge at hackUMBC 2026**.
 
-![Loch Raven Institutional Memory console](docs/console.png)
+![Loch Raven Capital cockpit](docs/cockpit.png)
 
 ## The problem
 
@@ -15,6 +15,8 @@ Most AI tools answer from generic memory, cannot show their sources and are neve
 ## What Loch Raven is
 
 Loch Raven Capital is an AI investment firm that runs on one computer. Every morning it screens the whole US stock market, five Claude research desks study the best candidates, a bull, a bear and a base case argue, a portfolio manager agent issues a binding verdict, and a risk desk with hard limits decides what the firm may do. Four strategy sleeves trade a paper book. See `docs/ENGINE.md` for the full engine.
+
+The Institutional Memory built at hackUMBC runs in the background of that flow. The cockpit looks exactly as it did before. The difference is inside every committee decision. Before the judge rules, it retrieves the firm's most relevant graded past decisions and playbook pages, cites them as P and K numbers, and the verdict records what it was shown and whether its citations and numbers checked out. Open any verdict in the cockpit to see its memory line.
 
 ## What was built at hackUMBC 2026
 
@@ -33,7 +35,9 @@ The hackUMBC rules ask that submitted work happen during the hacking period, fro
 | Walk forward evaluation | `firm/memory_eval.py` |
 | RAFT fine tuning datasets | `firm/memory_finetune.py` |
 | Console and API | `memory_console.py`, `firm/memory_api.py`, `dashboard/memory.html` |
-| Precedents in every committee judge prompt | `firm/debate.py` |
+| Precedents and playbook pages in every committee judge prompt | `firm/debate.py` |
+| Memory line and checks on every verdict in the cockpit | `firm/debate.py`, `dashboard/index.html` |
+| Demo isolation mode to run a paper copy beside a live firm | `config.py`, `scripts/seed_demo_state.py` |
 | 63 check memory test suite | `tests/test_memory.py` |
 
 ## Quick start, offline, no keys
@@ -85,6 +89,8 @@ The AI team runs a $100,000 paper book split across four categories, $25,000 eac
 The team allocates on its own. The portfolio manager sizes every position from its conviction, the risk desk caps any name at 18% of a sleeve and any sector at 35%, a weekly rebalance moves idle cash when a sleeve drifts outside 12% to 40% of the firm, and the learning review retunes caps inside hard bounds.
 
 At the September 25, 2026 close the book stood at $100,309 against a 4.6% gain for the S&P 500 since June 9. ETF Rotation ($26,109) and Core Blend ($26,098) tracked the index, the Options Desk ($25,450) trailed it, and Alpha Stocks ($22,651), the sleeve that leans hardest on AI judgment, lagged it by 14 points. That gap is why the memory layer exists.
+
+One known limitation. Documents and outcomes are point in time, but the index's term statistics are fit once over the whole archive, so ranking uses vocabulary statistics from memos written after some decisions. No future memo or outcome is ever retrieved, and a stricter study would rebuild the index per date.
 
 Four months and one market regime make a starter archive. The same pipeline pointed at a firm with decades of graded research is where these statistics become meaningful.
 

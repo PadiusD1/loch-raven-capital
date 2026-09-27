@@ -25,6 +25,7 @@ our best calls were judged".
 from __future__ import annotations
 
 import json
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -70,16 +71,23 @@ def _meta(m: archive.Memo) -> dict:
 
 
 _built: dict = {}
+_built_lock = threading.Lock()
 
 
 def build(split: str = DEFAULT_SPLIT, min_abs_score: float = MIN_ABS_SCORE,
           with_context: bool = True) -> dict:
     memos = archive.load_memos()
     key = (split, min_abs_score, with_context, len(memos), memos[-1].id if memos else "")
-    if key not in _built:
-        _built.clear()
-        _built[key] = _build(split, min_abs_score, with_context)
-    return _built[key]
+    with _built_lock:
+        cached = _built.get(key)
+    if cached is not None:
+        return cached
+    result = _build(split, min_abs_score, with_context)
+    with _built_lock:
+        if len(_built) >= 4:            # keep a few variants, never an unbounded cache
+            _built.pop(next(iter(_built)))
+        _built[key] = result
+    return result
 
 
 def _build(split: str, min_abs_score: float, with_context: bool) -> dict:

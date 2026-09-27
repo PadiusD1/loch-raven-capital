@@ -12,6 +12,12 @@ The comparison is between the committee alone and the committee with a
 memory veto. The veto rule and its threshold are fixed in advance
 (warn means the aligned precedent average is below zero), so the result is
 not tuned to this sample.
+
+Known limitation. Documents and outcomes are point in time, but the index's
+term statistics (BM25 document frequencies and the TF IDF plus SVD basis) are
+fit once over the whole archive. Ranking therefore uses vocabulary statistics
+from memos written after some decisions. No outcome or document from the future
+is ever retrieved, yet a strict study would rebuild the index per date.
 """
 from __future__ import annotations
 

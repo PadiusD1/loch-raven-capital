@@ -372,6 +372,22 @@ function renderSettings(d){
 const openVerdicts = new Set();
 let lastResearchAsof = null;
 
+// Institutional Memory (hackUMBC 2026): what the judge was shown, so every
+// [P#] and [K#] in a thesis traces back to a graded decision or a playbook page.
+function memoryHtml(m){
+  if(!m) return "";
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const ps = (m.precedents||[]).map((p,i)=>{
+    const out = p.outcome === "not yet knowable" ? "outcome not yet knowable"
+      : `${esc(p.outcome)} ${p.excess_20d>=0?"+":"−"}${Math.abs(p.excess_20d??0).toFixed(1)}% vs SPY`;
+    return `<b>P${i+1}</b> ${esc(p.ticker)} ${esc(p.asof)} ${esc(p.rating)}, ${out}`;
+  }).join(" · ");
+  const ks = (m.playbook||[]).map((k,i)=>`<b>K${i+1}</b> ${esc(k.chapter)}, ${esc(k.section)}`).join(" · ");
+  if(!ps && !ks) return "";
+  const ck = m.checks ? `<br><b style="text-transform:uppercase;font-size:10px;letter-spacing:.1em">checks ${esc(m.checks.status)}</b> ${esc((m.checks.detail||[]).join(" · "))}` : "";
+  return `<div class="v-debate"><b style="text-transform:uppercase;font-size:10px;letter-spacing:.1em">memory</b> ${[ps, ks].filter(Boolean).join(" · ")}${ck}</div>`;
+}
+
 function toggleVerdict(el){
   el.classList.toggle("open");
   if(el.classList.contains("open")) openVerdicts.add(el.dataset.tick);
@@ -411,6 +427,7 @@ async function renderResearch(){
         <b>Bear risk:</b> ${v.bear_risk||"—"}
         ${v.debate_summary?`<br><b>Committee:</b> ${v.debate_summary}`:""}
         ${debateHtml}
+        ${memoryHtml(v.memory)}
       </div>
     </div>`;
   }).join("");
