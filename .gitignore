@@ -1,0 +1,34 @@
+# Secrets — never commit (2026-06-14 audit A12)
+fmp_key.txt
+fred_key.txt
+.env
+
+# Runtime state, books, journals
+state/
+logs/
+
+# Python / tooling
+__pycache__/
+*.pyc
+*.tmp
+*.bak
+*.baktmp
+.pytest_cache/
+.ruff_cache/
+
+# Street Research drops are licensed documents — never commit them
+research_docs/inbox/
+*.env
+!.env.example
+.secrets.json
+.secrets.json.bak*
+keys.env
+.browser-profile/
+chrome-profile/
+*.db
+*.sqlite
+node_modules/
+.venv/
+venv/
+.credentials.json
+data/*.db

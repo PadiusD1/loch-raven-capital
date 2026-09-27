@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loch Raven Capital — Autonomous Multi-Strategy Desk</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0c0f'/%3E%3Cpath d='M7 22 L13 14 L18 18 L25 8' stroke='%2334d399' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0b0c0f; --panel:#101216; --line:#22252c; --line2:#2e323b;
+    --txt:#e7e8ea; --dim:#8b8f98; --faint:#5a5e67;
+    --up:#34d399; --up-dim:rgba(52,211,153,.12);
+    --dn:#fb7185; --dn-dim:rgba(251,113,133,.12);
+    --amber:#fbbf24;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:'Geist',sans-serif;font-size:14px;line-height:1.5}
+  .mono{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums}
+  .up{color:var(--up)} .dn{color:var(--dn)} .dim{color:var(--dim)} .faint{color:var(--faint)}
+  .wrap{max-width:1480px;margin:0 auto;padding:0 28px 80px}
+
+  /* top bar */
+  header{display:flex;align-items:baseline;gap:18px;padding:22px 0 16px;border-bottom:1px solid var(--line2);flex-wrap:wrap}
+  .brand{font-weight:700;font-size:17px;letter-spacing:-.02em}
+  .brand span{color:var(--up)}
+  .tagline{color:var(--faint);font-size:12px;text-transform:uppercase;letter-spacing:.14em}
+  .spacer{flex:1}
+  .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  button,select{font-family:'Geist',sans-serif;font-size:12.5px;font-weight:600;background:var(--panel);
+    color:var(--txt);border:1px solid var(--line2);padding:7px 14px;cursor:pointer;border-radius:6px;
+    transition:border-color .15s, transform .1s}
+  button:hover,select:hover{border-color:var(--up)}
+  button:active{transform:scale(.98)}
+  button.primary{background:var(--up);color:#06281c;border-color:var(--up)}
+  button.danger{border-color:var(--dn);color:var(--dn)}
+  .mode-pill{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.1em;
+    padding:5px 12px;border-radius:99px;border:1px solid}
+  .mode-paper{color:var(--amber);border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.08)}
+  .mode-live{color:var(--up);border-color:rgba(52,211,153,.5);background:var(--up-dim);animation:breathe 2.5s ease-in-out infinite}
+  @keyframes breathe{0%,100%{opacity:1}50%{opacity:.55}}
+
+  /* KPI strip */
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border-bottom:1px solid var(--line)}
+  .kpi{padding:18px 22px 16px 0;border-right:1px solid var(--line)}
+  .kpi:last-child{border-right:none}
+  .kpi .k-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--faint);margin-bottom:6px}
+  .kpi .k-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;letter-spacing:-.01em}
+  .kpi .k-sub{font-size:11.5px;color:var(--dim);margin-top:3px}
+
+  /* status line */
+  .statusline{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--faint)}
+  .pulse.on{background:var(--up);animation:breathe 1.2s ease-in-out infinite}
+  .progress{flex:1;max-width:340px;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+  .progress > div{height:100%;background:var(--up);width:0%;transition:width .6s ease}
+
+  /* main grid */
+  .main{display:grid;grid-template-columns:2.1fr 1fr;gap:0 36px;align-items:start}
+  @media(max-width:1024px){.main{grid-template-columns:1fr}}
+
+  /* sleeve sections */
+  .sleeve{padding:26px 0 22px;border-bottom:1px solid var(--line)}
+  .sleeve-head{display:flex;align-items:baseline;gap:14px;margin-bottom:4px;flex-wrap:wrap}
+  .sleeve-head h2{font-size:15px;font-weight:600;letter-spacing:-.01em}
+  .sleeve-head .tag{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);
+    border:1px solid var(--line2);padding:2px 8px;border-radius:99px}
+  .sleeve-head .ret{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;margin-left:auto}
+  .sleeve-desc{font-size:12px;color:var(--faint);margin-bottom:14px}
+  .sleeve-body{display:grid;grid-template-columns:1fr 220px;gap:24px}
+  @media(max-width:760px){.sleeve-body{grid-template-columns:1fr}}
+  .spark{height:88px;position:relative}
+  .spark canvas{position:absolute;inset:0}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);
+    text-align:left;font-weight:500;padding:5px 12px 5px 0;border-bottom:1px solid var(--line)}
+  td{padding:7px 12px 7px 0;border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:12px}
+  td.name{font-family:'Geist',sans-serif;font-weight:600}
+  .halt{margin-top:10px;font-size:12px;color:var(--dn);display:flex;gap:10px;align-items:center}
+  .empty{padding:14px 0;color:var(--faint);font-size:12.5px}
+  .meta-row{display:flex;gap:22px;margin-top:12px;font-size:11.5px;color:var(--dim)}
+
+  /* right rail */
+  .rail h3{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--faint);
+    padding:24px 0 10px;border-bottom:1px solid var(--line);margin-bottom:2px}
+  .verdict{padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer}
+  .verdict:hover{background:linear-gradient(90deg,transparent,rgba(255,255,255,.015))}
+  .v-top{display:flex;align-items:baseline;gap:10px}
+  .v-tick{font-weight:700;font-size:13.5px}
+  .v-rating{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:.06em;
+    padding:2px 8px;border-radius:4px}
+  .r-STRONG_BUY{background:var(--up-dim);color:var(--up)}
+  .r-BUY{background:rgba(52,211,153,.07);color:#6ee7b7}
+  .r-HOLD{background:rgba(139,143,152,.12);color:var(--dim)}
+  .r-SELL,.r-STRONG_SELL{background:var(--dn-dim);color:var(--dn)}
+  .v-conv{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--dim)}
+  .v-thesis{font-size:12px;color:var(--dim);margin-top:6px;display:none}
+  .v-thesis b{color:var(--txt);font-weight:600}
+  .verdict.open .v-thesis{display:block}
+  .v-debate{margin-top:8px;font-size:11.5px;color:var(--faint);border-left:2px solid var(--line2);padding-left:10px}
+  .journal-item{padding:8px 0;border-bottom:1px solid var(--line);font-size:11.5px;color:var(--dim)}
+  .journal-item .mono{color:var(--faint);font-size:10.5px}
+
+  /* Rail panels are fixed-height scrollable feeds — data accumulates inside
+     them, the page never grows */
+  .rail-scroll{max-height:300px;overflow-y:auto;padding-right:6px;overscroll-behavior:contain}
+  .rail-scroll.short{max-height:190px}
+  .rail-scroll::-webkit-scrollbar{width:4px}
+  .rail-scroll::-webkit-scrollbar-thumb{background:var(--line2);border-radius:2px}
+  .rail-scroll::-webkit-scrollbar-thumb:hover{background:var(--faint)}
+  .rail-scroll::-webkit-scrollbar-track{background:transparent}
+  .rail-scroll{scrollbar-width:thin;scrollbar-color:var(--line2) transparent}
+  .req-row{display:flex;gap:6px;margin:0 0 8px}
+  .req-row input{flex:1;min-width:0;background:transparent;border:1px solid var(--line2);border-radius:6px;color:inherit;padding:6px 8px;font:inherit;font-size:12px}
+  .req-row input:focus{outline:none;border-color:var(--faint)}
+  .req-row button{white-space:nowrap}
+  .req-queue{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .req-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);border-radius:12px;padding:2px 9px;font-size:11px}
+  .req-chip b{cursor:pointer;opacity:.55;font-weight:600}
+  .req-chip b:hover{opacity:1}
+
+  /* backtest */
+  .bt-section{padding:28px 0}
+  .bt-section h3{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--faint);margin-bottom:14px}
+  .bt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px}
+  .bt-cell{border-top:2px solid var(--line2);padding-top:14px}
+  .bt-cell h4{font-size:13px;font-weight:600;margin-bottom:8px}
+  .bt-stats{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:10px;font-size:12px}
+  .bt-stats div span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+  .bt-stats div b{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600}
+  .bt-chart{height:130px;position:relative}
+  .bt-chart canvas{position:absolute;inset:0}
+  .bt-note{font-size:11px;color:var(--faint);margin-top:8px;max-width:60ch}
+  .skel{background:linear-gradient(90deg,var(--line) 25%,var(--line2) 50%,var(--line) 75%);
+    background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;height:14px;margin:8px 0}
+  @keyframes shimmer{to{background-position:-200% 0}}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--line2);
+    padding:12px 18px;border-radius:8px;font-size:13px;opacity:0;transform:translateY(8px);
+    transition:all .25s;pointer-events:none;z-index:50}
+  .toast.show{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand">LOCH RAVEN <span>CAPITAL</span></div>
+      <div class="tagline">Autonomous Multi-Strategy Desk · Public.com · Opus Research Floor</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="controls">
+      <span id="modePill" class="mode-pill mode-paper">PAPER</span>
+      <select id="depthSel" title="Research depth">
+        <option value="" selected hidden>Depth: …</option>
+        <option value="fast">Depth: Fast (1 call/name)</option>
+        <option value="standard">Depth: Standard (3 calls/name)</option>
+        <option value="full">Depth: Full (9 calls/name)</option>
+      </select>
+      <button id="modeBtn">Switch to LIVE</button>
+      <button id="monitorBtn">Sweep Exits</button>
+      <button id="cycleBtn" class="primary">Run Firm Cycle</button>
+    </div>
+  </header>
+
+  <div id="alertBanner" style="display:none;margin-top:10px;padding:12px 16px;border:1px solid var(--dn);
+       border-radius:8px;background:var(--dn-dim);font-size:13px;align-items:baseline;gap:14px">
+    <b style="color:var(--dn);font-size:11px;letter-spacing:.1em">ALERT</b>
+    <span id="alertText" style="flex:1"></span>
+    <button class="danger" onclick="ackAlerts()">Acknowledge</button>
+  </div>
+
+  <div class="statusline">
+    <div id="pulse" class="pulse"></div>
+    <span id="statusStage" class="mono" style="font-size:11.5px;text-transform:uppercase;letter-spacing:.1em">idle</span>
+    <span id="statusDetail" class="dim"></span>
+    <div class="progress"><div id="progressBar"></div></div>
+  </div>
+
+  <div class="kpis" id="kpis">
+    <div class="kpi"><div class="k-label">Firm Equity</div><div class="k-val" id="kEquity">—</div><div class="k-sub" id="kReturn"></div></div>
+    <div class="kpi"><div class="k-label">Alpha Stocks</div><div class="k-val" id="kAlpha">—</div><div class="k-sub" id="kAlphaSub"></div></div>
+    <div class="kpi"><div class="k-label">Core Blend</div><div class="k-val" id="kCore">—</div><div class="k-sub" id="kCoreSub"></div></div>
+    <div class="kpi"><div class="k-label">Calls Desk</div><div class="k-val" id="kCalls">—</div><div class="k-sub" id="kCallsSub"></div></div>
+    <div class="kpi"><div class="k-label">ETF Rotation</div><div class="k-val" id="kEtf">—</div><div class="k-sub" id="kEtfSub"></div></div>
+  </div>
+
+  <div class="main">
+    <div id="sleeves"><div class="skel" style="width:60%"></div><div class="skel"></div><div class="skel" style="width:80%"></div></div>
+    <aside class="rail">
+      <h3>Desk Health</h3>
+      <div id="health" class="rail-scroll short"><div class="empty">First sweep runs two minutes after launch.</div></div>
+      <h3>Investment Committee — Latest Verdicts</h3>
+      <div id="verdicts" class="rail-scroll"><div class="empty">No research yet. Run a firm cycle to put the analysts to work.</div></div>
+      <h3>The Bench — Watchlist</h3>
+      <div id="bench" class="rail-scroll"><div class="empty">Names that almost made the cut land here, with the judge's own upgrade trigger. Builds after the next cycle.</div></div>
+      <h3>Ask the Firm — Research Requests</h3>
+      <div class="req-row">
+        <input id="reqInput" type="text" placeholder="PYPL, HTZ — committee seats next cycle" spellcheck="false" autocomplete="off">
+        <button id="reqBtn">Queue</button>
+      </div>
+      <div id="reqQueue" class="req-queue"><div class="empty">Queue a ticker and the committee researches it next cycle — cooldown overridden, your note rides the packet.</div></div>
+      <h3>Street Research — Loaded Reports <button id="srScanBtn" style="margin-left:8px;font-size:11px">Scan inbox</button></h3>
+      <div id="streetResearch" class="rail-scroll short"><div class="empty">Drop institutional reports (PDF, txt, md) into ai-fund\research_docs\inbox — the committee reads them within 30 minutes.</div></div>
+      <h3>Firm Memory — Lessons</h3>
+      <div id="lessons" class="rail-scroll"><div class="empty">After enough trades close, the firm reviews its own results with Opus and remembers what worked.</div></div>
+      <h3>Desk Journal</h3>
+      <div id="journal" class="rail-scroll"><div class="empty">Quiet so far.</div></div>
+    </aside>
+  </div>
+
+  <div class="bt-section">
+    <h3>Backtests vs SPY <button id="btBtn" style="margin-left:14px">Run All Backtests</button></h3>
+    <div class="bt-grid" id="btGrid"><div class="empty">Backtests replay each sleeve's mechanical core against SPY. Click run.</div></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt$ = v => "$" + Number(v).toLocaleString("en-US",{minimumFractionDigits:0,maximumFractionDigits:0});
+const fmtPct = v => (v>=0?"+":"") + Number(v).toFixed(2) + "%";
+const cls = v => v >= 0 ? "up" : "dn";
+let charts = {};
+let settings = {mode:"paper", depth:"standard"};
+
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 3200); }
+
+async function api(path, opts){
+  try{ const r = await fetch(path, opts); return await r.json(); }
+  catch(e){ return {success:false, error:String(e)}; } }
+
+function spark(canvasId, points, labelA, labelB){
+  const el = $(canvasId); if(!el || !points || points.length < 2) return;
+  if(charts[canvasId]) charts[canvasId].destroy();
+  const ds = [{data:points.map(p=>p.a), borderColor:"#34d399", borderWidth:1.6, pointRadius:0, tension:.25, fill:false}];
+  if(points[0].b !== undefined)
+    ds.push({data:points.map(p=>p.b), borderColor:"#5a5e67", borderWidth:1.2, pointRadius:0, tension:.25, borderDash:[4,3]});
+  charts[canvasId] = new Chart(el, {type:"line",
+    data:{labels:points.map(p=>p.l), datasets:ds},
+    options:{responsive:true, maintainAspectRatio:false, animation:false,
+      plugins:{legend:{display:false}, tooltip:{enabled:false}},
+      scales:{x:{display:false}, y:{display:false}}}});
+}
+
+function renderSleeves(data){
+  const order = ["alpha_stocks","core_blend","calls_only","etf_rotation"];
+  let html = "";
+  for(const key of order){
+    const s = data.sleeves[key]; if(!s) continue;
+    const posRows = s.positions.map(p => {
+      const isOpt = p.instrument === "option";
+      const sym = isOpt ? (p.underlying + " " + p.strike + "C " + (p.expiration||"").slice(5)) : p.symbol;
+      const mv = p.market_value ?? p.cost;
+      const gain = p.entry_price ? ((p.last_price||p.entry_price)/p.entry_price - 1) * 100 : 0;
+      return `<tr><td class="name">${sym}</td><td>${p.quantity}</td>
+        <td>${Number(p.entry_price).toFixed(2)}</td><td>${Number(p.last_price||p.entry_price).toFixed(2)}</td>
+        <td>${fmt$(mv)}</td><td class="${cls(gain)}">${fmtPct(gain)}</td></tr>`;
+    }).join("");
+    const curve = (s.equity_curve||[]).map(p=>({l:p.ts.slice(5,16), a:p.equity}));
+    html += `
+    <section class="sleeve">
+      <div class="sleeve-head">
+        <h2>${s.label}</h2><span class="tag">${s.instruments}</span>
+        ${data.trading_day === false ? `<span class="tag" style="opacity:.7" title="weekend / market holiday — no session today, so there is no day P&amp;L. Numbers resume next trading day.">MARKET CLOSED — no trading today</span>` : s.day_vs_spy_pct != null && s.spy_day_pct != null ? `<span class="tag" title="this trading day only — sleeve vs SPY">TODAY: <span class="${cls(s.day_pct)}" style="font-weight:700">${fmtPct(s.day_pct)}</span> · SPY ${fmtPct(s.spy_day_pct)} · <span class="${cls(s.day_vs_spy_pct)}">${Math.abs(s.day_vs_spy_pct).toFixed(2)}pts ${s.day_vs_spy_pct >= 0 ? "ahead" : "behind"}</span></span>` : ``}
+        ${s.vs_spy_pct != null && s.spy_return_pct != null ? `<span class="tag" title="cumulative since the fund's first trade — this sleeve vs SPY over the identical window">SINCE ${s.inception || "START"}: <span class="${cls(s.total_return_pct)}" style="font-weight:700">${fmtPct(s.total_return_pct)}</span> · SPY ${fmtPct(s.spy_return_pct)} · <span class="${cls(s.vs_spy_pct)}" style="font-weight:700">${Math.abs(s.vs_spy_pct).toFixed(2)}pts ${s.vs_spy_pct >= 0 ? "ahead" : "behind"}</span></span>` : `<span class="ret ${cls(s.total_return_pct)}">${fmtPct(s.total_return_pct)}</span>`}
+      </div>
+      <div class="sleeve-desc">${s.desc}</div>
+      <div class="sleeve-body">
+        <div>
+          <table>
+            <thead><tr><th>Position</th><th>Qty</th><th>Entry</th><th>Last</th><th>Value</th><th>P&amp;L</th></tr></thead>
+            <tbody>${posRows || `<tr><td colspan="6" class="empty" style="font-family:'Geist'">No open positions — sleeve is in cash (${fmt$(s.cash)}).</td></tr>`}</tbody>
+          </table>
+          <div class="meta-row">
+            <span>Equity <b class="mono" style="color:var(--txt)">${fmt$(s.equity)}</b></span>
+            <span>Cash <b class="mono" style="color:var(--txt)">${fmt$(s.cash)}</b></span>
+            ${data.trading_day === false ? `<span title="market closed — no session today">Day <b class="mono" style="color:var(--faint)">closed</b></span>` : `<span>Day <b class="mono ${cls(s.day_pnl)}">${s.day_pnl>=0?"+":""}${fmt$(s.day_pnl).replace("$-","-$")}</b></span>`}
+            ${s.win_rate !== null ? `<span>Win rate <b class="mono" style="color:var(--txt)">${s.win_rate}%</b> (${s.trades_closed})</span>` : ""}
+          </div>
+          ${s.halted ? `<div class="halt">RISK HALT — ${s.halt_reason}
+            <button class="danger" onclick="clearHalt('${key}')">Clear Halt</button></div>` : ""}
+        </div>
+        <div class="spark"><canvas id="spark_${key}"></canvas></div>
+      </div>
+    </section>`;
+  }
+  $("sleeves").innerHTML = html;
+  for(const key of order){
+    const s = data.sleeves[key]; if(!s) continue;
+    spark("spark_"+key, (s.equity_curve||[]).map(p=>({l:p.ts, a:p.equity})));
+  }
+}
+
+function renderKpis(d){
+  $("kEquity").textContent = fmt$(d.firm.total_equity);
+  const r = $("kReturn");
+  // Unambiguous benchmark line: show SPY's OWN return, then the edge in
+  // points — "vs SPY +0.24%" read as if SPY itself were up (operator report)
+  const f = d.firm;
+  // TODAY leads (the number the operator actually tracks); the all-time line
+  // carries its start date AND the starting dollars so "$98k yesterday ->
+  // $102k today" reads as the round trip it was, never as a contradiction
+  let dayHtml = "";
+  if (d.trading_day === false) {
+    // Weekend / holiday: there is no "today" — a drift number here read as a
+    // phantom trade on a closed day (operator 2026-07-04, 'Day +$8').
+    dayHtml = `<span style="opacity:.75">MARKET CLOSED (weekend/holiday) — ` +
+      `no trading today; day P&amp;L resumes next session</span><br>`;
+  } else if (f.day_vs_spy_pct != null && f.spy_day_pct != null) {
+    const w2 = f.day_vs_spy_pct >= 0 ? "ahead" : "behind";
+    // honest stale-mark badge: pre-market / after-hours the book is priced off the
+    // last close, so today's move is provisional, not a confident intraday number
+    const staleTag = f.marks_stale
+      ? ` <span class="tag" style="opacity:.75" title="positions priced off the last close — no live quote yet (pre-market / after-hours). Today's move is provisional until the next live mark.">provisional · stale marks</span>`
+      : "";
+    dayHtml = `TODAY <span class="${cls(f.day_pct)}" style="font-weight:700">` +
+      `${fmtPct(f.day_pct)}</span> · SPY ${fmtPct(f.spy_day_pct)} · ` +
+      `<span class="${cls(f.day_vs_spy_pct)}">${Math.abs(f.day_vs_spy_pct).toFixed(2)}pts ${w2}</span>${staleTag}<br>`;
+  }
+  let vsHtml = "";
+  if (f.spy_return_pct != null && f.vs_spy_pct != null) {
+    const word = f.vs_spy_pct >= 0 ? "ahead" : "behind";
+    vsHtml = ` · SPY ${fmtPct(f.spy_return_pct)} · ` +
+      `<span class="${cls(f.vs_spy_pct)}" style="font-weight:700">` +
+      `${Math.abs(f.vs_spy_pct).toFixed(2)}pts ${word}</span>`;
+  }
+  r.innerHTML = `${dayHtml}<span class="${cls(f.total_return_pct)}">` +
+    `${fmtPct(f.total_return_pct)}</span> since ${f.inception || "start"} ` +
+    `(started $100,000)${vsHtml}`;
+  r.className = "k-sub";
+  const map = {alpha_stocks:["kAlpha","kAlphaSub"], core_blend:["kCore","kCoreSub"],
+               calls_only:["kCalls","kCallsSub"], etf_rotation:["kEtf","kEtfSub"]};
+  for(const [k,[v,sub]] of Object.entries(map)){
+    const s = d.sleeves[k]; if(!s) continue;
+    $(v).textContent = fmt$(s.equity);
+    $(v).className = "k-val";
+    const e = $(sub); e.textContent = fmtPct(s.total_return_pct) + (s.halted ? " · HALTED" : "");
+    e.className = "k-sub " + (s.halted ? "dn" : cls(s.total_return_pct));
+  }
+}
+
+function renderStatus(d){
+  const st = d.status || {};
+  $("statusStage").textContent = st.stage || "idle";
+  $("statusDetail").textContent = st.detail || "";
+  $("progressBar").style.width = (st.pct||0) + "%";
+  $("pulse").className = "pulse" + (st.running ? " on" : "");
+  $("cycleBtn").disabled = !!st.running;
+  $("cycleBtn").textContent = st.running ? "Cycle Running…" : "Run Firm Cycle";
+}
+
+function renderSettings(d){
+  settings = d.settings;
+  const live = settings.mode === "live";
+  const pill = $("modePill");
+  pill.textContent = live ? "LIVE" : "PAPER";
+  pill.className = "mode-pill " + (live ? "mode-live" : "mode-paper");
+  $("modeBtn").textContent = live ? "Switch to PAPER" : "Switch to LIVE";
+  // Never fight the operator's hand: don't overwrite the dropdown while
+  // it's focused (the poll loop used to snap a fresh pick back to the old
+  // value for a beat — read as "it keeps reverting", 2026-06-12)
+  const sel = $("depthSel");
+  if (document.activeElement !== sel) sel.value = settings.depth;
+}
+
+// Expanded cards survive refreshes: remember which tickers are open, and only
+// rebuild the panel when NEW research lands (rebuilding every poll wiped
+// whatever you were reading or selecting).
+const openVerdicts = new Set();
+let lastResearchAsof = null;
+
+function toggleVerdict(el){
+  el.classList.toggle("open");
+  if(el.classList.contains("open")) openVerdicts.add(el.dataset.tick);
+  else openVerdicts.delete(el.dataset.tick);
+}
+
+async function renderResearch(){
+  const r = await api("/api/research");
+  const latest = r.latest || {};
+  const keys = Object.keys(latest);
+  if(!keys.length) return;
+  if(r.latest_asof === lastResearchAsof) return;   // nothing new — don't touch the DOM
+  lastResearchAsof = r.latest_asof;
+  // Two cycles can produce near-identical verdicts (the market's top
+  // momentum names are stable day to day) — only the timestamp tells the
+  // operator this is a FRESH judgment, not a stuck panel (2026-06-12)
+  const judged = r.latest_asof ? new Date(r.latest_asof) : null;
+  const judgedTxt = judged ?
+    `<div class="journal-item" style="color:var(--faint);font-size:10.5px">committee judged ${judged.toLocaleDateString([], {month:"short", day:"numeric"})} ${judged.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"})} · ${keys.length} names</div>` : "";
+  $("verdicts").innerHTML = judgedTxt + keys.map(t=>{
+    const v = latest[t].verdict || {};
+    const cases = latest[t].cases || {};
+    const debateHtml = ["bull","bear","base"].filter(s=>cases[s]&&cases[s].case)
+      .map(s=>`<div class="v-debate"><b style="text-transform:uppercase;font-size:10px;letter-spacing:.1em">${s}</b> ${cases[s].case}</div>`).join("");
+    return `<div class="verdict${openVerdicts.has(t) ? " open" : ""}" data-tick="${t}" onclick="toggleVerdict(this)">
+      <div class="v-top">
+        <span class="v-tick">${t}</span>
+        <span class="v-rating r-${v.rating||"HOLD"}">${(v.rating||"—").replace("_"," ")}</span>
+        <span class="v-conv" title="how confident the judge is IN THIS VERDICT — a 70-conviction HOLD is a STRONG reason not to buy, not a buy score">${v.conviction??"—"} conviction in ${(v.rating||"—").replace("_"," ")} · ${v.horizon||""}</span>
+      </div>
+      ${(()=>{const fs=latest[t].factor_scores||{};
+        const chip=(lbl,val)=>val==null?"":`<span class="tag" title="${lbl} factor lens, 0-100">${lbl} ${val}</span>`;
+        return (fs.momentum!=null||fs.value!=null||fs.quality!=null)
+          ? `<div style="margin:4px 0 2px;display:flex;gap:6px">${chip("MOM",fs.momentum)}${chip("VAL",fs.value)}${chip("QUAL",fs.quality)}</div>` : "";})()}
+      <div class="v-thesis">
+        <b>Thesis:</b> ${v.thesis||"—"}<br>
+        <b>Bear risk:</b> ${v.bear_risk||"—"}
+        ${v.debate_summary?`<br><b>Committee:</b> ${v.debate_summary}`:""}
+        ${debateHtml}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+let lastHealthAsof = null;
+async function renderHealth(){
+  const h = await api("/api/health");
+  if(!h || !h.checks) return;
+  // Health is a 30-min snapshot — without its age on screen, a report taken
+  // mid-outage reads as a LIVE alarm long after recovery (operator confusion
+  // 2026-06-12: "OFFLINE" shown 9 min after internet returned)
+  const ageMin = h.asof ? Math.max(0, Math.round((Date.now() - new Date(h.asof)) / 60000)) : null;
+  const ageTxt = ageMin == null ? "" :
+    `<div class="journal-item" style="color:var(--faint);font-size:10.5px">snapshot ${ageMin <= 1 ? "just now" : ageMin + " min ago"} — refreshes every 30 min${ageMin > 35 ? " · STALE, treat warnings as historical" : ""}</div>`;
+  if(h.asof === lastHealthAsof) return;
+  lastHealthAsof = h.asof;
+  // A line forced not-ok by a FAILING UPSTREAM SIGNAL is not the same alarm as
+  // one that found something itself (fix brief 2026-07-28 #3). Rendering both
+  // as a flat WARN would send the operator hunting eight symptoms of one root,
+  // so poisoned lines get their own muted badge that names the root.
+  $("health").innerHTML = ageTxt + h.checks.map(c => {
+    const poisoned = !!c.poisoned_by;
+    const label = c.ok ? "OK" : (poisoned ? "DEP" : "WARN");
+    const color = c.ok ? "var(--up)" : (poisoned ? "var(--amber)" : "var(--dn)");
+    return `<div class="journal-item" style="display:flex;gap:10px;align-items:baseline">
+      <span class="mono" style="color:${color};font-size:10px" title="${
+        poisoned ? "blocked by an upstream signal: " + c.poisoned_by : ""}">${label}</span>
+      <b style="color:${poisoned ? "var(--dim)" : "var(--txt)"}">${c.name}</b>
+      <span${poisoned ? ' style="color:var(--dim)"' : ""}>${c.detail}</span>
+    </div>`;
+  }).join("");
+}
+
+let lastBenchKey = null;
+async function renderBench(){
+  const r = await api("/api/watchlist");
+  if(!r || !r.bench || !r.bench.length) return;
+  const key = r.bench.map(b=>b.ticker+(b.quant_now||"")+(b.scored_at||"")).join("|");
+  if(key === lastBenchKey) return;
+  lastBenchKey = key;
+  const fmtAge = iso => {
+    if(!iso) return "";
+    const m = Math.round((Date.now() - new Date(iso)) / 60000);
+    return m < 90 ? `scored ${Math.max(1,m)}m ago` :
+           m < 60*36 ? `scored ${Math.round(m/60)}h ago` :
+           `scored ${Math.round(m/1440)}d ago — STALE`;
+  };
+  $("bench").innerHTML = r.bench.map(b=>{
+    const arrow = b.trend > 0 ? `<span class="up">▲${b.trend}</span>` :
+                  b.trend < 0 ? `<span class="dn">▼${Math.abs(b.trend)}</span>` :
+                  `<span class="faint">· flat</span>`;
+    return `<div class="journal-item" style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap">
+      <b style="color:var(--txt)">${b.ticker}</b>
+      <span class="mono" style="font-size:10.5px">q${b.quant_now??"—"} ${arrow}</span>
+      <span class="mono" style="font-size:10px;color:${b.source==="stop_out"?"var(--dn)":"var(--faint)"}">${b.source==="hold_verdict"?"PM HOLD":b.source==="stop_out"?"STOP-OUT":"near miss"}</span>
+      <span class="mono" style="font-size:9.5px;color:var(--faint)">${fmtAge(b.scored_at)}</span>
+      <span style="flex-basis:100%;font-size:11px;color:var(--faint)">${b.watch_trigger||""}</span>
+    </div>`;
+  }).join("");
+}
+
+let lastLessonsAsof = null;
+async function renderLessons(){
+  const r = await api("/api/learning");
+  const l = r && r.lessons;
+  if(!l || !l.lessons || !l.lessons.length){
+    if(r && r.stats && r.stats.trades > 0)
+      $("lessons").innerHTML = `<div class="empty">${r.stats.trades} decision trades in the ledger (win rate ${r.stats.win_rate_pct??"—"}%) — Opus review runs after 5+ closes.</div>`;
+    return;
+  }
+  if(l.asof === lastLessonsAsof) return;
+  lastLessonsAsof = l.asof;
+  const st = r.stats || {};
+  $("lessons").innerHTML =
+    `<div class="journal-item"><span class="mono" style="color:var(--up);font-size:10px">LEDGER</span>
+      ${st.trades||0} decision trade${(st.trades||0)===1?"":"s"} · win rate <b style="color:var(--txt)">${st.win_rate_pct??"—"}%</b> · P&amp;L <b class="${cls(st.total_pnl||0)} mono">${(st.total_pnl||0).toFixed(0)}</b>${st.strategy_trades?` · <span class="faint">${st.strategy_trades} mechanical-strategy exit${st.strategy_trades===1?"":"s"} graded separately</span>`:""}</div>` +
+    l.lessons.map((x,i)=>
+      `<div class="journal-item"><span class="mono faint" style="font-size:10px">${String(i+1).padStart(2,"0")}</span>
+        <span style="color:var(--txt)">${x.lesson}</span>
+        <span onclick="pruneLesson(${i})" title="Prune this lesson (human override)"
+              style="cursor:pointer;color:var(--dn);float:right;font-weight:700;padding:0 6px">×</span>
+        <div style="font-size:10.5px;color:var(--faint);margin-top:2px">${x.evidence||""}</div></div>`).join("");
+}
+
+let lastJournalTs = null;
+async function renderJournal(){
+  const r = await api("/api/journal");
+  const evs = (r.events||[]).slice(0,60);
+  if(!evs.length) return;
+  if(evs[0].ts === lastJournalTs) return;   // no new events — keep DOM stable
+  lastJournalTs = evs[0].ts;
+  $("journal").innerHTML = evs.map(e=>{
+    // Readable feed, never raw JSON: nested objects are summarized or
+    // dropped; short primitive lists join; known events get prose
+    let extras;
+    if(e.event === "eod_summary"){
+      const d = e.firm_day_pnl ?? 0;
+      extras = `firm ${fmt$(e.firm_equity ?? 0)} · day <span class="${cls(d)}">${d >= 0 ? "+" : "-"}$${Math.abs(d).toLocaleString(undefined,{maximumFractionDigits:0})}</span>`;
+    } else {
+      extras = Object.entries(e)
+        .filter(([k])=>!["ts","event","trace"].includes(k))
+        .map(([k,v])=>{
+          if(Array.isArray(v)) return v.length && typeof v[0] !== "object"
+            ? `${k}=${v.slice(0,5).join(",")}${v.length > 5 ? "…" : ""}` : "";
+          if(typeof v === "object" && v !== null) return "";
+          return `${k}=${String(v).slice(0,60)}`;
+        }).filter(Boolean).join(" · ");
+    }
+    return `<div class="journal-item"><span class="mono">${e.ts.slice(5,19).replace("T"," ")}</span>
+      <b style="color:var(--txt)">${e.event}</b> ${extras}</div>`;
+  }).join("");
+}
+
+async function renderAlerts(){
+  const r = await api("/api/alerts");
+  const items = (r && r.unacked) || [];
+  const banner = $("alertBanner");
+  if(!items.length){ banner.style.display = "none"; return; }
+  banner.style.display = "flex";
+  $("alertText").innerHTML = items.slice(-3).map(a =>
+    `<b style="color:var(--txt)">${a.title}</b> — ${a.msg}`).join("<br>");
+}
+
+async function pruneLesson(i){
+  if(!confirm("Remove this lesson from FIRM MEMORY? The committee stops seeing it immediately.")) return;
+  await api("/api/lessons/prune/"+i, {method:"POST"});
+  lastLessonsAsof = null; renderLessons(); toast("Lesson pruned");
+}
+
+async function ackAlerts(){
+  await api("/api/alerts/ack", {method:"POST"});
+  toast("Alerts acknowledged"); renderAlerts();
+}
+
+async function refresh(){
+  const d = await api("/api/overview");
+  if(!d || !d.sleeves) return;
+  renderSettings(d); renderStatus(d); renderKpis(d); renderSleeves(d);
+  renderResearch(); renderJournal(); renderHealth(); renderBench(); renderLessons();
+  renderAlerts(); renderRequests(); renderStreet();
+}
+
+async function renderRequests(){
+  const r = await api("/api/research-requests");
+  const q = (r && r.queue) || [];
+  $("reqQueue").innerHTML = q.length
+    ? q.map(x=>`<span class="req-chip">${x.ticker}<b onclick="removeRequest('${x.ticker}')" title="remove from queue">×</b></span>`).join("")
+    : '<div class="empty">Queue a ticker and the committee researches it next cycle — cooldown overridden, your note rides the packet.</div>';
+}
+async function queueRequest(){
+  const v = $("reqInput").value.trim(); if(!v) return;
+  const r = await api("/api/research-request", {method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({symbols:v.split(/[\s,;]+/)})});
+  if(r.success){
+    $("reqInput").value = "";
+    toast(r.queued && r.queued.length ? "Queued for next cycle: " + r.queued.join(", ")
+                                      : "Already queued");
+    renderRequests();
+  } else toast(r.error || "failed");
+}
+async function removeRequest(t){
+  await api("/api/research-request/remove", {method:"POST",
+    headers:{"Content-Type":"application/json"}, body:JSON.stringify({symbols:[t]})});
+  toast(t + " removed from queue"); renderRequests();
+}
+async function renderStreet(){
+  const r = await api("/api/street-research");
+  const docs = (r && r.docs) || [];
+  $("streetResearch").innerHTML = docs.length
+    ? docs.map(d=>{
+        const age = d.added ? Math.round((Date.now()-new Date(d.added))/864e5) : "?";
+        return `<div style="padding:5px 0;border-bottom:1px solid var(--line2)">
+          <b>${d.source||"?"}</b> — ${d.title||d.file}
+          <span class="faint" style="font-size:11px"> · ${age}d ago</span>
+          <div class="faint" style="font-size:11px">${d.scope||""}</div></div>`;
+      }).join("")
+    : '<div class="empty">Drop institutional reports (PDF, txt, md) into ai-fund\\research_docs\\inbox — the committee reads them within 30 minutes.</div>';
+}
+
+async function clearHalt(sleeve){
+  await api("/api/clear-halt/"+sleeve, {method:"POST"});
+  toast("Risk halt cleared on " + sleeve); refresh();
+}
+
+$("reqBtn").onclick = queueRequest;
+$("srScanBtn").onclick = async ()=>{
+  toast("Scanning research inbox…");
+  const r = await api("/api/street-research/scan", {method:"POST"});
+  toast(r.success ? (r.ingested ? `Loaded ${r.ingested} report(s) — committee sees them next cycle`
+                                : "No new reports in the inbox") : (r.error||"failed"));
+  renderStreet();
+};
+$("reqInput").addEventListener("keydown", e=>{ if(e.key === "Enter") queueRequest(); });
+$("cycleBtn").onclick = async ()=>{
+  const r = await api("/api/cycle", {method:"POST"});
+  toast(r.success ? "Firm cycle launched — research floor is working" : (r.error||"failed"));
+};
+$("monitorBtn").onclick = async ()=>{
+  toast("Sweeping exits…");
+  const r = await api("/api/monitor-now", {method:"POST"});
+  toast(r.success ? "Exit sweep done: " + JSON.stringify(r.closes) : (r.error||"failed"));
+  refresh();
+};
+$("modeBtn").onclick = async ()=>{
+  const next = settings.mode === "live" ? "paper" : "live";
+  if(next === "live" && !confirm("Switch to LIVE trading on Public.com account? Real orders will be placed."))
+    return;
+  await api("/api/settings", {method:"POST", headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({mode:next})});
+  toast("Mode: " + next.toUpperCase()); refresh();
+};
+$("depthSel").onchange = async e=>{
+  if (!e.target.value) return;
+  settings.depth = e.target.value;   // optimistic: stale polls can't flash it back
+  await api("/api/settings", {method:"POST", headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({depth:e.target.value})});
+  toast("Research depth: " + e.target.value);
+};
+
+$("btBtn").onclick = async ()=>{
+  $("btGrid").innerHTML = '<div class="skel"></div><div class="skel" style="width:70%"></div>';
+  const sleeves = ["alpha_stocks","core_blend","calls_only","etf_rotation"];
+  const results = await Promise.all(sleeves.map(s=>api("/api/backtest/"+s)));
+  $("btGrid").innerHTML = results.map((bt,i)=>{
+    if(bt.error) return `<div class="bt-cell"><h4>${sleeves[i]}</h4><div class="dn">${bt.error}</div></div>`;
+    const st = bt.stats;
+    return `<div class="bt-cell">
+      <h4>${sleeves[i].replace("_"," ").toUpperCase()} <span class="faint mono" style="font-size:11px">${st.years}y</span></h4>
+      <div class="bt-stats">
+        <div><span>CAGR</span><b class="${cls(st.cagr_pct)}">${fmtPct(st.cagr_pct)}</b></div>
+        <div><span>SPY CAGR</span><b class="dim">${fmtPct(st.spy_cagr_pct)}</b></div>
+        <div><span>Alpha</span><b class="${cls(st.alpha_pct)}">${fmtPct(st.alpha_pct)}</b></div>
+        <div><span>Sharpe</span><b>${st.sharpe}</b></div>
+        <div><span>Max DD</span><b class="dn">${st.max_dd_pct}%</b></div>
+      </div>
+      <div class="bt-chart"><canvas id="bt_${sleeves[i]}"></canvas></div>
+      <div class="bt-note">${bt.note}</div>
+    </div>`;
+  }).join("");
+  results.forEach((bt,i)=>{
+    if(bt.curve) spark("bt_"+sleeves[i], bt.curve.map(p=>({l:p.date, a:p.strategy, b:p.spy})));
+  });
+};
+
+refresh();
+setInterval(refresh, 5000);
+</script>
+</body>
+</html>
