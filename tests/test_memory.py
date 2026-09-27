@@ -88,11 +88,26 @@ buy = rag.precedent_signal(fake, 1)
 sell = rag.precedent_signal(fake, -1)
 check("a SELL flips the aligned signal", buy["aligned"] == -sell["aligned"] or buy["aligned"] == 0)
 
+print("\n3b. Firm playbook")
+kidx = rag.get_knowledge_index()
+check("playbook loads chapters and lessons", len(kidx.passages) >= 40, str(len(kidx.passages)))
+check("every passage names its source", all(p.source for p in kidx.passages))
+top = kidx.search("terminal value perpetuity growth WACC discount rate", k=2)
+check("a DCF question retrieves the DCF chapter", top and "DCF" in top[0][0].chapter, top[0][0].chapter if top else "none")
+top = kidx.search("conviction band 60 to 69 half clip sizing", k=3)
+check("a sizing question retrieves the firm lessons", any(p.chapter.startswith("Firm lessons") for p, _ in top))
+kb, ps = rag.knowledge_block("price to earnings misleads for cyclicals at peak earnings", k=3)
+check("playbook block labels passages K1 to Kk", all(f"[K{i}]" in kb for i in range(1, len(ps) + 1)) and ps)
+
 print("\n4. Guardrails")
 c_ok = guard.check_citations("Momentum faded after [P1] and [P3].", 3)
 c_bad = guard.check_citations("As [P9] shows.", 3)
 check("real citations pass", c_ok["status"] == "pass" and c_ok["cited"] == [1, 3])
-check("a citation to an unseen precedent fails", c_bad["status"] == "fail" and c_bad["invalid"] == [9])
+check("a citation to an unseen precedent fails", c_bad["status"] == "fail" and c_bad["invalid"] == ["P9"])
+c_k = guard.check_citations("Terminal value dominates [K1], as in [P2].", 3, 2)
+c_kbad = guard.check_citations("Per the playbook [K4].", 3, 2)
+check("playbook citations pass when real", c_k["status"] == "pass" and c_k["kcited"] == [1])
+check("a citation to an unseen playbook passage fails", c_kbad["status"] == "fail" and c_kbad["invalid"] == ["K4"])
 n_ok = guard.check_numbers("Revenue grew 52.2% at a 0.19% margin.", "revenue growing 52.2% with a 0.19% operating margin")
 n_bad = guard.check_numbers("Revenue grew 61.4% this year.", "revenue growing 52.2%")
 check("figures found in the evidence pass", n_ok["status"] == "pass")
@@ -134,6 +149,11 @@ check("KTO labels match the outcome", all(r["label"] == (r["metadata"]["label"] 
 check("test rows were decided on or after the split", all(r["metadata"]["asof"] >= card["split_date"] for r in ds["kto_test"]))
 check("SFT completions are valid JSON verdicts",
       all(json.loads(r["messages"][2]["content"])["rating"] for r in ds["sft_train"][:25]))
+check("RAFT prompts carry playbook passages", all("[K1]" in r["prompt"] for r in ds["kto_train"][:20]))
+rafts = [r for r in ds["kto_train"] if "[P1]" in r["prompt"]]
+check("RAFT precedents never leak an outcome known after the decision", all(
+    "not yet knowable" in line or line.split(" ")[1] < r["metadata"]["asof"]
+    for r in rafts for line in r["prompt"].splitlines() if line.startswith("[P")))
 out = finetune.export(out_dir=config.STATE_DIR / "ft")
 check("export writes every file and a data card",
       all((config.STATE_DIR / "ft" / f"{k}.jsonl").is_file() for k in ds)

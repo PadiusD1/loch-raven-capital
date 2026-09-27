@@ -80,6 +80,9 @@
   .cite{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--up);background:var(--up-dim);
     border-radius:4px;padding:1px 5px;cursor:pointer;white-space:nowrap}
   .cite:hover{background:rgba(52,211,153,.22)}
+  .cite.kcite{color:var(--txt);background:transparent;border:1px solid var(--line2)}
+  .cite.kcite:hover{border-color:var(--up)}
+  .p-id.kid{color:var(--dim)}
   .kv{display:grid;grid-template-columns:130px 1fr;gap:6px 14px;margin-top:14px;font-size:13px}
   .kv dt{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding-top:2px}
   .audit{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:14px}
@@ -148,7 +151,7 @@
     <div class="kpi"><div class="k-label">Decisions in memory</div><div class="k-val" id="k-memos">...</div><div class="k-sub" id="k-range"></div></div>
     <div class="kpi"><div class="k-label">Graded by the market</div><div class="k-val" id="k-graded">...</div><div class="k-sub">20 trading days vs SPY</div></div>
     <div class="kpi"><div class="k-label">Directional hit rate</div><div class="k-val" id="k-hit">...</div><div class="k-sub" id="k-hit-sub"></div></div>
-    <div class="kpi"><div class="k-label">Fine tuning rows</div><div class="k-val" id="k-ft">...</div><div class="k-sub">time split, no leakage</div></div>
+    <div class="kpi"><div class="k-label">Playbook passages</div><div class="k-val" id="k-kb">...</div><div class="k-sub">DCF, comps, thesis, risk, lessons</div></div>
     <div class="kpi"><div class="k-label">Audit chain</div><div class="k-val" id="k-audit">...</div><div class="k-sub" id="k-audit-sub">hash linked records</div></div>
   </section>
 
@@ -214,6 +217,7 @@ async function loadStats() {
   $('k-graded').textContent = s.n_scored_20d.toLocaleString();
   $('k-hit').textContent = rate(s.directional.hit_rate);
   $('k-hit-sub').textContent = `${s.directional.n} BUY and SELL calls · avg ${pct(s.directional.mean_score_20d)}`;
+  $('k-kb').textContent = (s.playbook_passages || 0).toLocaleString();
   $('k-audit').innerHTML = s.audit.ok ? '<span class="up">intact</span>' : '<span class="dn">broken</span>';
   $('k-audit-sub').textContent = `${s.audit.records} hash linked records`;
   const chips = s.replay_tickers.length ? s.replay_tickers : [];
@@ -248,8 +252,7 @@ async function loadFinetune() {
   try {
     const f = await api('/api/memory/finetune');
     const c = f.card.counts;
-    $('k-ft').textContent = (c.kto_train + c.kto_test).toLocaleString();
-    $('ft').innerHTML = `<table>
+    $('ft').innerHTML = `<div class="note">${esc(f.card.format || '')}. Every example carries playbook passages and point in time precedents.</div><table>
       <tr><th>Set</th><th>Train</th><th>Test</th></tr>
       <tr><td>SFT, proven right only</td><td>${c.sft_train}</td><td>${c.sft_test}</td></tr>
       <tr><td>KTO, labeled by outcome</td><td>${c.kto_train} <span class="faint">(${f.card.kto_train_desirable} good)</span></td><td>${c.kto_test} <span class="faint">(${f.card.kto_test_desirable} good)</span></td></tr>
@@ -275,7 +278,20 @@ function outcomeBadge(p) {
 }
 
 function citeify(text) {
-  return esc(text).replace(/\[P(\d{1,2})\]/g, (m, n) => `<span class="cite" data-p="${n}">P${n}</span>`);
+  return esc(text).replace(/\[(P|K)(\d{1,2})\]/g, (m, t, n) => `<span class="cite${t === 'K' ? ' kcite' : ''}" data-p="${t}${n}">${t}${n}</span>`);
+}
+
+function passagesHtml(r) {
+  const ps = r.passages || [];
+  if (!ps.length) return '';
+  return `<h3>Firm playbook passages retrieved</h3>
+    <div class="reveal">${ps.map((p, i) => `
+      <div class="prec" id="K${i + 1}">
+        <div class="p-id kid">K${i + 1}</div>
+        <div><div class="p-meta"><b style="color:var(--txt)">${esc(p.chapter)}</b><span>${esc(p.section)}</span></div>
+          <div class="p-head dim">${esc(p.text.length > 320 ? p.text.slice(0, 317) + '...' : p.text)}</div></div>
+        <span class="badge b-neutral">PLAYBOOK<span class="b-sub">${esc((p.source || '').split('.')[0].slice(0, 40))}</span></span>
+      </div>`).join('')}</div>`;
 }
 
 async function review() {
@@ -320,9 +336,10 @@ function render(r, hist) {
     </div>
     <h3>Guardrails the model cannot override</h3>
     <div class="checks reveal">${g.checks.map(c => `<div class="check s-${esc(c.status)}"><div class="c-name"><span class="dot"></span>${esc(c.name.replace(/_/g, ' '))}</div><div class="c-det">${esc(c.detail)}${c.ungrounded && c.ungrounded.length ? ' · ' + esc(c.ungrounded.join(', ')) : ''}</div></div>`).join('')}</div>
-    ${precedentsHtml(r)}`;
+    ${precedentsHtml(r)}
+    ${passagesHtml(r)}`;
   document.querySelectorAll('.cite').forEach(el => el.addEventListener('click', () => {
-    const row = document.getElementById('P' + el.dataset.p);
+    const row = document.getElementById(el.dataset.p);
     if (!row) return;
     row.scrollIntoView({behavior: 'smooth', block: 'center'});
     row.classList.add('flash'); setTimeout(() => row.classList.remove('flash'), 1400);

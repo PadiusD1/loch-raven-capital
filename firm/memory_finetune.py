@@ -7,6 +7,11 @@ the model's default behavior. This module turns the Institutional Memory
 archive into three training sets, each split by time so that nothing in the
 training set was graded after the first test decision was made.
 
+Prompts use the RAFT recipe (retrieval augmented fine tuning). Each example
+carries the firm playbook passages and the point in time precedents the
+committee could have retrieved that day, so the tuned model learns to reason
+with the firm's methodology and history in front of it.
+
   sft      supervised examples, only directional calls the market proved RIGHT
   kto      every graded directional call, labeled desirable or undesirable.
            KTO (Kahneman Tversky Optimization) learns from unpaired good and bad
@@ -26,7 +31,7 @@ from pathlib import Path
 from firm import memory_archive as archive
 
 OUT_DIR = archive.MEMORY_DIR / "finetune"
-DEFAULT_SPLIT = "2026-08-01"
+DEFAULT_SPLIT = "2026-08-10"   # roughly balances train and test after the leakage purge
 MIN_ABS_SCORE = 2.0
 
 SYSTEM = ("You are the portfolio manager of an institutional investment committee. "
@@ -34,10 +39,23 @@ SYSTEM = ("You are the portfolio manager of an institutional investment committe
           "with rating, conviction, thesis, bear_risk and watch_trigger.")
 
 
-def _prompt(m: archive.Memo) -> str:
-    return (f"Ticker {m.ticker} ({m.kind}) on {m.asof}.\n"
+def _context(m: archive.Memo) -> str:
+    """RAFT context for one example. The playbook passages and the precedents the
+    committee could have retrieved ON THAT DATE, so the tuned model learns to use
+    the firm's memory rather than memorize it. Precedent outcomes appear only
+    where they were knowable before the decision."""
+    from firm import memory_rag as rag
+    query = f"{m.ticker} {m.debate_summary}"
+    kblock, _ = rag.knowledge_block(query, k=2)
+    pblock, _, _ = rag.precedent_block(query, ticker=m.ticker, asof=m.asof, direction=0, k=3)
+    return kblock + pblock
+
+
+def _prompt(m: archive.Memo, context: str = "") -> str:
+    return (context
+            + f"Ticker {m.ticker} ({m.kind}) on {m.asof}.\n"
             f"Committee debate summary. {m.debate_summary or 'none recorded'}\n"
-            f"Issue the verdict.")
+            f"Issue the verdict, citing any playbook passage as [K#] and precedent as [P#] you rely on.")
 
 
 def _completion(m: archive.Memo) -> str:
@@ -51,23 +69,41 @@ def _meta(m: archive.Memo) -> dict:
             "label": m.label, "known_at_20d": m.known_at_20d}
 
 
-def build(split: str = DEFAULT_SPLIT, min_abs_score: float = MIN_ABS_SCORE) -> dict:
-    """Return every dataset in memory. Train rows must be graded BEFORE split."""
+_built: dict = {}
+
+
+def build(split: str = DEFAULT_SPLIT, min_abs_score: float = MIN_ABS_SCORE,
+          with_context: bool = True) -> dict:
+    memos = archive.load_memos()
+    key = (split, min_abs_score, with_context, len(memos), memos[-1].id if memos else "")
+    if key not in _built:
+        _built.clear()
+        _built[key] = _build(split, min_abs_score, with_context)
+    return _built[key]
+
+
+def _build(split: str, min_abs_score: float, with_context: bool) -> dict:
+    """Return every dataset in memory. Train rows must be graded BEFORE split.
+
+    with_context builds retrieval augmented fine tuning (RAFT) prompts, where
+    each example carries the playbook passages and point in time precedents.
+    """
     memos = archive.load_memos()
     graded = [m for m in memos if m.direction != 0 and m.score_20d is not None and m.debate_summary]
     train = [m for m in graded if m.known_at_20d and m.known_at_20d < split]
     test = [m for m in graded if m.asof >= split]
+    contexts = {m.id: (_context(m) if with_context else "") for m in train + test}
 
     def sft_rows(rows):
         return [{"messages": [{"role": "system", "content": SYSTEM},
-                              {"role": "user", "content": _prompt(m)},
+                              {"role": "user", "content": _prompt(m, contexts[m.id])},
                               {"role": "assistant", "content": _completion(m)}],
                  "metadata": _meta(m)}
                 for m in rows if m.label == "right" and abs(m.score_20d) >= min_abs_score]
 
     def kto_rows(rows):
-        return [{"prompt": _prompt(m), "completion": _completion(m), "label": m.label == "right",
-                 "metadata": _meta(m)} for m in rows]
+        return [{"prompt": _prompt(m, contexts[m.id]), "completion": _completion(m),
+                 "label": m.label == "right", "metadata": _meta(m)} for m in rows]
 
     rewards = [{"memo_id": m.id, "ticker": m.ticker, "asof": m.asof, "rating": m.rating,
                 "reward": m.score_20d if m.direction else None, "excess_20d": m.excess_20d,
@@ -84,7 +120,9 @@ def build(split: str = DEFAULT_SPLIT, min_abs_score: float = MIN_ABS_SCORE) -> d
         "kto_train_desirable": sum(1 for r in datasets["kto_train"] if r["label"]),
         "kto_test_desirable": sum(1 for r in datasets["kto_test"] if r["label"]),
         "leakage_rows": leak, "train_test_overlap": sorted(overlap),
-        "source": "Loch Raven committee decisions, graded against real prices versus SPY",
+        "format": "RAFT, retrieval augmented fine tuning" if with_context else "plain prompts",
+        "source": "Loch Raven committee decisions, graded against real prices versus SPY, "
+                  "with firm playbook passages and point in time precedents in every prompt",
     }
     return {"datasets": datasets, "card": card}
 
@@ -111,6 +149,12 @@ def _data_card_md(card: dict) -> str:
         f"* {c['kto_train']} KTO training examples ({card['kto_train_desirable']} desirable) and "
         f"{c['kto_test']} test examples ({card['kto_test_desirable']} desirable). Every graded call, labeled by outcome.",
         f"* {c['rewards']} reward labels for a reward model.",
+        "",
+        "## Format",
+        "",
+        f"{card.get('format', 'RAFT')}. Every prompt carries the firm playbook passages and the point in "
+        "time precedents the committee could have retrieved on that date, so a tuned model learns to "
+        "use the firm's memory instead of memorizing it.",
         "",
         "## How leakage is prevented",
         "",

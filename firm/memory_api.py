@@ -47,6 +47,7 @@ def memory_stats():
     s = archive.stats()
     s["replay_tickers"] = review.replay_tickers()
     s["audit"] = guard.audit_verify()
+    s["playbook_passages"] = len(rag.get_knowledge_index().passages)
     return s
 
 
@@ -113,3 +114,16 @@ def memory_audit():
 @router.get("/api/memory/lessons")
 def memory_lessons():
     return {"text": archive.lessons_text()}
+
+
+@router.get("/api/memory/playbook")
+def memory_playbook(q: str = "", k: int = 4):
+    idx = rag.get_knowledge_index()
+    if not q:
+        chapters: dict[str, int] = {}
+        for p in idx.passages:
+            chapters[p.chapter] = chapters.get(p.chapter, 0) + 1
+        return {"passages": len(idx.passages), "chapters": chapters}
+    k = max(1, min(int(k), 10))
+    return {"query": q[:2000], "hits": [dict(p.public(), score=round(s, 5))
+                                        for p, s in idx.search(q[:2000], k=k)]}
