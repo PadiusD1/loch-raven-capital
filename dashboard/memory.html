@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loch Raven Capital · Institutional Memory</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0c0f'/%3E%3Cpath d='M7 22 L13 14 L18 18 L25 8' stroke='%2334d399' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0c0f; --panel:#101216; --panel2:#14171c; --line:#22252c; --line2:#2e323b;
+    --txt:#e7e8ea; --dim:#8b8f98; --faint:#5a5e67;
+    --up:#34d399; --up-dim:rgba(52,211,153,.12);
+    --dn:#fb7185; --dn-dim:rgba(251,113,133,.12);
+    --amber:#fbbf24; --amber-dim:rgba(251,191,36,.10);
+    --sans:'Geist','Segoe UI',system-ui,sans-serif;
+    --mono:'JetBrains Mono',Consolas,'Cascadia Mono',monospace;
+    --ease:cubic-bezier(.22,1,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:14px;line-height:1.5;min-height:100dvh}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .up{color:var(--up)} .dn{color:var(--dn)} .dim{color:var(--dim)} .faint{color:var(--faint)} .amb{color:var(--amber)}
+  .wrap{max-width:1480px;margin:0 auto;padding:0 28px 64px}
+
+  header{display:flex;align-items:baseline;gap:18px;padding:22px 0 16px;border-bottom:1px solid var(--line2);flex-wrap:wrap}
+  .brand{font-weight:700;font-size:17px;letter-spacing:-.02em}
+  .brand span{color:var(--up)}
+  .tagline{color:var(--faint);font-size:11.5px;text-transform:uppercase;letter-spacing:.14em}
+  .spacer{flex:1}
+  a.back{color:var(--dim);font-size:12.5px;text-decoration:none;border:1px solid var(--line2);padding:6px 12px;border-radius:6px}
+  a.back:hover{border-color:var(--up);color:var(--txt)}
+
+  .kpis{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));border-bottom:1px solid var(--line)}
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{padding:16px 20px 14px 0;border-right:1px solid var(--line)}
+  .kpi:last-child{border-right:none}
+  .k-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.13em;color:var(--faint);margin-bottom:5px}
+  .k-val{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.01em}
+  .k-sub{font-size:11.5px;color:var(--dim);margin-top:2px}
+
+  .main{display:grid;grid-template-columns:1.75fr 1fr;gap:0 36px;align-items:start}
+  @media(max-width:1100px){.main{grid-template-columns:1fr}}
+  h3{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--faint);font-weight:500;
+     padding:22px 0 10px;border-bottom:1px solid var(--line)}
+
+  /* ask bar */
+  .ask{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:16px 0 12px}
+  .ask input{background:var(--panel);border:1px solid var(--line2);border-radius:6px;color:var(--txt);
+    font-family:var(--mono);font-size:15px;padding:9px 12px;width:150px;text-transform:uppercase}
+  .ask input.date{width:150px;font-size:13px;text-transform:none}
+  .ask input:focus{outline:none;border-color:var(--up)}
+  button{font-family:var(--sans);font-size:12.5px;font-weight:600;background:var(--panel);color:var(--txt);
+    border:1px solid var(--line2);padding:9px 14px;cursor:pointer;border-radius:6px;transition:border-color .15s var(--ease),transform .12s var(--ease)}
+  button:hover{border-color:var(--up)}
+  button:active{transform:scale(.97)}
+  button.primary{background:var(--up);color:#06281c;border-color:var(--up)}
+  button[disabled]{opacity:.55;cursor:progress}
+  .seg{display:inline-flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
+  .seg button{border:none;border-radius:0;padding:9px 12px;background:transparent;color:var(--dim)}
+  .seg button.on{background:var(--panel2);color:var(--txt)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:4px}
+  .chip{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line2);border-radius:99px;padding:3px 10px;
+    cursor:pointer;color:var(--dim);background:transparent}
+  .chip:hover{border-color:var(--up);color:var(--txt)}
+  .hint{font-size:12px;color:var(--faint);padding:2px 0 8px}
+
+  /* verdict */
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-top:12px}
+  .v-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .v-tick{font-weight:700;font-size:20px;letter-spacing:-.01em}
+  .rating{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;padding:3px 9px;border-radius:4px}
+  .r-STRONG_BUY{background:var(--up-dim);color:var(--up)} .r-BUY{background:rgba(52,211,153,.07);color:#6ee7b7}
+  .r-HOLD{background:rgba(139,143,152,.12);color:var(--dim)} .r-SELL,.r-STRONG_SELL{background:var(--dn-dim);color:var(--dn)}
+  .conv{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .conv b{color:var(--txt);font-size:18px}
+  .source{font-size:11.5px;color:var(--faint);margin-top:4px}
+  .thesis{font-size:14.5px;line-height:1.65;margin-top:12px;max-width:78ch}
+  .cite{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--up);background:var(--up-dim);
+    border-radius:4px;padding:1px 5px;cursor:pointer;white-space:nowrap}
+  .cite:hover{background:rgba(52,211,153,.22)}
+  .kv{display:grid;grid-template-columns:130px 1fr;gap:6px 14px;margin-top:14px;font-size:13px}
+  .kv dt{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:.1em;padding-top:2px}
+  .audit{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:14px}
+
+  /* guardrails */
+  .checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;margin-top:12px}
+  .check{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--panel)}
+  .check .c-name{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+  .check .c-det{font-size:12px;color:var(--dim);margin-top:4px}
+  .dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .s-pass .dot{background:var(--up)} .s-warn .dot{background:var(--amber)} .s-fail .dot{background:var(--dn)}
+
+  /* precedents */
+  .prec{display:grid;grid-template-columns:44px 1fr 150px;gap:12px;padding:12px 10px;border-bottom:1px solid var(--line);
+    border-radius:6px;transition:background .4s var(--ease)}
+  .prec.flash{background:rgba(52,211,153,.08)}
+  .p-id{font-family:var(--mono);font-weight:600;color:var(--up);font-size:12.5px;padding-top:2px}
+  .p-meta{font-family:var(--mono);font-size:11.5px;color:var(--dim);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .p-head{font-size:13px;margin-top:4px;color:var(--txt)}
+  .badge{font-family:var(--mono);font-size:11px;font-weight:600;border-radius:4px;padding:3px 8px;text-align:center;align-self:start}
+  .b-right{background:var(--up-dim);color:var(--up)} .b-wrong{background:var(--dn-dim);color:var(--dn)}
+  .b-neutral{background:rgba(139,143,152,.12);color:var(--dim)} .b-hidden{border:1px dashed var(--line2);color:var(--faint)}
+  .b-sub{display:block;font-weight:400;font-size:10.5px;opacity:.85;margin-top:2px}
+  .signal{font-size:12.5px;color:var(--dim);padding:10px 0}
+
+  .timeline{display:flex;gap:4px;align-items:center;margin-top:10px;flex-wrap:wrap}
+  .tl{width:10px;height:10px;border-radius:2px;background:var(--line2)}
+  .tl.right{background:var(--up)} .tl.wrong{background:var(--dn)} .tl.neutral{background:var(--faint)} .tl.pending{background:transparent;border:1px solid var(--faint)}
+
+  /* rail */
+  .bars{display:flex;flex-direction:column;gap:10px;padding:12px 0}
+  .bar-row{display:grid;grid-template-columns:150px 1fr 92px;gap:10px;align-items:center;font-size:12.5px}
+  .bar-row .lbl{color:var(--dim)}
+  .track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+  .fill{height:100%;border-radius:4px;background:var(--up);width:0;transition:width .8s var(--ease)}
+  .fill.dn{background:var(--dn)} .fill.mid{background:var(--faint)}
+  .val{font-family:var(--mono);font-size:12px;text-align:right}
+  .headline{font-size:12.5px;color:var(--dim);line-height:1.55;border-left:2px solid var(--line2);padding:4px 0 4px 12px;margin:6px 0 4px}
+  .note{font-size:11.5px;color:var(--faint);padding:6px 0}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+  th{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--faint);text-align:left;font-weight:500;padding:5px 10px 5px 0;border-bottom:1px solid var(--line)}
+  td{padding:7px 10px 7px 0;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px}
+  .search input{width:100%;background:var(--panel);border:1px solid var(--line2);border-radius:6px;color:var(--txt);font-size:13px;padding:9px 11px;margin-top:10px}
+  .search input:focus{outline:none;border-color:var(--up)}
+  .s-hit{padding:9px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .s-hit .p-meta{font-size:11px}
+  .lessons{font-size:12.5px;color:var(--dim);white-space:pre-wrap;max-height:260px;overflow:auto;padding:10px 0;line-height:1.55}
+  .skel{height:14px;border-radius:4px;background:linear-gradient(90deg,var(--line) 0%,var(--line2) 50%,var(--line) 100%);background-size:200% 100%;animation:shimmer 1.2s linear infinite;margin:8px 0}
+  @keyframes shimmer{to{background-position:-200% 0}}
+  .reveal{animation:rise .38s var(--ease) both}
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .err{color:var(--dn);font-size:13px;padding:12px 0}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">LOCH RAVEN <span>CAPITAL</span></div>
+    <div class="tagline">Institutional Memory · RAG over the firm's own graded decisions</div>
+    <div class="spacer"></div>
+    <a class="back" href="/">Firm cockpit</a>
+  </header>
+
+  <section class="kpis" id="kpis">
+    <div class="kpi"><div class="k-label">Decisions in memory</div><div class="k-val" id="k-memos">...</div><div class="k-sub" id="k-range"></div></div>
+    <div class="kpi"><div class="k-label">Graded by the market</div><div class="k-val" id="k-graded">...</div><div class="k-sub">20 trading days vs SPY</div></div>
+    <div class="kpi"><div class="k-label">Directional hit rate</div><div class="k-val" id="k-hit">...</div><div class="k-sub" id="k-hit-sub"></div></div>
+    <div class="kpi"><div class="k-label">Fine tuning rows</div><div class="k-val" id="k-ft">...</div><div class="k-sub">time split, no leakage</div></div>
+    <div class="kpi"><div class="k-label">Audit chain</div><div class="k-val" id="k-audit">...</div><div class="k-sub" id="k-audit-sub">hash linked records</div></div>
+  </section>
+
+  <div class="main">
+    <div>
+      <h3>Ask the firm's memory</h3>
+      <div class="ask">
+        <input id="ticker" value="" placeholder="TICKER" maxlength="10" aria-label="Ticker">
+        <input id="asof" class="date" placeholder="as of YYYY-MM-DD" aria-label="As of date">
+        <div class="seg" role="group" aria-label="Mode">
+          <button id="m-auto" class="on" data-mode="auto">Recorded</button>
+          <button id="m-live" data-mode="live">Live Claude</button>
+        </div>
+        <button class="primary" id="go">Review with memory</button>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="hint">Retrieval is point in time. A review dated D only sees memos written before D, and only sees outcomes that were already known before D.</div>
+      <div id="result"></div>
+    </div>
+
+    <aside>
+      <h3>Honest scorecard</h3>
+      <div id="eval"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+
+      <h3>Conviction calibration</h3>
+      <div id="calib"><div class="skel"></div><div class="skel"></div></div>
+
+      <h3>Fine tuning dataset</h3>
+      <div id="ft"><div class="skel"></div></div>
+
+      <h3>Search the memory</h3>
+      <div class="search"><input id="q" placeholder="cash burn ahead of a financing, momentum leader overbought ..." aria-label="Search"></div>
+      <div id="hits"></div>
+
+      <h3>Firm lessons</h3>
+      <div class="lessons" id="lessons"></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pct = (v, d=1) => v == null ? 'n/a' : (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(d) + '%';
+const rate = (v) => v == null ? 'n/a' : Math.round(v * 100) + '%';
+let mode = 'auto';
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  if (!r.ok) { let t = await r.text(); try { t = JSON.parse(t).detail || t; } catch (e) {} throw new Error(t); }
+  return r.json();
+}
+
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.seg button').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); mode = b.dataset.mode;
+}));
+
+async function loadStats() {
+  const s = await api('/api/memory/stats');
+  $('k-memos').textContent = s.n_memos.toLocaleString();
+  $('k-range').textContent = `${s.n_tickers} tickers · ${s.first_date} to ${s.last_date}`;
+  $('k-graded').textContent = s.n_scored_20d.toLocaleString();
+  $('k-hit').textContent = rate(s.directional.hit_rate);
+  $('k-hit-sub').textContent = `${s.directional.n} BUY and SELL calls · avg ${pct(s.directional.mean_score_20d)}`;
+  $('k-audit').innerHTML = s.audit.ok ? '<span class="up">intact</span>' : '<span class="dn">broken</span>';
+  $('k-audit-sub').textContent = `${s.audit.records} hash linked records`;
+  const chips = s.replay_tickers.length ? s.replay_tickers : [];
+  $('chips').innerHTML = chips.map(t => `<button class="chip" data-t="${esc(t)}">${esc(t)}</button>`).join('');
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => { $('ticker').value = c.dataset.t; $('asof').value = ''; review(); }));
+  if (!$('ticker').value && chips.length) $('ticker').value = chips[0];
+  const rows = Object.entries(s.directional_by_conviction);
+  $('calib').innerHTML = `<table><tr><th>Conviction</th><th>Calls</th><th>Hit rate</th><th>Avg vs SPY</th></tr>` +
+    rows.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${v.n}</td><td class="${v.hit_rate >= .5 ? 'up' : 'dn'}">${rate(v.hit_rate)}</td><td>${pct(v.mean_score_20d)}</td></tr>`).join('') +
+    `</table><div class="note">Confidence is not calibration. The memory shows the committee's typical conviction band carried no edge in this period, which is what calibration has to fix.</div>`;
+}
+
+function bar(label, v, max, cls, right) {
+  const w = v == null ? 0 : Math.max(2, Math.min(100, 100 * v / max));
+  return `<div class="bar-row"><span class="lbl">${label}</span><div class="track"><div class="fill ${cls}" data-w="${w}"></div></div><span class="val">${right}</span></div>`;
+}
+function animateBars(root) { requestAnimationFrame(() => root.querySelectorAll('.fill').forEach(f => f.style.width = f.dataset.w + '%')); }
+
+async function loadEval() {
+  try {
+    const e = await api('/api/memory/eval');
+    const rows = [['Committee alone', e.committee_alone], ['Memory supported', e.memory_kept], ['Memory warned', e.memory_vetoed], ['No memory yet', e.no_memory_yet]];
+    $('eval').innerHTML = `<div class="bars">` + rows.map(([n, r]) =>
+      bar(`${n} <span class="faint mono">n=${r.n}</span>`, r.hit_rate, 1, r.hit_rate >= .5 ? '' : 'dn', `${rate(r.hit_rate)} · ${pct(r.mean_score_20d)}`)).join('') +
+      `</div><div class="headline">${esc(e.headline || '')}</div>
+      <div class="note">Walk forward over every graded BUY and SELL. Each call only sees memos written before it and outcomes known before it. The veto rule was fixed in advance. In this sample, following the memory mechanically would not have helped, so it informs the committee and never overrules it.</div>`;
+    animateBars($('eval'));
+  } catch (err) { $('eval').innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+}
+
+async function loadFinetune() {
+  try {
+    const f = await api('/api/memory/finetune');
+    const c = f.card.counts;
+    $('k-ft').textContent = (c.kto_train + c.kto_test).toLocaleString();
+    $('ft').innerHTML = `<table>
+      <tr><th>Set</th><th>Train</th><th>Test</th></tr>
+      <tr><td>SFT, proven right only</td><td>${c.sft_train}</td><td>${c.sft_test}</td></tr>
+      <tr><td>KTO, labeled by outcome</td><td>${c.kto_train} <span class="faint">(${f.card.kto_train_desirable} good)</span></td><td>${c.kto_test} <span class="faint">(${f.card.kto_test_desirable} good)</span></td></tr>
+      <tr><td>Reward labels</td><td colspan="2">${c.rewards}</td></tr></table>
+      <div class="note">Split at ${esc(f.card.split_date)}. Leaked rows ${f.card.leakage_rows.length}. Rows in both splits ${f.card.train_test_overlap.length}.</div>
+      <button id="export">Export training files</button> <span class="note" id="export-msg"></span>`;
+    $('export').addEventListener('click', async () => {
+      $('export').disabled = true;
+      try { const r = await api('/api/memory/finetune/export', {method: 'POST'}); $('export-msg').textContent = `${Object.keys(r.files).length} files and a data card written to data/memory/finetune`; }
+      catch (err) { $('export-msg').textContent = err.message; }
+      $('export').disabled = false;
+    });
+  } catch (err) { $('ft').innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+}
+
+function outcomeBadge(p) {
+  if (!p.outcome_visible) return `<span class="badge b-hidden">NOT YET KNOWABLE<span class="b-sub">outcome after this date</span></span>`;
+  const o = p.outcome || {};
+  const lab = o.label;
+  const cls = lab === 'right' ? 'b-right' : lab === 'wrong' ? 'b-wrong' : 'b-neutral';
+  const word = lab === 'right' ? 'RIGHT' : lab === 'wrong' ? 'WRONG' : 'NO CALL';
+  return `<span class="badge ${cls}">${word} ${pct(o.excess_20d)}<span class="b-sub">20d vs SPY</span></span>`;
+}
+
+function citeify(text) {
+  return esc(text).replace(/\[P(\d{1,2})\]/g, (m, n) => `<span class="cite" data-p="${n}">P${n}</span>`);
+}
+
+async function review() {
+  const t = $('ticker').value.trim().toUpperCase();
+  if (!t) return;
+  $('go').disabled = true;
+  $('result').innerHTML = `<div class="card"><div class="skel" style="width:40%"></div><div class="skel"></div><div class="skel"></div><div class="skel" style="width:70%"></div></div>`;
+  try {
+    const body = {ticker: t, mode, asof: $('asof').value.trim() || null};
+    const r = await api('/api/memory/review', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+    let hist = [];
+    try { hist = (await api('/api/memory/ticker/' + encodeURIComponent(t))).decisions; } catch (e) {}
+    render(r, hist);
+  } catch (err) {
+    $('result').innerHTML = `<div class="err">${esc(err.message)}</div>`;
+  }
+  $('go').disabled = false;
+}
+
+function render(r, hist) {
+  if (!r.ok) {
+    $('result').innerHTML = `<div class="card reveal"><div class="err">${esc(r.error)}</div></div>` + precedentsHtml(r);
+    return;
+  }
+  const v = r.verdict;
+  const g = r.guardrails;
+  const tl = hist.filter(d => d.asof < r.asof).map(d => `<span class="tl ${esc((d.outcome || {}).label === 'right' ? 'right' : (d.outcome || {}).label === 'wrong' ? 'wrong' : (d.outcome || {}).label === 'neutral' ? 'neutral' : 'pending')}" title="${esc(d.asof)} ${esc(d.rating)} ${esc(pct((d.outcome || {}).excess_20d))}"></span>`).join('');
+  $('result').innerHTML = `
+    <div class="card reveal">
+      <div class="v-top"><span class="v-tick">${esc(r.ticker)}</span><span class="rating r-${esc(v.rating)}">${esc(v.rating)}</span>
+        <span class="faint mono" style="font-size:11.5px">as of ${esc(r.asof)}</span>
+        <span class="conv">conviction <b>${v.conviction ?? 'n/a'}</b></span></div>
+      <div class="source">${esc(r.source)} · ${r.precedents.length} precedents retrieved · guardrails <span class="${g.status === 'pass' ? 'up' : g.status === 'warn' ? 'amb' : 'dn'}">${esc(g.status)}</span></div>
+      <div class="thesis">${citeify(v.thesis)}</div>
+      <dl class="kv">
+        <dt>Biggest risk</dt><dd>${citeify(v.bear_risk)}</dd>
+        <dt>Change my mind</dt><dd>${citeify(v.watch_trigger)}</dd>
+        <dt>Memory changed</dt><dd>${citeify(v.memory_note)}</dd>
+      </dl>
+      ${tl ? `<div class="timeline"><span class="faint" style="font-size:11px;margin-right:6px">This name's file</span>${tl}</div>` : ''}
+      <div class="audit">audit ${esc(r.audit.hash.slice(0, 16))} linked to ${esc(r.audit.prev.slice(0, 16))}</div>
+    </div>
+    <h3>Guardrails the model cannot override</h3>
+    <div class="checks reveal">${g.checks.map(c => `<div class="check s-${esc(c.status)}"><div class="c-name"><span class="dot"></span>${esc(c.name.replace(/_/g, ' '))}</div><div class="c-det">${esc(c.detail)}${c.ungrounded && c.ungrounded.length ? ' · ' + esc(c.ungrounded.join(', ')) : ''}</div></div>`).join('')}</div>
+    ${precedentsHtml(r)}`;
+  document.querySelectorAll('.cite').forEach(el => el.addEventListener('click', () => {
+    const row = document.getElementById('P' + el.dataset.p);
+    if (!row) return;
+    row.scrollIntoView({behavior: 'smooth', block: 'center'});
+    row.classList.add('flash'); setTimeout(() => row.classList.remove('flash'), 1400);
+  }));
+}
+
+function precedentsHtml(r) {
+  const s = r.signal || {};
+  const sig = s.n ? `Memory signal. ${s.n} precedents with known outcomes averaged ${pct(s.avg_excess_20d)} versus SPY over the next 20 trading days.` : 'No precedent outcomes were knowable yet at this date.';
+  return `<h3>Precedents retrieved, point in time</h3>
+    <div class="signal">${esc(sig)}</div>
+    <div class="reveal">${(r.precedents || []).map((p, i) => `
+      <div class="prec" id="P${i + 1}">
+        <div class="p-id">P${i + 1}</div>
+        <div><div class="p-meta"><span>${esc(p.asof)}</span><b style="color:var(--txt)">${esc(p.ticker)}</b><span class="rating r-${esc(p.rating)}">${esc(p.rating)}</span><span>conv ${p.conviction ?? 'n/a'}</span></div>
+          <div class="p-head">${esc(p.headline)}</div></div>
+        ${outcomeBadge(p)}
+      </div>`).join('')}</div>`;
+}
+
+let qTimer = null;
+$('q').addEventListener('input', () => {
+  clearTimeout(qTimer);
+  qTimer = setTimeout(async () => {
+    const q = $('q').value.trim();
+    if (q.length < 3) { $('hits').innerHTML = ''; return; }
+    try {
+      const r = await api('/api/memory/search?k=6&q=' + encodeURIComponent(q));
+      $('hits').innerHTML = r.hits.map(p => `<div class="s-hit reveal"><div class="p-meta"><span>${esc(p.asof)}</span><b style="color:var(--txt)">${esc(p.ticker)}</b><span class="rating r-${esc(p.rating)}">${esc(p.rating)}</span><span>${p.outcome_visible && p.outcome ? esc((p.outcome.label || '').toUpperCase()) + ' ' + pct(p.outcome.excess_20d) : ''}</span></div><div class="p-head">${esc(p.headline)}</div></div>`).join('') || '<div class="note">No matches.</div>';
+    } catch (err) { $('hits').innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+  }, 260);
+});
+
+$('go').addEventListener('click', review);
+$('ticker').addEventListener('keydown', e => { if (e.key === 'Enter') review(); });
+
+(async () => {
+  try { await loadStats(); } catch (err) { $('result').innerHTML = `<div class="err">${esc(err.message)}</div>`; }
+  loadEval(); loadFinetune();
+  try { const t = await fetch('/api/memory/lessons'); if (t.ok) $('lessons').textContent = (await t.json()).text; } catch (e) {}
+  if ($('ticker').value) review();
+})();
+</script>
+</body>
+</html>

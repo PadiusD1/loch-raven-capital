@@ -25,6 +25,14 @@ from firm import broker, cycle, health, learning, monitor, risk, state
 
 app = FastAPI(title="Loch Raven Capital")
 
+# Institutional Memory console (hackUMBC 2026). Mounted fail soft so the firm
+# never loses its dashboard over an optional layer.
+try:
+    from firm import memory_api as _memory_api
+    app.include_router(_memory_api.router)
+except Exception as _mem_err:   # pragma: no cover
+    print(f"institutional memory disabled, {_mem_err}")
+
 # A previous process may have died mid-cycle; reset stale running status —
 # but NOT while a headless cycle legitimately holds the cycle lock.
 _boot_lock = config.STATE_DIR / "cycle.lock"
