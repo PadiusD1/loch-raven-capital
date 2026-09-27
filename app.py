@@ -285,6 +285,9 @@ def update_settings(upd: SettingsUpdate):
         return JSONResponse({"success": False, "error": "bad depth"}, 400)
 
     new_mode = changes.get("mode")
+    if new_mode == "live" and getattr(config, "DEMO_MODE", False):
+        return JSONResponse({"success": False,
+                             "error": "demo mode is paper only"}, 409)
     if new_mode and new_mode != state.get_settings()["mode"]:
         # A cycle captured the OLD mode at start — flipping mid-cycle would
         # let it book trades in the wrong book minutes after the switch
@@ -861,6 +864,8 @@ def _preopen_ram_sweep_loop():
     from datetime import time as _dtime
     from zoneinfo import ZoneInfo
     from firm import market_hours
+    if getattr(config, "DEMO_MODE", False):
+        return                   # a demo copy never sweeps the host's processes
     while True:
         try:
             now_et = datetime.now(ZoneInfo("America/New_York"))
@@ -1325,12 +1330,13 @@ if __name__ == "__main__":
     # never run monitor threads (cross-process state races), not even for the
     # seconds it would take uvicorn to fail binding the port.
     import socket
+    _port = int(getattr(config, "PORT", 8420))
     _probe = socket.socket()
     try:
-        _probe.bind(("127.0.0.1", 8420))
+        _probe.bind(("127.0.0.1", _port))
         _probe.close()
     except OSError:
-        print("port 8420 already in use — another instance is running; exiting")
+        print(f"port {_port} already in use — another instance is running; exiting")
         raise SystemExit(0)
     # Janitor: PID-unique scratch files from writers killed mid-save are
     # harmless but should not accumulate across months of restarts. Only
@@ -1344,5 +1350,11 @@ if __name__ == "__main__":
             except OSError:
                 pass
     _start_background_threads()
-    print("Loch Raven Capital -> http://localhost:8420")
-    uvicorn.run(app, host="127.0.0.1", port=8420, log_level="warning")
+    if getattr(config, "DEMO_MODE", False):
+        try:
+            from firm import memory_api as _mem
+            _mem.warm_up()
+        except Exception:
+            pass
+    print(f"Loch Raven Capital -> http://localhost:{_port}")
+    uvicorn.run(app, host="127.0.0.1", port=_port, log_level="warning")

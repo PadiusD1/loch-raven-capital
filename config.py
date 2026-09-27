@@ -84,6 +84,16 @@ def _load_public_credentials() -> tuple[str, str]:
 
 PUBLIC_API_KEY, PUBLIC_ACCOUNT_NUMBER = _load_public_credentials()
 
+# Demo isolation (hackUMBC 2026). LOCH_RAVEN_DEMO=1 runs a second copy of the
+# firm next to a live one without touching it. No broker credentials, so quotes
+# fall back to yfinance and nothing can route to a real account. No host wide
+# RAM janitor or cleaner, no Windows toasts or Slack posts, no scripts that call
+# the live app, and paper mode only. LOCH_RAVEN_PORT moves the dashboard off 8420.
+DEMO_MODE = os.environ.get("LOCH_RAVEN_DEMO", "") == "1"
+PORT = int(os.environ.get("LOCH_RAVEN_PORT", "8420"))
+if DEMO_MODE:
+    PUBLIC_API_KEY, PUBLIC_ACCOUNT_NUMBER = "", ""
+
 # ── Financial Modeling Prep (clean fundamentals + confirmed earnings) ─────────
 # Audit-grade value/quality inputs and confirmed earnings, vs yfinance's
 # screening-grade .info. Key from env FMP_API_KEY first, then a local file

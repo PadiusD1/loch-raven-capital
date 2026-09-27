@@ -138,7 +138,7 @@ def _effective_workers() -> int:
 def _fire_janitor() -> None:
     """Trigger the OS level Claude session janitor task. Windows only. On the
     VPS there is no desktop app and no janitor, systemd owns lifetimes."""
-    if os.name != "nt" or not shutil.which("schtasks"):
+    if os.name != "nt" or not shutil.which("schtasks") or getattr(config, "DEMO_MODE", False):
         return
     subprocess.run(["schtasks", "/Run", "/TN",
                     str(getattr(config, "RAM_RECOVERY_TASK", "Claude Session Janitor"))],
@@ -175,6 +175,8 @@ def _preflight_ram_recovery(avail_gb: float | None = None,
     same rule, both twins. Unit tests that mean to exercise the decision logic
     opt in explicitly with allow_in_sandbox=True."""
     try:
+        if getattr(config, "DEMO_MODE", False):
+            return
         if (not allow_in_sandbox
                 and str(config.STATE_DIR) != str(config.BASE_DIR / "state")):
             return
@@ -205,7 +207,8 @@ def _post_cycle_ram_clean() -> None:
         # Sandboxed suites repoint STATE_DIR (test_firm / test_week_sim run
         # hundreds of simulated cycles) — a simulated cycle must never spawn
         # host-wide cleanup subprocesses. Real books only.
-        if str(config.STATE_DIR) != str(config.BASE_DIR / "state"):
+        if (str(config.STATE_DIR) != str(config.BASE_DIR / "state")
+                or getattr(config, "DEMO_MODE", False)):
             return
         import subprocess
         import sys as _sys

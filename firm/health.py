@@ -3915,6 +3915,8 @@ def _escalate_recon_drift() -> None:
             # One fail-soft re-run at the escalation moment only — the
             # `alerted` latch guarantees this never loops on the 30-min sweep.
             try:
+                if getattr(config, "DEMO_MODE", False):
+                    raise RuntimeError("demo mode never runs scripts that call the live app")
                 import subprocess
                 import sys as _sys
                 subprocess.run(

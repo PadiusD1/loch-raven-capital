@@ -84,7 +84,7 @@ def _slack(title: str, msg: str) -> bool:
     This is the VPS replacement for the Windows toast. The same alert is posted
     at most once per SLACK_REPEAT_S."""
     url = os.environ.get("SLACK_WEBHOOK_URL", "")
-    if not url:
+    if not url or os.environ.get("LOCH_RAVEN_DEMO", "") == "1":
         return False
     try:
         if not _due(title, time.time()):
@@ -97,7 +97,7 @@ def _slack(title: str, msg: str) -> bool:
 def _toast(title: str, msg: str) -> None:
     """Best-effort Windows toast; never blocks, never raises. Text passed via env
     vars (injection-safe), not interpolated into the PowerShell command."""
-    if os.name != "nt":
+    if os.name != "nt" or os.environ.get("LOCH_RAVEN_DEMO", "") == "1":
         return
     try:
         env = dict(os.environ, LR_TOAST_TITLE=str(title)[:120], LR_TOAST_MSG=str(msg)[:240])
