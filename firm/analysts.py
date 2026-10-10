@@ -90,6 +90,29 @@ def _desk_packet(desk: str, packet: dict) -> dict:
     if "technicals" not in view:
         tech = packet.get("technicals") or {}
         view["price_context"] = {k: tech.get(k) for k in _ALWAYS_TECH_KEYS}
+    # External research is optional and scoped to the receiving desk.
+    # Never expose a future record to a historical research packet.
+    try:
+        from datetime import datetime, timezone
+        from firm import research_rag
+        asof = str(packet.get("asof") or "")
+        if len(asof) == 10:
+            asof += "T23:59:59+00:00"
+        if asof:
+            datetime.fromisoformat(asof.replace("Z", "+00:00"))
+        query = " ".join(str(packet.get(k) or "") for k in ("ticker", "name", "sector"))
+        if query.strip() and asof:
+            matches = research_rag.retrieve(query, desk=desk, asof=asof, k=3)
+            if matches:
+                view["verified_external_research"] = [
+                    {"title": h["record"]["title"],
+                     "source_url": h["record"]["source_url"],
+                     "published_at": h["record"]["published_at"],
+                     "observed_at": h["record"]["observed_at"],
+                     "excerpt": h["record"]["body"][:3000]}
+                    for h in matches]
+    except (ImportError, ValueError, OSError):
+        pass  # Optional evidence never interrupts an existing research cycle.
     return view
 
 
