@@ -26,5 +26,6 @@ jobs:
           python tests/test_memory_direction.py
           python tests/test_research_provenance.py
           python tests/test_research_rag.py
+          python tests/test_desk_research_integration.py
       - name: Run existing institutional-memory suite
         run: python tests/test_memory.py
