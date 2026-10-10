@@ -27,23 +27,29 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Apply exact locally tested patch and quality fixes
+      - name: Apply and stage exact audited source patch
         run: |
+          mkdir -p /tmp/free-validation
           python - <<'PY'
-          import base64, hashlib, lzma, pathlib, subprocess
+          import base64, hashlib, lzma, pathlib, subprocess, json
           text = ''.join(p.read_text() for p in sorted(pathlib.Path('.automation/free-data').glob('*.b64')))
           patch = lzma.decompress(base64.b64decode(text, validate=True))
           assert hashlib.sha256(patch).hexdigest() == '115614467d2bf26345aad26746b6498954c4e0cf8af4b44f20706bfe8c40455f'
           pathlib.Path('/tmp/free-data.patch').write_bytes(patch)
-          subprocess.run(['git','apply','--check','/tmp/free-data.patch'], check=True)
-          subprocess.run(['git','apply','/tmp/free-data.patch'], check=True)
+          subprocess.run(['git','apply','--check','--index','/tmp/free-data.patch'], check=True)
+          subprocess.run(['git','apply','--index','/tmp/free-data.patch'], check=True)
+          subprocess.run(['python','.automation/free-data/final-quality-fix.py'],check=True)
+          paths=['firm/research_automation.py','firm/research_transport.py','scripts/free_source_collection.py','tests/test_research_automation.py']
+          for path in paths:
+              assert pathlib.Path(path).is_file(), 'Missing source: '+path
+          subprocess.run(['git','add','-f','--']+paths,check=True)
+          pathlib.Path('/tmp/free-validation/module-manifest.json').write_text(json.dumps({p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths},indent=2))
           PY
-          python .automation/free-data/final-quality-fix.py
       - name: Install existing dependencies
         run: python -m pip install -r requirements.txt
       - name: Compile and run research, direction and desk tests
         run: |
-          mkdir -p /tmp/free-validation
+          python -c "import firm.research_automation, firm.research_transport; print(firm.research_automation.__file__, firm.research_transport.__file__)"
           python -m compileall -q firm scripts tests
           python -m unittest discover -s tests -p 'test_research*.py' 2>&1 | tee /tmp/free-validation/research.txt
           python -m unittest discover -s tests -p 'test_memory_direction.py' 2>&1 | tee /tmp/free-validation/direction.txt
@@ -67,10 +73,19 @@ jobs:
           python -m scripts.evaluate_research 2>&1 | tee /tmp/free-validation/retrieval.txt
       - name: Persist exact approved source and data paths only
         run: |
-          git add -f -- .github/workflows/refresh-sec-research.yml .github/workflows/research-integrity.yml .gitignore README.md config.py docs/FREE_DATA_AUTOMATION.md firm/cycle.py firm/data_engine.py firm/memory_api.py firm/research_automation.py firm/research_provenance.py firm/research_rag.py firm/research_transport.py scripts/fetch_sec_research.py scripts/free_source_collection.py scripts/refresh_research.py tests/test_firm.py tests/test_research_automation.py tests/test_week_sim.py data/research data/research_evaluation data/research_refresh_report.json
-          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Implement bounded fund-aware free-source automation with validated live data'
-          git push origin HEAD:feat/free-data-automation
-          git archive --format=zip --output=/tmp/free-validation/tested-source.zip HEAD
+          python - <<'PY'
+          import pathlib, subprocess, hashlib, json
+          manifest=json.loads(pathlib.Path('/tmp/free-validation/module-manifest.json').read_text())
+          for path,digest in manifest.items():
+              p=pathlib.Path(path)
+              assert p.is_file(), 'Tested source disappeared: '+path
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==digest, 'Tested source changed: '+path
+          paths=['.github/workflows/refresh-sec-research.yml','.github/workflows/research-integrity.yml','.gitignore','README.md','config.py','docs/FREE_DATA_AUTOMATION.md','firm/cycle.py','firm/data_engine.py','firm/memory_api.py','firm/research_automation.py','firm/research_provenance.py','firm/research_rag.py','firm/research_transport.py','scripts/fetch_sec_research.py','scripts/free_source_collection.py','scripts/refresh_research.py','tests/test_firm.py','tests/test_research_automation.py','tests/test_week_sim.py','data/research','data/research_evaluation','data/research_refresh_report.json']
+          subprocess.run(['git','add','-f','--']+paths,check=True)
+          subprocess.run(['git','-c','user.name=github-actions[bot]','-c','user.email=41898282+github-actions[bot]@users.noreply.github.com','commit','-m','Implement bounded fund-aware free-source automation with validated live data'],check=True)
+          subprocess.run(['git','push','origin','HEAD:feat/free-data-automation'],check=True)
+          subprocess.run(['git','archive','--format=zip','--output=/tmp/free-validation/tested-source.zip','HEAD'],check=True)
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
