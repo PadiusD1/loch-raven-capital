@@ -32,7 +32,7 @@ def build_prompt(ticker: str, asof: str | None = None, k: int = 6) -> dict:
     query = latest.text() if latest else t
     direction = latest.direction if latest else 0
     block, hits, signal = rag.precedent_block(query, ticker=t, asof=asof, direction=direction, k=k)
-    kblock, passages = rag.knowledge_block(query, k=3)
+    kblock, passages = rag.knowledge_block(query, k=3, asof=asof)
     current = ("No prior committee file on this name." if latest is None else
                f"LATEST COMMITTEE FILE ({latest.asof}). Rating {latest.rating}, conviction "
                f"{latest.conviction}. Thesis. {latest.thesis}\nBiggest risk named. {latest.bear_risk}\n"

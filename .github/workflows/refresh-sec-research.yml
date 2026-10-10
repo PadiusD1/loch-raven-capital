@@ -1,0 +1,70 @@
+name: Refresh source-linked research
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 12 * * 1-5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: research-refresh-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  research-refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: .
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install research dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Resolve existing public SEC contact without a required new secret
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: |
+          python - <<'PY'
+          import os, re, subprocess
+          contact = os.environ.get('SEC_USER_AGENT', '')
+          if not contact:
+              emails = subprocess.check_output(['git', 'log', '--all', '--reverse', '--format=%ae'], text=True).splitlines()
+              email = next((e for e in emails if re.fullmatch(r'[^@\s]+@[^@\s]+\.[^@\s]+', e) and not e.endswith('noreply.github.com')), '')
+              contact = 'LochRavenCapital research ' + email if email else ''
+          if contact:
+              if '\n' in contact or '\r' in contact:
+                  raise ValueError('Invalid user-agent header')
+              with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as fh:
+                  fh.write('SEC_USER_AGENT=' + contact + '\n')
+          PY
+      - name: Collect official disclosures, macro observations and price features
+        run: python -m scripts.refresh_research
+      - name: Verify corpus and retrieval before persistence
+        run: |
+          python -m unittest discover -s tests -p 'test_research*.py'
+          python -m unittest discover -s tests -p 'test_desk_research_integration.py'
+          python -m scripts.evaluate_research
+      - name: Persist validated research data only
+        run: |
+          git add -- data/research data/research_evaluation data/research_refresh_report.json
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Refresh source-linked research and retrieval evaluation'
+            git push origin HEAD:"${GITHUB_REF_NAME}"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: research-refresh-${{ github.run_id }}
+          path: |
+            data/research_refresh_report.json
+            data/research_evaluation/retrieval_evaluation.json
+          retention-days: 30

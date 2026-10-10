@@ -610,13 +610,19 @@ def _precedent_note(packet: dict, research: dict | None) -> str:
         return ""
     try:
         from firm import memory_rag
-        today = datetime.now(timezone.utc).date().isoformat()
+        from firm.research_provenance import decision_time
+        from zoneinfo import ZoneInfo
+        when = decision_time(str(packet["asof"])) if packet.get("asof") else datetime.now(timezone.utc)
+        today = when.astimezone(ZoneInfo("America/New_York")).date().isoformat()
         ticker = str(packet.get("ticker") or "")
         query = memory_rag.query_from_research(packet, research)
-        kblock, passages = memory_rag.knowledge_block(query, k=2)
+        kblock, passages = memory_rag.knowledge_block(query, k=2, asof=today)
         block, hits, _signal = memory_rag.precedent_block(
             query, ticker=ticker, asof=today, k=int(getattr(config, "MEMORY_K", 6)))
+        from firm.research_rag import source_block
+        external, sources = source_block(packet)
         _MEM.last = {
+            "external_sources": sources,
             "ticker": ticker,
             "precedents": [{"id": h.memo.id, "ticker": h.memo.ticker, "asof": h.memo.asof,
                             "rating": h.memo.rating,
@@ -624,9 +630,9 @@ def _precedent_note(packet: dict, research: dict | None) -> str:
                             "excess_20d": h.memo.excess_20d if h.outcome_visible else None}
                            for h in hits],
             "playbook": [{"id": p.id, "chapter": p.chapter, "section": p.section} for p in passages],
-            "evidence": kblock + block,
+            "evidence": kblock + block + external,
         }
-        return kblock + block
+        return kblock + block + external
     except Exception:
         return ""
 
@@ -887,15 +893,19 @@ def run_debate_and_verdict(packet: dict, research: dict, depth: str = "standard"
                                  json.dumps(research or {}, default=str),
                                  json.dumps(out.get("cases") or {}, default=str),
                                  f" {v.get('conviction')} {v.get('target_weight_pct') or ''}"])
-            checks = [memory_guard.check_citations(text, len(mem["precedents"]), len(mem["playbook"])),
+            checks = [memory_guard.check_citations(text, len(mem["precedents"]), len(mem["playbook"]),
+                        [r["citation"] for r in mem.get("external_sources", [])]),
                       memory_guard.check_numbers(text, evidence)]
             status = ("fail" if any(c["status"] == "fail" for c in checks)
                       else "warn" if any(c["status"] == "warn" for c in checks) else "pass")
             v["memory"] = {"precedents": mem["precedents"], "playbook": mem["playbook"],
+                           "external_sources": [{k:r.get(k) for k in ("id", "citation", "source_url", "observed_at", "content_sha256")}
+                                                for r in mem.get("external_sources", [])],
                            "checks": {"status": status,
                                       "detail": [f"{c['name']} {c['status']}, {c['detail']}" for c in checks]}}
             memory_guard.audit_append({
                 "kind": "committee_verdict", "ticker": mem["ticker"],
+                "external_source_ids": [r["id"] for r in mem.get("external_sources", [])],
                 "precedent_ids": [p["id"] for p in mem["precedents"]],
                 "passage_ids": [p["id"] for p in mem["playbook"]],
                 "rating": v.get("rating"), "conviction": v.get("conviction"), "checks": status})

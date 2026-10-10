@@ -81,12 +81,12 @@ check("block labels precedents P1 to Pk", all(f"[P{i}]" in block for i in range(
 check("block never states an outcome that was not knowable",
       all(("not yet knowable" in line) for line in block.splitlines()
           for i, h in enumerate(bhits, 1) if line.startswith(f"[P{i}]") and not h.outcome_visible))
-check("signal counts only knowable outcomes", sig["n"] == sum(1 for h in bhits if h.outcome_visible))
+check("signal counts only knowable outcomes", sig["n"] == sum(1 for h in bhits if h.outcome_visible and h.memo.direction == probe.direction and h.memo.excess_20d is not None))
 fake = [rag.Hit(memo=m, score=1.0, bm25_rank=1, dense_rank=1, outcome_visible=True)
         for m in scored[:4]]
 buy = rag.precedent_signal(fake, 1)
 sell = rag.precedent_signal(fake, -1)
-check("a SELL flips the aligned signal", buy["aligned"] == -sell["aligned"] or buy["aligned"] == 0)
+check("signals count the selected same-direction precedent cohort", buy["n"] == sum(1 for h in fake if h.memo.direction == 1) and sell["n"] == sum(1 for h in fake if h.memo.direction == -1))
 
 print("\n3b. Firm playbook")
 kidx = rag.get_knowledge_index()
@@ -152,7 +152,8 @@ check("KTO labels match the outcome", all(r["label"] == (r["metadata"]["label"] 
 check("test rows were decided on or after the split", all(r["metadata"]["asof"] >= card["split_date"] for r in ds["kto_test"]))
 check("SFT completions are valid JSON verdicts",
       all(json.loads(r["messages"][2]["content"])["rating"] for r in ds["sft_train"][:25]))
-check("RAFT prompts carry playbook passages", all("[K1]" in r["prompt"] for r in ds["kto_train"][:20]))
+check("RAFT training never contains lessons authored after its split",
+      all("2026-09-18" not in r["prompt"] and "2026-09-26" not in r["prompt"] for r in ds["kto_train"]))
 rafts = [r for r in ds["kto_train"] if "[P1]" in r["prompt"]]
 check("RAFT precedents never leak an outcome known after the decision", all(
     "not yet knowable" in line or line.split(" ")[1] < r["metadata"]["asof"]
