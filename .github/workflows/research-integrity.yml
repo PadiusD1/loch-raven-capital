@@ -12,19 +12,15 @@ jobs:
   research-integrity:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
     env:
       PYTHONPATH: .
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
     steps:
       - uses: actions/checkout@v4
-      - name: Capture exact tested source
-        run: git archive --format=tar -o /tmp/loch-raven-source.tar HEAD
-      - uses: actions/upload-artifact@v4
-        with:
-          name: research-source-snapshot
-          path: /tmp/loch-raven-source.tar
-          retention-days: 7
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -34,13 +30,23 @@ jobs:
         run: python -m compileall -q firm scripts tests
       - name: Run targeted regression tests
         run: |
-          python -m unittest discover -s tests -p 'test_memory_direction.py'
-          python -m unittest discover -s tests -p 'test_research_provenance.py'
-          python -m unittest discover -s tests -p 'test_research_rag.py'
-          python -m unittest discover -s tests -p 'test_desk_research_integration.py'
+          mkdir -p /tmp/research-validation
+          python -m unittest discover -s tests -p 'test_memory_direction.py' 2>&1 | tee /tmp/research-validation/direction.txt
+          python -m unittest discover -s tests -p 'test_research*.py' 2>&1 | tee /tmp/research-validation/research.txt
+          python -m unittest discover -s tests -p 'test_desk_research_integration.py' 2>&1 | tee /tmp/research-validation/desk-integration.txt
       - name: Run existing institutional-memory suite
-        run: python tests/test_memory.py
+        run: python tests/test_memory.py 2>&1 | tee /tmp/research-validation/memory.txt
       - name: Run firm regression suite
-        run: python tests/test_firm.py
+        run: python tests/test_firm.py 2>&1 | tee /tmp/research-validation/firm.txt
       - name: Run simulated trading week
-        run: python tests/test_week_sim.py
+        run: python tests/test_week_sim.py 2>&1 | tee /tmp/research-validation/week.txt
+      - name: Evaluate populated source corpus
+        run: python -m scripts.evaluate_research 2>&1 | tee /tmp/research-validation/retrieval.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: research-validation-${{ github.sha }}
+          path: |
+            /tmp/research-validation/
+            data/research_evaluation/retrieval_evaluation.json
+          retention-days: 30
