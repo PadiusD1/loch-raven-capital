@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Apply exact locally tested patch
+      - name: Apply exact locally tested patch and quality fixes
         run: |
           python - <<'PY'
           import base64, hashlib, lzma, pathlib, subprocess
@@ -38,6 +38,7 @@ jobs:
           subprocess.run(['git','apply','--check','/tmp/free-data.patch'], check=True)
           subprocess.run(['git','apply','/tmp/free-data.patch'], check=True)
           PY
+          python .automation/free-data/final-quality-fix.py
       - name: Install existing dependencies
         run: python -m pip install -r requirements.txt
       - name: Compile and run research, direction and desk tests
@@ -64,10 +65,9 @@ jobs:
           python -m scripts.refresh_research --report /tmp/free-validation/repeat-collection.json 2>&1 | tee /tmp/free-validation/repeat.txt
           python -m unittest discover -s tests -p 'test_research*.py' 2>&1 | tee /tmp/free-validation/research-populated.txt
           python -m scripts.evaluate_research 2>&1 | tee /tmp/free-validation/retrieval.txt
-      - name: Persist tested source and research, excluding private state and raw cache
+      - name: Persist exact approved source and data paths only
         run: |
-          git add -f -- firm/research_automation.py firm/research_transport.py
-          git add -- .github/workflows/refresh-sec-research.yml .github/workflows/research-integrity.yml .gitignore README.md config.py docs/FREE_DATA_AUTOMATION.md firm/cycle.py firm/data_engine.py firm/memory_api.py firm/research_automation.py firm/research_provenance.py firm/research_rag.py firm/research_transport.py scripts/fetch_sec_research.py scripts/free_source_collection.py scripts/refresh_research.py tests/test_firm.py tests/test_research_automation.py tests/test_week_sim.py data/research data/research_evaluation data/research_refresh_report.json
+          git add -f -- .github/workflows/refresh-sec-research.yml .github/workflows/research-integrity.yml .gitignore README.md config.py docs/FREE_DATA_AUTOMATION.md firm/cycle.py firm/data_engine.py firm/memory_api.py firm/research_automation.py firm/research_provenance.py firm/research_rag.py firm/research_transport.py scripts/fetch_sec_research.py scripts/free_source_collection.py scripts/refresh_research.py tests/test_firm.py tests/test_research_automation.py tests/test_week_sim.py data/research data/research_evaluation data/research_refresh_report.json
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Implement bounded fund-aware free-source automation with validated live data'
           git push origin HEAD:feat/free-data-automation
           git archive --format=zip --output=/tmp/free-validation/tested-source.zip HEAD
