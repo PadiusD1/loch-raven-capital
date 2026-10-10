@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # ── Isolate ALL state into a throwaway sandbox BEFORE importing firm ─────────
 import config  # noqa: E402
+config.RESEARCH_AUTO_REFRESH = False
 
 config.STATE_DIR = Path(tempfile.mkdtemp(prefix="lochraven_test_"))
 # The regression suite is FULLY OFFLINE: never let earnings_docs spin up a real

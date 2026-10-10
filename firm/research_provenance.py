@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+import re
 from datetime import datetime, timezone
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
@@ -65,6 +67,11 @@ def validate_research(record: dict, decision_at: str | None = None) -> dict:
     tickers = record.get('tickers', [])
     if not isinstance(tickers, list) or any(not isinstance(t, str) for t in tickers):
         raise ValueError('tickers must be a list of strings')
+    if any(not re.fullmatch(r'[A-Z][A-Z0-9.\-]{0,9}', t.upper()) for t in tickers):
+        raise ValueError('Invalid ticker symbol')
+    age = record.get('max_age_days', 120)
+    if isinstance(age,bool) or not isinstance(age,(float,int)) or not math.isfinite(age) or age < 0:
+        raise ValueError('Invalid freshness limit')
     ident = record.get('id') or hashlib.sha256(json.dumps(
         [record['desk'], record['source_url'], observed.isoformat(), digest]).encode()).hexdigest()[:24]
     if not isinstance(ident, str) or not ident or len(ident) > 160:

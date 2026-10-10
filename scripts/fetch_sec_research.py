@@ -24,8 +24,22 @@ METRICS = {
     "CapitalExpenditure": ("PaymentsToAcquirePropertyPlantAndEquipment",),
     "Assets": ("Assets",),
     "Liabilities": ("Liabilities",),
+    "OperatingIncome": ("OperatingIncomeLoss",),
+    "GrossProfit": ("GrossProfit",),
+    "CashAndEquivalents": ("CashAndCashEquivalentsAtCarryingValue",),
+    "CurrentAssets": ("AssetsCurrent",),
+    "CurrentLiabilities": ("LiabilitiesCurrent",),
+    "StockholdersEquity": ("StockholdersEquity",),
+    "DebtCurrent": ("LongTermDebtCurrent",),
+    "DebtNoncurrent": ("LongTermDebtNoncurrent",),
+    "StockBasedCompensation": ("ShareBasedCompensation",),
+    "ResearchAndDevelopment": ("ResearchAndDevelopmentExpense",),
+    "ShareRepurchases": ("PaymentsForRepurchaseOfCommonStock",),
+    "DividendsPaid": ("PaymentsOfDividendsCommonStock",),
+    "DilutedShares": ("WeightedAverageNumberOfDilutedSharesOutstanding",),
+    "DilutedEPS": ("EarningsPerShareDiluted",),
 }
-MAX_FACTS_PER_METRIC = 6
+MAX_FACTS_PER_METRIC = 12
 
 
 def extract_facts(payload: dict, *, observed_at: str) -> list[dict]:
@@ -37,13 +51,14 @@ def extract_facts(payload: dict, *, observed_at: str) -> list[dict]:
         entries = []
         for concept in concepts:
             for unit, facts in usgaap.get(concept, {}).get("units", {}).items():
-                if unit != "USD":
+                expected = {"DilutedShares": "shares", "DilutedEPS": "USD/shares"}.get(metric, "USD")
+                if unit != expected:
                     continue
                 for f in facts:
                     filed = f.get("filed")
                     if not filed or filed > obs.isoformat():
                         continue
-                    if f.get("form") not in ("10-K", "10-Q"):
+                    if f.get("form") not in ("10-K", "10-Q", "10-K/A", "10-Q/A"):
                         continue
                     if isinstance(f.get("val"), bool) or not isinstance(f.get("val"), (int, float)) or not __import__("math").isfinite(f["val"]):
                         continue
@@ -55,7 +70,7 @@ def extract_facts(payload: dict, *, observed_at: str) -> list[dict]:
         entries.sort(key=lambda x: (x["filed"], x["end"] or ""), reverse=True)
         seen = set()
         for e in entries:
-            key = (e["concept"], e["start"], e["end"], e["value"], e["accession"])
+            key = (e["concept"], e["start"], e["end"], e["unit"])
             if key not in seen:
                 output.append(e)
                 seen.add(key)

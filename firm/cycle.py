@@ -22,6 +22,15 @@ from firm import (analysts, broker, data_engine, debate, learning, monitor,
                   risk, riskbrain, sleeves, state, watchlist)
 
 
+def _prepare_source_research(symbols):
+    try:
+        from firm.research_automation import prepare_cycle
+        report = prepare_cycle(symbols)
+        state.journal("source_research_refresh", **report)
+    except Exception:
+        state.journal("source_research_refresh_error", note="Prior good evidence retained; acquisition failed")
+
+
 def _research_deadline_min(depth: str, n_candidates: int,
                            workers: int | None = None) -> tuple[float, dict]:
     """Self-tuning research deadline in minutes (pure: state in, number out).
@@ -1148,6 +1157,7 @@ def underwrite_held(max_names: int | None = None) -> dict:
         # remainder.
         _resumed_h = _resume_from_checkpoint([(t, "stock") for t in take], depth)
         verdicts.update(_resumed_h)
+        _prepare_source_research(list(tech))
         with ThreadPoolExecutor(max_workers=workers) as pool:
             futures = {pool.submit(_research_one, t, "stock", tech[t],
                                    data_engine.quant_score(tech[t]), depth,
@@ -1772,6 +1782,7 @@ def run_cycle() -> dict:
                          "REAL verdicts instead of timing out into quant-only degraded "
                          "mode. Free RAM (close idle windows) to restore full depth.",
                          "info")
+        _prepare_source_research([t for t, _kind in candidates])
         pool = ThreadPoolExecutor(max_workers=_eff_workers)
         deadline_hit = False
         futures: dict = {}

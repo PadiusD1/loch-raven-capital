@@ -34,7 +34,7 @@ SERIES = {'DGS2': '2-year Treasury yield percent', 'DGS10': '10-year Treasury yi
           'UNRATE': 'civilian unemployment rate percent',
           'CPIAUCSL': 'consumer price index all urban consumers seasonally adjusted',
           'T10Y2Y': '10-year minus 2-year Treasury yield spread percentage points'}
-ALLOWED_HOSTS = frozenset(('data.sec.gov', 'fred.stlouisfed.org', 'query1.finance.yahoo.com'))
+from firm.research_transport import HOSTS as ALLOWED_HOSTS
 
 
 def _get(client, url, *, headers=None):
@@ -64,6 +64,7 @@ def _record(desk, url, title, body, observed, *, topic, tickers=(), effective=No
 def sec_records(client, ticker, cik, observed, user_agent):
     url = f'https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json'
     response = _get(client, url, headers={'User-Agent': user_agent})
+    observed = response.extensions.get("research_observed_at", observed)
     payload = response.json()
     if int(payload.get('cik', -1)) != cik:
         raise ValueError('SEC entity identity mismatch')
@@ -77,7 +78,7 @@ def sec_records(client, ticker, cik, observed, user_agent):
     for metric, facts in grouped.items():
         title = f'{ticker} {payload.get("entityName", "")} SEC {metric} filed financial facts'
         body = (f'{ticker} {metric}. Source: SEC company-reported XBRL. Values are absolute USD, '
-                'not millions. Start/end identify duration versus instant facts. Never add overlapping '
+                'unless the explicit unit is shares or USD/shares; never assume millions. Start/end identify duration versus instant facts. Never add overlapping '
                 'year-to-date periods or mix original and amended filings.\n' + json.dumps(facts, sort_keys=True))
         out.append(_record('fundamental', url, title, body, observed,
             topic=f'sec:{ticker}:{metric}', tickers=[ticker],
@@ -92,13 +93,14 @@ def sec_records(client, ticker, cik, observed, user_agent):
 def filing_records(client, ticker, cik, observed, user_agent):
     url = f'https://data.sec.gov/submissions/CIK{cik:010d}.json'
     response = _get(client, url, headers={'User-Agent': user_agent})
+    observed = response.extensions.get("research_observed_at", observed)
     obj = response.json()
     if int(obj.get('cik', -1)) != cik or ticker not in obj.get('tickers', []):
         raise ValueError('SEC submission entity/ticker mismatch')
     recent = obj.get('filings', {}).get('recent', {})
     events = []
     for i, form in enumerate(recent.get('form', [])):
-        if form not in ('8-K', '10-Q', '10-K'):
+        if form not in ('8-K', '10-Q', '10-K', '8-K/A', '10-Q/A', '10-K/A', '4', '4/A'):
             continue
         accepted = recent.get('acceptanceDateTime', [])[i]
         accepted_time = datetime.fromisoformat(accepted.replace('Z', '+00:00'))
@@ -108,13 +110,15 @@ def filing_records(client, ticker, cik, observed, user_agent):
             continue
         events.append({'form': form, 'filed': recent['filingDate'][i],
                        'accepted': accepted, 'accession': recent['accessionNumber'][i],
-                       'document': recent['primaryDocument'][i]})
-        if len(events) >= 5:
+                       'document': recent['primaryDocument'][i],
+                       'items': (recent.get('items') or ['']*len(recent['form']))[i]})
+        if len(events) >= 12:
             break
     if not events:
         raise ValueError('No SEC filing events')
     body = (f'{ticker} recent primary disclosure/catalyst calendar from SEC submissions. '
             'These are filing metadata, NOT the filing text, a sentiment score, or proof of good/bad news. '
+            'Form 4 is an insider report, not proof of a discretionary purchase; amendments and item codes are retained. '
             'Read the referenced document before drawing a directional conclusion.\n' + json.dumps(events))
     return [_record('sentiment', url, f'{ticker} SEC filing disclosure calendar', body, observed,
          topic=f'sec-events:{ticker}', tickers=[ticker], max_age=45, events=events,
@@ -122,9 +126,10 @@ def filing_records(client, ticker, cik, observed, user_agent):
 
 
 def fred_record(client, series, observed):
-    start = (datetime.fromisoformat(observed)-timedelta(days=800)).date().isoformat()
+    start = '2016-01-01'  # stable URL/cache key; public macro history, not a fitted training set
     url = f'https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}&cosd={start}'
     response = _get(client, url)
+    observed = response.extensions.get("research_observed_at", observed)
     rows = []
     for row in csv.DictReader(io.StringIO(response.text)):
         date = row.get('DATE') or row.get('observation_date')
@@ -138,12 +143,14 @@ def fred_record(client, series, observed):
         raise ValueError('No FRED numeric observations')
     rows.sort(key=lambda r: r['date'])
     # Only government-origin series; no S&P/CBOE licensed histories redistributed.
-    points = rows[-24:]
+    points = rows[-120:]
     body = (f'{series}: {SERIES[series]}. Latest-vintage observations downloaded from FRED. '
             'Observation dates are NOT publication dates. Available to this system only at observed_at; '
             'do not use this snapshot in earlier backtests.\n' + json.dumps(points))
     return _record('macro', url, f'FRED {series} {SERIES[series]}', body, observed,
-        topic=f'fred:{series}', effective=points[-1]['date']+'T00:00:00+00:00', max_age=60,
+        topic=f'fred:{series}', effective=points[-1]['date']+'T00:00:00+00:00',
+        max_age=__import__('scripts.free_source_collection',fromlist=['EXTRA_SERIES']).EXTRA_SERIES.get(series,('',60))[1],
+        source_tier='government_origin_via_FRED',
         observations=points, vintage='latest_at_observed_at_not_historical_vintage',
         raw_response_sha256=hashlib.sha256(response.content).hexdigest())
 
@@ -151,6 +158,7 @@ def fred_record(client, series, observed):
 def chart(client, ticker, observed):
     url = f'https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=2y'
     response = _get(client, url)
+    observed = response.extensions.get('research_observed_at', observed)
     result = response.json()['chart']['result'][0]
     if result['meta']['symbol'].upper() != ticker:
         raise ValueError('Price symbol mismatch')
@@ -158,15 +166,22 @@ def chart(client, ticker, observed):
     prices = result['indicators'].get('adjclose', [{}])[0].get('adjclose', [])
     if len(times) != len(prices):
         raise ValueError('Missing adjusted prices')
-    # Date-only daily bars are conservatively treated as completed at next UTC day.
-    today = datetime.fromisoformat(observed).date().isoformat()
-    rows = {datetime.fromtimestamp(t, timezone.utc).date().isoformat(): float(p)
-            for t, p in zip(times, prices) if p is not None and not isinstance(p, bool)
-            and math.isfinite(float(p)) and p > 0
-            and datetime.fromtimestamp(t, timezone.utc).date().isoformat() < today}
+    from zoneinfo import ZoneInfo
+    when=datetime.fromisoformat(observed).astimezone(ZoneInfo('America/New_York'))
+    today=when.date().isoformat()
+    cutoff=today if (when.hour,when.minute)>=(16,15) else (when.date()-timedelta(days=1)).isoformat()
+    rows = {datetime.fromtimestamp(t, timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat(): float(p)
+            for t,p in zip(times,prices) if p is not None and not isinstance(p,bool)
+            and math.isfinite(float(p)) and p>0
+            and datetime.fromtimestamp(t,timezone.utc).astimezone(ZoneInfo('America/New_York')).date().isoformat()<=cutoff}
     if len(rows) < 65:
         raise ValueError('Too few completed adjusted price observations')
-    return url, dict(sorted(rows.items())), hashlib.sha256(response.content).hexdigest()
+    values=dict(sorted(rows.items()))
+    # Quarantine gross adjusted-price dislocations; investigate rather than invent a split.
+    arr=np.array(list(values.values()))
+    if np.any(np.abs(np.diff(arr)/arr[:-1]) > .8):
+        raise ValueError('Unconfirmed adjusted-price dislocation above 80 percent')
+    return url, values, hashlib.sha256(response.content).hexdigest()
 
 
 def price_records(ticker, series, benchmark, observed, url, digest):
@@ -197,7 +212,8 @@ def price_records(ticker, series, benchmark, observed, url, digest):
               'Adjusted close is not a tradable quote. This is descriptive historical data, not a '
               'tested return forecast. The snapshot is only available at observed_at.\n')
     return [_record(desk, url, f'{ticker} {label}', common+json.dumps(values, sort_keys=True), observed,
-              topic=f'yahoo:{ticker}:{desk}', tickers=[ticker], effective=dates[-1]+'T23:59:59+00:00',
+              topic=f'yahoo:{ticker}:{desk}', tickers=[ticker], effective=__import__('datetime').datetime.fromisoformat(dates[-1]+'T16:15:00').replace(
+                  tzinfo=__import__('zoneinfo').ZoneInfo('America/New_York')).astimezone(timezone.utc).isoformat(),
               max_age=7, metrics=values, raw_response_sha256=digest, source_vendor='Yahoo Finance',
               raw_history_redistributed=False)
             for desk, label, values in [('technical', 'price trend momentum relative strength', metrics),
@@ -208,13 +224,22 @@ def persist(records, root):
     root.mkdir(parents=True, exist_ok=True)
     path = root/'snapshots.jsonl'
     old = [validate_research(json.loads(s)) for s in path.read_text().splitlines() if s.strip()] if path.exists() else []
-    keys = {(r['desk'], r.get('topic_id'), r['source_url'], r['content_sha256']) for r in old}
-    added = 0
+    latest={}
+    for r in old:
+        key=(r['desk'],r.get('topic_id'),r['source_url'])
+        if key not in latest or r['observed_at']>latest[key]['observed_at']:latest[key]=r
+    added=0
     for row in records:
-        r = validate_research(row)
-        key = (r['desk'], r.get('topic_id'), r['source_url'], r['content_sha256'])
-        if key not in keys:
-            old.append(r); keys.add(key); added += 1
+        r=validate_research(row)
+        key=(r['desk'],r.get('topic_id'),r['source_url'])
+        previous=latest.get(key)
+        if previous and r['observed_at']<previous['observed_at']:
+            continue  # a cached older response cannot overwrite a newer snapshot
+        quality_fields=('quality_warnings','source_tier','lineage_group','max_age_days')
+        if (previous and previous['content_sha256']==r['content_sha256']
+                and all(previous.get(k)==r.get(k) for k in quality_fields)):
+            continue  # unchanged bytes AND quality; warnings themselves are evidence
+        old.append(r);latest[key]=r;added+=1
     temp = path.with_suffix('.tmp')
     temp.write_text(''.join(json.dumps(r, sort_keys=True, allow_nan=False)+'\n' for r in old), encoding='utf-8')
     temp.replace(path)
@@ -225,7 +250,7 @@ def contact():
     if os.getenv('SEC_USER_AGENT'):
         return os.environ['SEC_USER_AGENT']
     try:
-        emails = subprocess.check_output(['git', 'log', '--format=%ae', '-30'], text=True).splitlines()
+        emails = subprocess.check_output(['git', 'log', '--all', '--reverse', '--format=%ae'], text=True).splitlines()
         email = next(e for e in emails if re.fullmatch(r'[^@\s]+@[^@\s]+\.[^@\s]+', e)
                      and not e.endswith('noreply.github.com'))
         return 'LochRavenCapital research '+email
@@ -233,50 +258,25 @@ def contact():
         return ''
 
 
-def refresh(root: Path) -> dict:
-    observed = datetime.now(timezone.utc).isoformat()
-    records, errors, successes = [], [], []
-    ua = contact()
-    def attempt(label, fn):
-        try:
-            result = fn()
-            records.extend(result if isinstance(result, list) else [result])
-            successes.append(label)
-        except (ValueError, KeyError, TypeError, IndexError, httpx.HTTPError) as exc:
-            errors.append({'source': label, 'error': type(exc).__name__, 'detail': str(exc)[:160]})
-        time.sleep(0.25)
-    with httpx.Client(timeout=25, headers={'User-Agent': 'LochRavenCapitalResearch/1.0'}, follow_redirects=False) as client:
-        for ticker, cik in UNIVERSE.items():
-            if ua:
-                attempt('SEC facts '+ticker, lambda t=ticker,c=cik: sec_records(client,t,c,observed,ua))
-                attempt('SEC filings '+ticker, lambda t=ticker,c=cik: filing_records(client,t,c,observed,ua))
-        if not ua:
-            errors.append({'source': 'SEC', 'error': 'MissingContact', 'detail': 'Other feeds remain enabled'})
-        for series in SERIES:
-            attempt('FRED '+series, lambda s=series: fred_record(client,s,observed))
-        try:
-            _, benchmark, _ = chart(client, 'SPY', observed)
-            for ticker in (*UNIVERSE, 'QQQ', 'SPY'):
-                def prices(t=ticker):
-                    url, series, digest = chart(client,t,observed)
-                    return price_records(t, series, benchmark, observed, url, digest)
-                attempt('Yahoo '+ticker, prices)
-        except (ValueError, KeyError, TypeError, IndexError, httpx.HTTPError) as exc:
-            errors.append({'source': 'Yahoo SPY benchmark', 'error': type(exc).__name__, 'detail': str(exc)[:160]})
-    added = persist(records, root)
-    report = {'observed_at': observed, 'added': added, 'records_collected': len(records),
-              'successful_sources': successes, 'errors': errors, 'models_trained': 0}
-    print(json.dumps(report, indent=2))
-    if not records:
-        raise RuntimeError('No source succeeded; existing corpus preserved')
-    return report
+def refresh(root: Path, **kwargs) -> dict:
+    from scripts.free_source_collection import collect
+    return collect(root, **kwargs)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--output', type=Path, default=Path('data/research'))
-    parser.add_argument('--report', type=Path, default=Path('data/research_refresh_report.json'))
-    args = parser.parse_args()
-    result = refresh(args.output)
-    args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(json.dumps(result, indent=2)+'\n')
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--output',type=Path,default=Path('data/research'))
+    parser.add_argument('--report',type=Path,default=Path('data/research_refresh_report.json'))
+    parser.add_argument('--cache',type=Path)
+    parser.add_argument('--symbols',default='')
+    parser.add_argument('--runtime',action='store_true')
+    parser.add_argument('--request-budget',type=int,default=180)
+    parser.add_argument('--time-budget',type=float,default=480)
+    args=parser.parse_args()
+    result=refresh(args.output,priority=args.symbols.split(','),runtime=args.runtime,cache=args.cache,
+                   request_budget=args.request_budget,time_budget=args.time_budget)
+    args.report.parent.mkdir(parents=True,exist_ok=True)
+    temp=args.report.with_suffix('.tmp')
+    temp.write_text(json.dumps(result,indent=2)+'\n');temp.replace(args.report)
+    if not result.get('records_collected') and result.get('status')!='busy':
+        raise SystemExit('No source succeeded; old corpus retained and error report written')

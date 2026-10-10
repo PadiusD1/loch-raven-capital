@@ -40,18 +40,23 @@ def load_records(root: Path | None = None) -> list[dict]:
         if _CACHE.get('key') == key:
             return [dict(r) for r in _CACHE['records']]
     records, seen = [], set()
+    rejected=0
     for path in paths:
         try:
             text = path.read_text(encoding='utf-8')
-            rows = [json.loads(x) for x in text.splitlines() if x.strip()] if path.suffix == '.jsonl' else [json.loads(text)]
-            for row in rows:
-                record = validate_research(row)
-                if record['id'] not in seen:
-                    seen.add(record['id']); records.append(record)
-        except (ValueError, OSError, TypeError, KeyError) as exc:
-            _LOG.warning('Rejected research file %s: %s', path.name, exc)
+            lines = [x for x in text.splitlines() if x.strip()] if path.suffix == '.jsonl' else [text]
+            for line in lines:
+                try:
+                    record = validate_research(json.loads(line))
+                    if record['id'] not in seen:
+                        seen.add(record['id']); records.append(record)
+                except (ValueError, TypeError, KeyError) as exc:
+                    rejected+=1
+                    _LOG.warning('Rejected research row in %s: %s', path.name, type(exc).__name__)
+        except (OSError, ValueError) as exc:
+            _LOG.warning('Research file unavailable %s: %s', path.name, type(exc).__name__)
     with _LOCK:
-        _CACHE.update(key=key, records=records)
+        _CACHE.update(key=key, records=records, rejected_rows=rejected)
     return [dict(r) for r in records]
 
 
@@ -71,7 +76,7 @@ def retrieve(query: str, *, desk: str | None = None, asof: str | None = None,
         if symbol:
             if record['tickers'] and symbol not in record['tickers']:
                 continue
-            if not record['tickers'] and record['desk'] != 'macro' and record.get('scope') != 'methodology':
+            if not record['tickers'] and record['desk'] != 'macro' and record.get('scope') not in ('methodology', 'market'):
                 continue
         if when:
             try:
@@ -116,7 +121,7 @@ def desk_evidence(desk: str, packet: dict, *, k: int = 3, root=None) -> list[dic
     prefix = {'fundamental': 'RF', 'technical': 'RT', 'sentiment': 'RS', 'macro': 'RM', 'quant': 'RQ'}[desk]
     return [{'citation': f'{prefix}{i}', 'id': h['record']['id'],
              **{key: h['record'].get(key) for key in ('title', 'source_url', 'published_at',
-                       'observed_at', 'asof', 'content_sha256', 'stale', 'fact_checked')},
+                       'observed_at', 'asof', 'content_sha256', 'stale', 'fact_checked', 'lineage_group', 'source_tier', 'quality_warnings')},
              'excerpt': h['record']['body'][:2200]}
             for i, h in enumerate(hits, 1)]
 
@@ -130,12 +135,12 @@ def source_block(packet: dict) -> tuple[str, list[dict]]:
              'Reported figures and management opinions are not independent proof. '
              'Stale records are historical context, not current market conditions.']
     lines += [f"[{s['citation']}] {s['title']} | {s['source_url']} | "
-              f"observed={s['observed_at']} stale={s['stale']}\n{s['excerpt']}" for s in sources]
+              f"observed={s['observed_at']} stale={s['stale']} warnings={s.get('quality_warnings') or []}\n{s['excerpt']}" for s in sources]
     return '\n'.join(lines) + '\n\n', sources
 
 
 def corpus_status(root=None) -> dict:
     records = load_records(root)
-    return {'records': len(records), 'by_desk': dict(Counter(r['desk'] for r in records)),
+    return {'records': len(records), 'rejected_rows': _CACHE.get('rejected_rows',0), 'by_desk': dict(Counter(r['desk'] for r in records)),
             'source_hosts': sorted({r['source_host'] for r in records}),
             'latest_observed_at': max((r['observed_at'] for r in records), default=None)}
