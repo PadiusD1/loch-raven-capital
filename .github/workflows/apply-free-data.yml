@@ -83,7 +83,7 @@ jobs:
           paths=['.github/workflows/refresh-sec-research.yml','.github/workflows/research-integrity.yml','.gitignore','README.md','config.py','docs/FREE_DATA_AUTOMATION.md','firm/cycle.py','firm/data_engine.py','firm/memory_api.py','firm/research_automation.py','firm/research_provenance.py','firm/research_rag.py','firm/research_transport.py','scripts/fetch_sec_research.py','scripts/free_source_collection.py','scripts/refresh_research.py','tests/test_firm.py','tests/test_research_automation.py','tests/test_week_sim.py','data/research','data/research_evaluation','data/research_refresh_report.json']
           subprocess.run(['git','add','-f','--']+paths,check=True)
           subprocess.run(['git','-c','user.name=github-actions[bot]','-c','user.email=41898282+github-actions[bot]@users.noreply.github.com','commit','-m','Implement bounded fund-aware free-source automation with validated live data'],check=True)
-          subprocess.run(['git','push','origin','HEAD:feat/free-data-automation'],check=True)
+          subprocess.run(['git','push','origin','HEAD:refs/heads/feat/free-data-automation'],check=True)
           subprocess.run(['git','archive','--format=zip','--output=/tmp/free-validation/tested-source.zip','HEAD'],check=True)
           PY
       - uses: actions/upload-artifact@v4
