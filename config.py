@@ -1684,3 +1684,9 @@ MEMORY_DIR = BASE_DIR / "data" / "memory"
 MEMORY_RAG_ENABLED = True
 MEMORY_K = 6
 MEMORY_MAX_TARGET_WEIGHT_PCT = 18.0   # same single name cap as alpha_stocks
+
+# Free-source research, isolated from orders and model training.
+# Existing CLI/AI subscriptions are NOT required for this acquisition path.
+RESEARCH_AUTO_REFRESH = os.getenv("LOCH_RAVEN_AUTO_RESEARCH", "1") == "1"
+RESEARCH_SEC_SYMBOL_LIMIT = 24
+RESEARCH_PRICE_SYMBOL_LIMIT = 64

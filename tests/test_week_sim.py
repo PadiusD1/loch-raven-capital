@@ -25,6 +25,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 # ── Isolate ALL state into throwaway sandboxes BEFORE importing firm ──────────
 import config  # noqa: E402
+config.RESEARCH_AUTO_REFRESH = False
 
 WEEK_DIR = Path(tempfile.mkdtemp(prefix="lochraven_week_"))
 LIVE_DIR = Path(tempfile.mkdtemp(prefix="lochraven_weeklive_"))

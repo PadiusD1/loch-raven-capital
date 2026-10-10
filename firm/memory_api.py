@@ -132,7 +132,8 @@ def memory_playbook(q: str = "", k: int = 4):
 @router.get("/api/memory/research/status")
 def external_research_status():
     from firm.research_rag import corpus_status
-    return corpus_status()
+    from firm.research_automation import health
+    return {**corpus_status(), 'quality': health()}
 
 
 @router.get("/api/memory/research/search")

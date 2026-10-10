@@ -1,7 +1,9 @@
 {
-  "observed_at": "2026-10-10T02:39:17.319611+00:00",
-  "added": 71,
-  "records_collected": 71,
+  "started_at": "2026-10-10T04:08:32.260526+00:00",
+  "observed_at": "2026-10-10T04:09:38.943188+00:00",
+  "status": "healthy",
+  "added": 611,
+  "records_collected": 620,
   "successful_sources": [
     "SEC facts AAPL",
     "SEC filings AAPL",
@@ -17,12 +19,88 @@
     "SEC filings CSCO",
     "SEC facts AMZN",
     "SEC filings AMZN",
+    "SEC facts TXN",
+    "SEC filings TXN",
+    "SEC facts INTU",
+    "SEC filings INTU",
+    "SEC facts AMAT",
+    "SEC filings AMAT",
+    "SEC facts ISRG",
+    "SEC filings ISRG",
+    "SEC facts NOW",
+    "SEC filings NOW",
+    "SEC facts UBER",
+    "SEC filings UBER",
+    "SEC facts PLTR",
+    "SEC filings PLTR",
+    "SEC facts BKNG",
+    "SEC filings BKNG",
+    "SEC facts SPGI",
+    "SEC filings SPGI",
+    "SEC facts GS",
+    "SEC filings GS",
+    "SEC facts BLK",
+    "SEC filings BLK",
+    "SEC facts VRTX",
+    "SEC filings VRTX",
+    "SEC facts REGN",
+    "SEC filings REGN",
+    "SEC facts PANW",
+    "SEC filings PANW",
+    "SEC facts SNOW",
+    "SEC filings SNOW",
+    "SEC facts SHOP",
+    "SEC filings SHOP",
+    "SEC facts ANET",
+    "SEC filings ANET",
     "FRED DGS2",
     "FRED DGS10",
     "FRED FEDFUNDS",
     "FRED UNRATE",
     "FRED CPIAUCSL",
     "FRED T10Y2Y",
+    "FRED DGS3MO",
+    "FRED DGS30",
+    "FRED DFII10",
+    "FRED PCEPI",
+    "FRED PCEPILFE",
+    "FRED GDPC1",
+    "FRED PAYEMS",
+    "FRED ICSA",
+    "FRED INDPRO",
+    "FRED RSAFS",
+    "FRED HOUST",
+    "FRED WALCL",
+    "FRED M2SL",
+    "FRED DTWEXBGS",
+    "BLS LNS14000000",
+    "BLS CES0000000001",
+    "BLS CUSR0000SA0",
+    "Federal Reserve press_monetary.xml",
+    "Federal Reserve speeches.xml",
+    "Yahoo SPY",
+    "Yahoo BIL",
+    "Yahoo DIA",
+    "Yahoo EEM",
+    "Yahoo EFA",
+    "Yahoo GLD",
+    "Yahoo IWM",
+    "Yahoo QQQ",
+    "Yahoo RSP",
+    "Yahoo SMH",
+    "Yahoo TLT",
+    "Yahoo VOO",
+    "Yahoo VTI",
+    "Yahoo XLB",
+    "Yahoo XLC",
+    "Yahoo XLE",
+    "Yahoo XLF",
+    "Yahoo XLI",
+    "Yahoo XLK",
+    "Yahoo XLP",
+    "Yahoo XLU",
+    "Yahoo XLV",
+    "Yahoo XLY",
     "Yahoo AAPL",
     "Yahoo MSFT",
     "Yahoo NVDA",
@@ -30,9 +108,1091 @@
     "Yahoo MU",
     "Yahoo CSCO",
     "Yahoo AMZN",
-    "Yahoo QQQ",
-    "Yahoo SPY"
+    "Yahoo TXN",
+    "Yahoo INTU",
+    "Yahoo AMAT",
+    "Yahoo ISRG",
+    "Yahoo NOW",
+    "Yahoo UBER",
+    "Yahoo PLTR",
+    "Yahoo BKNG",
+    "Yahoo SPGI",
+    "Yahoo GS",
+    "Yahoo BLK",
+    "Yahoo VRTX",
+    "Yahoo REGN",
+    "Yahoo PANW",
+    "Yahoo SNOW",
+    "Yahoo SHOP",
+    "Yahoo ANET",
+    "Yahoo DE",
+    "Yahoo LMT",
+    "Yahoo GOOGL",
+    "Yahoo META",
+    "Yahoo TSLA",
+    "Yahoo AVGO",
+    "Yahoo LLY",
+    "Yahoo JPM",
+    "Yahoo V",
+    "Yahoo UNH",
+    "Yahoo XOM",
+    "Yahoo MA",
+    "Yahoo COST",
+    "Yahoo HD",
+    "Yahoo PG",
+    "Yahoo JNJ",
+    "Yahoo ABBV"
   ],
   "errors": [],
-  "models_trained": 0
+  "skipped": [],
+  "universe": {
+    "sec": [
+      "AAPL",
+      "MSFT",
+      "NVDA",
+      "AMD",
+      "MU",
+      "CSCO",
+      "AMZN",
+      "TXN",
+      "INTU",
+      "AMAT",
+      "ISRG",
+      "NOW",
+      "UBER",
+      "PLTR",
+      "BKNG",
+      "SPGI",
+      "GS",
+      "BLK",
+      "VRTX",
+      "REGN",
+      "PANW",
+      "SNOW",
+      "SHOP",
+      "ANET"
+    ],
+    "prices": [
+      "SPY",
+      "BIL",
+      "DIA",
+      "EEM",
+      "EFA",
+      "GLD",
+      "IWM",
+      "QQQ",
+      "RSP",
+      "SMH",
+      "TLT",
+      "VOO",
+      "VTI",
+      "XLB",
+      "XLC",
+      "XLE",
+      "XLF",
+      "XLI",
+      "XLK",
+      "XLP",
+      "XLU",
+      "XLV",
+      "XLY",
+      "AAPL",
+      "MSFT",
+      "NVDA",
+      "AMD",
+      "MU",
+      "CSCO",
+      "AMZN",
+      "TXN",
+      "INTU",
+      "AMAT",
+      "ISRG",
+      "NOW",
+      "UBER",
+      "PLTR",
+      "BKNG",
+      "SPGI",
+      "GS",
+      "BLK",
+      "VRTX",
+      "REGN",
+      "PANW",
+      "SNOW",
+      "SHOP",
+      "ANET",
+      "DE",
+      "LMT",
+      "GOOGL",
+      "META",
+      "TSLA",
+      "AVGO",
+      "LLY",
+      "JPM",
+      "V",
+      "UNH",
+      "XOM",
+      "MA",
+      "COST",
+      "HD",
+      "PG",
+      "JNJ",
+      "ABBV"
+    ],
+    "priority": [],
+    "deferred": [
+      "ABBV",
+      "ACN",
+      "ADBE",
+      "AVGO",
+      "BAC",
+      "CAT",
+      "COST",
+      "CRM",
+      "CVX",
+      "DE",
+      "GE",
+      "GOOGL",
+      "HD",
+      "IBM",
+      "JNJ",
+      "JPM",
+      "KO",
+      "LLY",
+      "LMT",
+      "MA",
+      "MCD",
+      "META",
+      "MRK",
+      "NFLX",
+      "ORCL",
+      "PEP",
+      "PG",
+      "QCOM",
+      "TMO",
+      "TSLA",
+      "UNH",
+      "V",
+      "WMT",
+      "XOM"
+    ],
+    "rotation_policy": "held/candidates first; broad stock tail rotates daily",
+    "private_state_read": false
+  },
+  "transport": {
+    "requests": 138,
+    "host:www.sec.gov": 1,
+    "host:data.sec.gov": 48,
+    "host:fred.stlouisfed.org": 20,
+    "host:api.bls.gov": 3,
+    "host:www.federalreserve.gov": 2,
+    "host:query1.finance.yahoo.com": 64,
+    "cache_hits": 1
+  },
+  "source_checks": [
+    {
+      "url": "https://www.sec.gov/files/company_tickers.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:32.466267+00:00",
+      "checked_at": "2026-10-10T04:08:32.466267+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:32.548741+00:00",
+      "checked_at": "2026-10-10T04:08:32.548741+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000320193.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:33.010498+00:00",
+      "checked_at": "2026-10-10T04:08:33.010498+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000789019.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:33.527972+00:00",
+      "checked_at": "2026-10-10T04:08:33.527972+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000789019.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:34.011173+00:00",
+      "checked_at": "2026-10-10T04:08:34.011173+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001045810.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:34.540052+00:00",
+      "checked_at": "2026-10-10T04:08:34.540052+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001045810.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:35.011644+00:00",
+      "checked_at": "2026-10-10T04:08:35.011644+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000002488.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:35.558017+00:00",
+      "checked_at": "2026-10-10T04:08:35.558017+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000002488.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:36.011780+00:00",
+      "checked_at": "2026-10-10T04:08:36.011780+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000723125.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:36.519285+00:00",
+      "checked_at": "2026-10-10T04:08:36.519285+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000723125.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:37.041987+00:00",
+      "checked_at": "2026-10-10T04:08:37.041987+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000858877.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:38.009345+00:00",
+      "checked_at": "2026-10-10T04:08:38.009345+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000858877.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:38.103758+00:00",
+      "checked_at": "2026-10-10T04:08:38.103758+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001018724.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:38.705943+00:00",
+      "checked_at": "2026-10-10T04:08:38.705943+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001018724.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:39.101026+00:00",
+      "checked_at": "2026-10-10T04:08:39.101026+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000097476.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:39.829121+00:00",
+      "checked_at": "2026-10-10T04:08:39.829121+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000097476.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:40.101816+00:00",
+      "checked_at": "2026-10-10T04:08:40.101816+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000896878.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:40.828331+00:00",
+      "checked_at": "2026-10-10T04:08:40.828331+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000896878.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:41.124327+00:00",
+      "checked_at": "2026-10-10T04:08:41.124327+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000006951.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:41.871923+00:00",
+      "checked_at": "2026-10-10T04:08:41.871923+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000006951.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:42.102421+00:00",
+      "checked_at": "2026-10-10T04:08:42.102421+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001035267.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:42.753201+00:00",
+      "checked_at": "2026-10-10T04:08:42.753201+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001035267.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:43.103710+00:00",
+      "checked_at": "2026-10-10T04:08:43.103710+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001373715.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:43.762012+00:00",
+      "checked_at": "2026-10-10T04:08:43.762012+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001373715.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:44.100578+00:00",
+      "checked_at": "2026-10-10T04:08:44.100578+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001543151.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:44.733176+00:00",
+      "checked_at": "2026-10-10T04:08:44.733176+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001543151.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:45.101514+00:00",
+      "checked_at": "2026-10-10T04:08:45.101514+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001321655.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:45.763929+00:00",
+      "checked_at": "2026-10-10T04:08:45.763929+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001321655.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:46.103503+00:00",
+      "checked_at": "2026-10-10T04:08:46.103503+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001075531.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:46.800048+00:00",
+      "checked_at": "2026-10-10T04:08:46.800048+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001075531.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:47.101809+00:00",
+      "checked_at": "2026-10-10T04:08:47.101809+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000064040.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:47.799874+00:00",
+      "checked_at": "2026-10-10T04:08:47.799874+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000064040.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:48.142819+00:00",
+      "checked_at": "2026-10-10T04:08:48.142819+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000886982.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:48.644378+00:00",
+      "checked_at": "2026-10-10T04:08:48.644378+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000886982.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:49.115298+00:00",
+      "checked_at": "2026-10-10T04:08:49.115298+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0002012383.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:49.727075+00:00",
+      "checked_at": "2026-10-10T04:08:49.727075+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0002012383.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:50.108823+00:00",
+      "checked_at": "2026-10-10T04:08:50.108823+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000875320.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:50.839083+00:00",
+      "checked_at": "2026-10-10T04:08:50.839083+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000875320.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:51.105613+00:00",
+      "checked_at": "2026-10-10T04:08:51.105613+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000872589.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:51.780064+00:00",
+      "checked_at": "2026-10-10T04:08:51.780064+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0000872589.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:52.106347+00:00",
+      "checked_at": "2026-10-10T04:08:52.106347+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001327567.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:52.780712+00:00",
+      "checked_at": "2026-10-10T04:08:52.780712+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001327567.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:53.121730+00:00",
+      "checked_at": "2026-10-10T04:08:53.121730+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001640147.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:53.856632+00:00",
+      "checked_at": "2026-10-10T04:08:53.856632+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001640147.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:54.127742+00:00",
+      "checked_at": "2026-10-10T04:08:54.127742+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001594805.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:54.723483+00:00",
+      "checked_at": "2026-10-10T04:08:54.723483+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001594805.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:55.122148+00:00",
+      "checked_at": "2026-10-10T04:08:55.122148+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0001596532.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:55.831220+00:00",
+      "checked_at": "2026-10-10T04:08:55.831220+00:00"
+    },
+    {
+      "url": "https://data.sec.gov/submissions/CIK0001596532.json",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:56.106747+00:00",
+      "checked_at": "2026-10-10T04:08:56.106747+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS2&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:56.189150+00:00",
+      "checked_at": "2026-10-10T04:08:56.189150+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS10&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:56.630937+00:00",
+      "checked_at": "2026-10-10T04:08:56.630937+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=FEDFUNDS&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:57.137894+00:00",
+      "checked_at": "2026-10-10T04:08:57.137894+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=UNRATE&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:57.632104+00:00",
+      "checked_at": "2026-10-10T04:08:57.632104+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCSL&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:58.162741+00:00",
+      "checked_at": "2026-10-10T04:08:58.162741+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10Y2Y&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:58.655695+00:00",
+      "checked_at": "2026-10-10T04:08:58.655695+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS3MO&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:59.158896+00:00",
+      "checked_at": "2026-10-10T04:08:59.158896+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS30&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:08:59.632545+00:00",
+      "checked_at": "2026-10-10T04:08:59.632545+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFII10&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:00.172328+00:00",
+      "checked_at": "2026-10-10T04:09:00.172328+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PCEPI&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:00.630385+00:00",
+      "checked_at": "2026-10-10T04:09:00.630385+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PCEPILFE&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:01.173964+00:00",
+      "checked_at": "2026-10-10T04:09:01.173964+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=GDPC1&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:01.645756+00:00",
+      "checked_at": "2026-10-10T04:09:01.645756+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=PAYEMS&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:02.140299+00:00",
+      "checked_at": "2026-10-10T04:09:02.140299+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=ICSA&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:02.695195+00:00",
+      "checked_at": "2026-10-10T04:09:02.695195+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDPRO&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:03.132909+00:00",
+      "checked_at": "2026-10-10T04:09:03.132909+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=RSAFS&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:03.638646+00:00",
+      "checked_at": "2026-10-10T04:09:03.638646+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=HOUST&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:04.160623+00:00",
+      "checked_at": "2026-10-10T04:09:04.160623+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=WALCL&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:04.635568+00:00",
+      "checked_at": "2026-10-10T04:09:04.635568+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=M2SL&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:05.148871+00:00",
+      "checked_at": "2026-10-10T04:09:05.148871+00:00"
+    },
+    {
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXBGS&cosd=2016-01-01",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:05.649496+00:00",
+      "checked_at": "2026-10-10T04:09:05.649496+00:00"
+    },
+    {
+      "url": "https://api.bls.gov/publicAPI/v1/timeseries/data/LNS14000000",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:05.868207+00:00",
+      "checked_at": "2026-10-10T04:09:05.868207+00:00"
+    },
+    {
+      "url": "https://api.bls.gov/publicAPI/v1/timeseries/data/CES0000000001",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:06.332897+00:00",
+      "checked_at": "2026-10-10T04:09:06.332897+00:00"
+    },
+    {
+      "url": "https://api.bls.gov/publicAPI/v1/timeseries/data/CUSR0000SA0",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:06.806969+00:00",
+      "checked_at": "2026-10-10T04:09:06.806969+00:00"
+    },
+    {
+      "url": "https://www.federalreserve.gov/feeds/press_monetary.xml",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:06.849194+00:00",
+      "checked_at": "2026-10-10T04:09:06.849194+00:00"
+    },
+    {
+      "url": "https://www.federalreserve.gov/feeds/speeches.xml",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:07.323903+00:00",
+      "checked_at": "2026-10-10T04:09:07.323903+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SPY?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:07.407994+00:00",
+      "checked_at": "2026-10-10T04:09:07.407994+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SPY?interval=1d&range=2y",
+      "status": "cache",
+      "observed_at": "2026-10-10T04:09:07.407994+00:00",
+      "checked_at": "2026-10-10T04:09:07.407994+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/BIL?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:07.913882+00:00",
+      "checked_at": "2026-10-10T04:09:07.913882+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/DIA?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:08.408932+00:00",
+      "checked_at": "2026-10-10T04:09:08.408932+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/EEM?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:08.931523+00:00",
+      "checked_at": "2026-10-10T04:09:08.931523+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/EFA?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:09.397135+00:00",
+      "checked_at": "2026-10-10T04:09:09.397135+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/GLD?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:09.940546+00:00",
+      "checked_at": "2026-10-10T04:09:09.940546+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/IWM?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:10.391273+00:00",
+      "checked_at": "2026-10-10T04:09:10.391273+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/QQQ?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:10.972315+00:00",
+      "checked_at": "2026-10-10T04:09:10.972315+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/RSP?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:11.395887+00:00",
+      "checked_at": "2026-10-10T04:09:11.395887+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SMH?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:11.897097+00:00",
+      "checked_at": "2026-10-10T04:09:11.897097+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/TLT?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:12.395306+00:00",
+      "checked_at": "2026-10-10T04:09:12.395306+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/VOO?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:12.911292+00:00",
+      "checked_at": "2026-10-10T04:09:12.911292+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/VTI?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:13.396721+00:00",
+      "checked_at": "2026-10-10T04:09:13.396721+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLB?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:13.941216+00:00",
+      "checked_at": "2026-10-10T04:09:13.941216+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLC?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:14.398028+00:00",
+      "checked_at": "2026-10-10T04:09:14.398028+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLE?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:14.942280+00:00",
+      "checked_at": "2026-10-10T04:09:14.942280+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLF?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:15.441906+00:00",
+      "checked_at": "2026-10-10T04:09:15.441906+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLI?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:15.940047+00:00",
+      "checked_at": "2026-10-10T04:09:15.940047+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLK?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:16.428337+00:00",
+      "checked_at": "2026-10-10T04:09:16.428337+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLP?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:16.897159+00:00",
+      "checked_at": "2026-10-10T04:09:16.897159+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLU?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:17.393084+00:00",
+      "checked_at": "2026-10-10T04:09:17.393084+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLV?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:17.941503+00:00",
+      "checked_at": "2026-10-10T04:09:17.941503+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XLY?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:18.424372+00:00",
+      "checked_at": "2026-10-10T04:09:18.424372+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AAPL?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:18.942855+00:00",
+      "checked_at": "2026-10-10T04:09:18.942855+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/MSFT?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:19.395662+00:00",
+      "checked_at": "2026-10-10T04:09:19.395662+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/NVDA?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:19.908119+00:00",
+      "checked_at": "2026-10-10T04:09:19.908119+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AMD?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:20.380630+00:00",
+      "checked_at": "2026-10-10T04:09:20.380630+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/MU?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:20.911707+00:00",
+      "checked_at": "2026-10-10T04:09:20.911707+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/CSCO?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:21.397769+00:00",
+      "checked_at": "2026-10-10T04:09:21.397769+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AMZN?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:21.914119+00:00",
+      "checked_at": "2026-10-10T04:09:21.914119+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/TXN?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:22.418807+00:00",
+      "checked_at": "2026-10-10T04:09:22.418807+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/INTU?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:22.886266+00:00",
+      "checked_at": "2026-10-10T04:09:22.886266+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AMAT?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:23.407293+00:00",
+      "checked_at": "2026-10-10T04:09:23.407293+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/ISRG?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:23.879162+00:00",
+      "checked_at": "2026-10-10T04:09:23.879162+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/NOW?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:24.418970+00:00",
+      "checked_at": "2026-10-10T04:09:24.418970+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/UBER?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:24.924825+00:00",
+      "checked_at": "2026-10-10T04:09:24.924825+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/PLTR?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:25.407738+00:00",
+      "checked_at": "2026-10-10T04:09:25.407738+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/BKNG?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:25.901134+00:00",
+      "checked_at": "2026-10-10T04:09:25.901134+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SPGI?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:26.406622+00:00",
+      "checked_at": "2026-10-10T04:09:26.406622+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/GS?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:26.916857+00:00",
+      "checked_at": "2026-10-10T04:09:26.916857+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/BLK?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:27.442869+00:00",
+      "checked_at": "2026-10-10T04:09:27.442869+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/VRTX?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:27.900143+00:00",
+      "checked_at": "2026-10-10T04:09:27.900143+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/REGN?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:28.384885+00:00",
+      "checked_at": "2026-10-10T04:09:28.384885+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/PANW?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:28.900300+00:00",
+      "checked_at": "2026-10-10T04:09:28.900300+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SNOW?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:29.385926+00:00",
+      "checked_at": "2026-10-10T04:09:29.385926+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/SHOP?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:29.899479+00:00",
+      "checked_at": "2026-10-10T04:09:29.899479+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/ANET?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:30.425296+00:00",
+      "checked_at": "2026-10-10T04:09:30.425296+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/DE?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:30.948930+00:00",
+      "checked_at": "2026-10-10T04:09:30.948930+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/LMT?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:31.424410+00:00",
+      "checked_at": "2026-10-10T04:09:31.424410+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/GOOGL?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:31.887131+00:00",
+      "checked_at": "2026-10-10T04:09:31.887131+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/META?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:32.419030+00:00",
+      "checked_at": "2026-10-10T04:09:32.419030+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/TSLA?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:32.901989+00:00",
+      "checked_at": "2026-10-10T04:09:32.901989+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/AVGO?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:33.395273+00:00",
+      "checked_at": "2026-10-10T04:09:33.395273+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/LLY?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:33.924367+00:00",
+      "checked_at": "2026-10-10T04:09:33.924367+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/JPM?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:34.419202+00:00",
+      "checked_at": "2026-10-10T04:09:34.419202+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/V?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:34.910424+00:00",
+      "checked_at": "2026-10-10T04:09:34.910424+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/UNH?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:35.423749+00:00",
+      "checked_at": "2026-10-10T04:09:35.423749+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/XOM?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:35.946122+00:00",
+      "checked_at": "2026-10-10T04:09:35.946122+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/MA?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:36.400654+00:00",
+      "checked_at": "2026-10-10T04:09:36.400654+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/COST?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:36.901846+00:00",
+      "checked_at": "2026-10-10T04:09:36.901846+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/HD?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:37.461482+00:00",
+      "checked_at": "2026-10-10T04:09:37.461482+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/PG?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:37.940816+00:00",
+      "checked_at": "2026-10-10T04:09:37.940816+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/JNJ?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:38.437981+00:00",
+      "checked_at": "2026-10-10T04:09:38.437981+00:00"
+    },
+    {
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/ABBV?interval=1d&range=2y",
+      "status": "download",
+      "observed_at": "2026-10-10T04:09:38.894668+00:00",
+      "checked_at": "2026-10-10T04:09:38.894668+00:00"
+    }
+  ],
+  "reconciliation": [
+    {
+      "series": "LNS14000000",
+      "mirror": "UNRATE",
+      "date": "2026-09-01",
+      "difference": 0.0,
+      "status": "match",
+      "independent_sources": false
+    },
+    {
+      "series": "CES0000000001",
+      "mirror": "PAYEMS",
+      "date": "2026-09-01",
+      "difference": 0.0,
+      "status": "match",
+      "independent_sources": false
+    },
+    {
+      "series": "CUSR0000SA0",
+      "mirror": "CPIAUCSL",
+      "date": "2026-08-01",
+      "difference": 0.0,
+      "status": "match",
+      "independent_sources": false
+    }
+  ],
+  "health": {
+    "asof": "2026-10-10T04:09:38.943188+00:00",
+    "latest_topics": 631,
+    "desks": {
+      "fundamental": {
+        "fresh": 385,
+        "stale": 39,
+        "methodology": 0
+      },
+      "macro": {
+        "fresh": 34,
+        "stale": 3,
+        "methodology": 0
+      },
+      "quant": {
+        "fresh": 64,
+        "stale": 0,
+        "methodology": 2
+      },
+      "sentiment": {
+        "fresh": 38,
+        "stale": 1,
+        "methodology": 0
+      },
+      "technical": {
+        "fresh": 64,
+        "stale": 0,
+        "methodology": 1
+      }
+    },
+    "missing_or_stale_company_evidence": {
+      "SPGI": [
+        "fundamental"
+      ]
+    },
+    "no_training_or_trading": true
+  },
+  "models_trained": 0,
+  "llm_calls": 0,
+  "broker_calls": 0,
+  "limits": {
+    "requests": 180,
+    "seconds": 480
+  },
+  "provider_terms": "Government-origin allowlist; Yahoo best-effort derived research only; no raw price-history redistribution"
 }

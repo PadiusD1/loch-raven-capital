@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   research-integrity:
+    if: github.event.repository.private == false
     runs-on: ubuntu-latest
     timeout-minutes: 15
     defaults:
@@ -19,6 +20,7 @@ jobs:
       PYTHONPATH: .
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
+      LOCH_RAVEN_AUTO_RESEARCH: '0'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -49,4 +51,4 @@ jobs:
           path: |
             /tmp/research-validation/
             data/research_evaluation/retrieval_evaluation.json
-          retention-days: 30
+          retention-days: 3
