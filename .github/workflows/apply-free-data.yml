@@ -66,6 +66,7 @@ jobs:
           python -m scripts.evaluate_research 2>&1 | tee /tmp/free-validation/retrieval.txt
       - name: Persist tested source and research, excluding private state and raw cache
         run: |
+          git add -f -- firm/research_automation.py firm/research_transport.py
           git add -- .github/workflows/refresh-sec-research.yml .github/workflows/research-integrity.yml .gitignore README.md config.py docs/FREE_DATA_AUTOMATION.md firm/cycle.py firm/data_engine.py firm/memory_api.py firm/research_automation.py firm/research_provenance.py firm/research_rag.py firm/research_transport.py scripts/fetch_sec_research.py scripts/free_source_collection.py scripts/refresh_research.py tests/test_firm.py tests/test_research_automation.py tests/test_week_sim.py data/research data/research_evaluation data/research_refresh_report.json
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Implement bounded fund-aware free-source automation with validated live data'
           git push origin HEAD:feat/free-data-automation
