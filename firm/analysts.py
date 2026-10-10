@@ -93,12 +93,30 @@ def _desk_packet(desk: str, packet: dict) -> dict:
     return view
 
 
+# Desk-specific evidence checks apply to both full and standard research.
+# They do not imply that any new external data has been fetched.
+_DESK_EVIDENCE_CHECKS = {
+    "fundamental": "Separate reported facts from estimates. Check free cash flow, margins, leverage, dilution, valuation assumptions and peer comparability only where supplied.",
+    "technical": "Check trend versus SPY, momentum persistence, volume confirmation, volatility and invalidation levels only where price history supports them.",
+    "sentiment": "Separate company disclosures from commentary. Check publication dates, catalyst timing, positioning and corroboration.",
+    "macro": "Identify the macro regime and observed rates, inflation, credit or sector data supporting it. Never use future revisions.",
+    "quant": "Check factor exposure, liquidity, volatility, correlation and sample size. Separate validated backtests from hypotheses.",
+}
+_EVIDENCE_DISCIPLINE = (
+    "Use ONLY supplied evidence. Never invent prices, filings, metrics, news, "
+    "citations, outcomes or probabilities. Flag missing or stale inputs and "
+    "reduce conviction if material evidence is absent. Separate observations "
+    "from inference and name a falsifiable thesis invalidation. "
+    "Never treat missing data as zero."
+)
+
+
 def _desk_prompt(desk: str, packet: dict) -> str:
     # No FIRM-MEMORY lessons here (2026-06-10 audit): injecting the same
     # prior into all five desks AND the judge applies it seven times over —
     # desks stay evidence-driven; the judge weighs the lessons once.
     return (
-        f"{DESKS[desk]}\n\n"
+        f"{DESKS[desk]}\n{_DESK_EVIDENCE_CHECKS[desk]}\n{_EVIDENCE_DISCIPLINE}\n\n"
         f"CANDIDATE DATA PACKET (your desk's evidence only):\n"
         f"{_packet_text(_desk_packet(desk, packet))}\n\n"
         f"Respond with ONLY this JSON:\n{_DESK_SCHEMA}"
@@ -117,7 +135,7 @@ def _panel_prompt(packet: dict) -> str:
     sections = []
     for desk, role in DESKS.items():
         sections.append(
-            f"=== {desk.upper()} DESK ===\n{role}\n"
+            f"=== {desk.upper()} DESK ===\n{role}\n"\n            f"{_DESK_EVIDENCE_CHECKS[desk]}\n{_EVIDENCE_DISCIPLINE}\n"
             f"THIS DESK'S EVIDENCE (all it may reason from):\n"
             f"{_packet_text(_desk_packet(desk, packet))}")
     return (
