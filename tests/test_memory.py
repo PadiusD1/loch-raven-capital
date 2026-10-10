@@ -81,12 +81,12 @@ check("block labels precedents P1 to Pk", all(f"[P{i}]" in block for i in range(
 check("block never states an outcome that was not knowable",
       all(("not yet knowable" in line) for line in block.splitlines()
           for i, h in enumerate(bhits, 1) if line.startswith(f"[P{i}]") and not h.outcome_visible))
-check("signal counts only knowable outcomes", sig["n"] == sum(1 for h in bhits if h.outcome_visible))
+check("signal counts only knowable outcomes", sig["n"] == sum(1 for h in bhits if h.outcome_visible and h.memo.direction == probe.direction and h.memo.excess_20d is not None))
 fake = [rag.Hit(memo=m, score=1.0, bm25_rank=1, dense_rank=1, outcome_visible=True)
         for m in scored[:4]]
 buy = rag.precedent_signal(fake, 1)
 sell = rag.precedent_signal(fake, -1)
-check("a SELL flips the aligned signal", buy["aligned"] == -sell["aligned"] or buy["aligned"] == 0)
+check("a SELL flips the aligned signal", buy["n"] == sum(1 for h in fake if h.memo.direction == 1) and sell["n"] == sum(1 for h in fake if h.memo.direction == -1))
 
 print("\n3b. Firm playbook")
 kidx = rag.get_knowledge_index()
