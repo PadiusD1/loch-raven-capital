@@ -1,0 +1,83 @@
+name: Apply and verify research upgrade
+on:
+  pull_request:
+permissions:
+  contents: write
+concurrency:
+  group: apply-research-upgrade
+  cancel-in-progress: false
+jobs:
+  apply-tested-upgrade:
+    if: github.event.pull_request.head.repo.full_name == 'PadiusD1/loch-raven-capital' && github.head_ref == 'fix/memory-signal-direction-and-cache'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONPATH: .
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/memory-signal-direction-and-cache
+          fetch-depth: 40
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify exact locally tested source patch
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,lzma
+          parts=sorted(Path('.github/research-upgrade').glob('part*'))
+          assert len(parts)==6, 'Incomplete source bundle'
+          packed=b''.join(p.read_bytes() for p in parts)
+          assert hashlib.sha256(packed).hexdigest()=='ef994de15a7ee763fa5c9fd7059ceb841cacc5e7c0dbc79c65d767f87f0fd213'
+          patch=lzma.decompress(packed)
+          assert hashlib.sha256(patch).hexdigest()=='1f77844c2b1620930824ff6629305a182ea07cd7e759697142fb9261fb3b8723'
+          Path('/tmp/research-upgrade.patch').write_bytes(patch)
+          PY
+          git apply --check --index --unidiff-zero --exclude='.github/workflows/*' /tmp/research-upgrade.patch
+          git apply --index --unidiff-zero --exclude='.github/workflows/*' /tmp/research-upgrade.patch
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Compile and run research integration tests
+        run: |
+          mkdir -p /tmp/research-validation
+          python -m compileall -q firm scripts tests
+          python -m unittest discover -s tests -p 'test_research*.py' 2>&1 | tee /tmp/research-validation/research.txt
+          python -m unittest discover -s tests -p 'test_memory_direction.py' 2>&1 | tee /tmp/research-validation/direction.txt
+          python -m unittest discover -s tests -p 'test_desk_research_integration.py' 2>&1 | tee /tmp/research-validation/desk-integration.txt
+      - name: Run institutional memory regression
+        run: python tests/test_memory.py 2>&1 | tee /tmp/research-validation/memory.txt
+      - name: Run full firm regression
+        run: python tests/test_firm.py 2>&1 | tee /tmp/research-validation/firm.txt
+      - name: Run simulated trading week
+        run: python tests/test_week_sim.py 2>&1 | tee /tmp/research-validation/week.txt
+      - name: Collect real financial and macro data
+        env:
+          SEC_USER_AGENT: ${{ secrets.SEC_USER_AGENT }}
+        run: python -m scripts.refresh_research 2>&1 | tee /tmp/research-validation/collection.txt
+      - name: Evaluate populated research corpus
+        run: |
+          python -m scripts.evaluate_research 2>&1 | tee /tmp/research-validation/retrieval.txt
+          python -m unittest discover -s tests -p 'test_research*.py' 2>&1 | tee /tmp/research-validation/populated-research.txt
+      - name: Commit verified source and persistent data on development branch
+        run: |
+          git rm -r -- .github/research-upgrade
+          git add -- firm scripts tests README.md docs/RESEARCH_UPGRADE.md data/research data/research_evaluation data/research_refresh_report.json
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Implement tested five-desk source RAG and ingest live research data'
+          git push origin HEAD:fix/memory-signal-direction-and-cache
+          git rev-parse HEAD > /tmp/research-validation/tested-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: verified-research-upgrade
+          path: |
+            /tmp/research-validation/
+            data/research/
+            data/research_evaluation/
+            data/research_refresh_report.json
+          retention-days: 30
