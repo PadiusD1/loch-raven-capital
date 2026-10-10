@@ -127,3 +127,19 @@ def memory_playbook(q: str = "", k: int = 4):
     k = max(1, min(int(k), 10))
     return {"query": q[:2000], "hits": [dict(p.public(), score=round(s, 5))
                                         for p, s in idx.search(q[:2000], k=k)]}
+
+
+@router.get("/api/memory/research/status")
+def external_research_status():
+    from firm.research_rag import corpus_status
+    return corpus_status()
+
+
+@router.get("/api/memory/research/search")
+def external_research_search(q: str, desk: str = "", ticker: str = "", asof: str = "", k: int = 5):
+    from firm.research_rag import retrieve
+    try:
+        return {"hits": retrieve(q[:2000], desk=desk or None, ticker=ticker or None,
+                                  asof=asof or None, k=max(1, min(k, 20)))}
+    except ValueError as exc:
+        raise HTTPException(400, str(exc)) from exc

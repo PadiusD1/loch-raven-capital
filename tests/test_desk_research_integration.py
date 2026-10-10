@@ -13,7 +13,7 @@ class DeskResearchIntegrationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             rec = {
-                "desk": "fundamental",
+                "desk": "fundamental", "tickers": ["AAPL"],
                 "source_url": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json",
                 "published_at": "2026-09-01T00:00:00Z",
                 "observed_at": "2026-09-02T00:00:00Z",
@@ -26,7 +26,8 @@ class DeskResearchIntegrationTests(unittest.TestCase):
             original = research_rag.retrieve
 
             def isolated(query, **kwargs):
-                return original(query, root=root, **kwargs)
+                kwargs["root"] = root
+                return original(query, **kwargs)
 
             packet = {"ticker": "AAPL", "name": "Apple", "asof": "2026-09-03",
                       "technicals": {"price": 100}}
@@ -34,9 +35,9 @@ class DeskResearchIntegrationTests(unittest.TestCase):
                 fundamental = analysts._desk_packet("fundamental", packet)
                 technical = analysts._desk_packet("technical", packet)
                 past = analysts._desk_packet("fundamental", {**packet, "asof": "2026-09-01"})
-            self.assertEqual(len(fundamental["verified_external_research"]), 1)
-            self.assertNotIn("verified_external_research", technical)
-            self.assertNotIn("verified_external_research", past)
+            self.assertEqual(len(fundamental["external_research"]), 1)
+            self.assertNotIn("external_research", technical)
+            self.assertNotIn("external_research", past)
 
 
 if __name__ == "__main__":

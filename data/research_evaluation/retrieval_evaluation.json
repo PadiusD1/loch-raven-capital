@@ -1,0 +1,178 @@
+{
+  "evaluated_at": "2026-10-10T02:39:28.588873+00:00",
+  "corpus": {
+    "records": 82,
+    "by_desk": {
+      "fundamental": 43,
+      "sentiment": 10,
+      "macro": 8,
+      "technical": 10,
+      "quant": 11
+    },
+    "source_hosts": [
+      "arxiv.org",
+      "data.sec.gov",
+      "fred.stlouisfed.org",
+      "mba.tuck.dartmouth.edu",
+      "nvidianews.nvidia.com",
+      "query1.finance.yahoo.com",
+      "www.apple.com",
+      "www.aqr.com",
+      "www.federalreserve.gov",
+      "www.microsoft.com"
+    ],
+    "latest_observed_at": "2026-10-10T02:39:17.319611+00:00"
+  },
+  "curated_cases": 10,
+  "hit_at_3": 1.0,
+  "mean_reciprocal_rank_at_5": 0.95,
+  "future_records_excluded": true,
+  "desk_evidence_counts": {
+    "fundamental": 3,
+    "technical": 2,
+    "sentiment": 2,
+    "macro": 3,
+    "quant": 3
+  },
+  "cases": [
+    {
+      "desk": "fundamental",
+      "ticker": "AAPL",
+      "query": "Apple quarterly revenue and tariff refund impact on margin fiscal Q3 2026",
+      "expected_id": "apple-fy26q3-results",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "apple-fy26q3-results",
+        "2d0a86883e47ef58b253bebb",
+        "47a0a97d537a8ee72258266d",
+        "6b6c4d73b56f808a3d5dcf5d",
+        "d0b344ba6de265d7c24919c4"
+      ]
+    },
+    {
+      "desk": "fundamental",
+      "ticker": "NVDA",
+      "query": "NVIDIA quarterly operating cash flow GAAP net income fiscal Q2 2027",
+      "expected_id": "nvidia-fy27q2-results",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "nvidia-fy27q2-results",
+        "27fcb80b6a4b9b556fc38bcb",
+        "d64baeb832637fe8f79200b4",
+        "840e7e17af1da448b2cd27d8",
+        "deed52b68de16ce33fbc5926"
+      ]
+    },
+    {
+      "desk": "fundamental",
+      "ticker": "MSFT",
+      "query": "Microsoft GAAP and adjusted diluted earnings per share June 2026",
+      "expected_id": "microsoft-fy26q4-results",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "microsoft-fy26q4-results",
+        "6a8d84c288d6c7934b43f197",
+        "aa206546d31e0ec52313879b",
+        "d0b908f6b1787c766529cea2",
+        "ff069dd49e2d01b70c97ec16"
+      ]
+    },
+    {
+      "desk": "sentiment",
+      "ticker": "NVDA",
+      "query": "NVIDIA next quarter revenue guidance excludes China Data Center",
+      "expected_id": "nvidia-fy27q3-guidance",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "nvidia-fy27q3-guidance",
+        "nvidia-science-commitment-20261008"
+      ]
+    },
+    {
+      "desk": "sentiment",
+      "ticker": "NVDA",
+      "query": "NVIDIA future science quantum healthcare commitment October",
+      "expected_id": "nvidia-science-commitment-20261008",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "nvidia-science-commitment-20261008",
+        "nvidia-fy27q3-guidance"
+      ]
+    },
+    {
+      "desk": "macro",
+      "ticker": "AAPL",
+      "query": "September 16 2026 FOMC policy target range rate increase",
+      "expected_id": "fed-20260916-policy",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "fed-20260916-policy",
+        "9876133ce4d2eb9952c9f409",
+        "8abdb56047aa2ea229e3e33b",
+        "6f0bd41d8b94e48902a9c6be",
+        "fdf2ae3982616314f93f0ebb"
+      ]
+    },
+    {
+      "desk": "technical",
+      "ticker": "AAPL",
+      "query": "time-series momentum 58 futures contracts 12-month returns reversal",
+      "expected_id": "time-series-momentum-evidence",
+      "rank": 2,
+      "hit_at_3": true,
+      "returned_ids": [
+        "2c6b337c5e96f5802f1d7b4b",
+        "time-series-momentum-evidence"
+      ]
+    },
+    {
+      "desk": "quant",
+      "ticker": "AAPL",
+      "query": "French monthly momentum factor size prior months 2-12 construction",
+      "expected_id": "french-momentum-construction",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "french-momentum-construction"
+      ]
+    },
+    {
+      "desk": "macro",
+      "ticker": "MSFT",
+      "query": "FRED ALFRED historical revisions real-time observation publication dates",
+      "expected_id": "fred-revision-discipline",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "fred-revision-discipline",
+        "6f0bd41d8b94e48902a9c6be",
+        "9876133ce4d2eb9952c9f409",
+        "8abdb56047aa2ea229e3e33b",
+        "fdf2ae3982616314f93f0ebb"
+      ]
+    },
+    {
+      "desk": "quant",
+      "ticker": "MSFT",
+      "query": "RAFT open book relevant evidence distractor training evaluation",
+      "expected_id": "raft-evidence-training",
+      "rank": 1,
+      "hit_at_3": true,
+      "returned_ids": [
+        "raft-evidence-training"
+      ]
+    }
+  ],
+  "training_candidates": 20,
+  "models_trained": 0,
+  "promote_model": false,
+  "evaluation_split": "development_probes_not_held_out",
+  "training_warning": "Grounding candidates overlap development probes. Do not train on them and call these tests held-out.",
+  "limitation": "Curated retrieval probes, not model-answer accuracy or investment performance."
+}

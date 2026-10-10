@@ -13,15 +13,14 @@ memory veto. The veto rule and its threshold are fixed in advance
 (warn means the aligned precedent average is below zero), so the result is
 not tuned to this sample.
 
-Known limitation. Documents and outcomes are point in time, but the index's
-term statistics (BM25 document frequencies and the TF IDF plus SVD basis) are
-fit once over the whole archive. Ranking therefore uses vocabulary statistics
-from memos written after some decisions. No outcome or document from the future
-is ever retrieved, yet a strict study would rebuild the index per date.
+The rankers are refit using only documents before each decision date.
+These historical, overlapping call cohorts are diagnostic; their averages
+are not tradable portfolio returns or evidence of causal model improvement.
 """
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 
 from firm import memory_archive as archive
@@ -67,7 +66,8 @@ def walk_forward(k: int | None = None, threshold: float = 0.0, min_precedents: i
     report = {
         "method": {"k": k, "threshold_aligned_pct": threshold, "min_precedents": min_precedents,
                    "horizon": "20 trading days, excess return versus SPY, direction adjusted",
-                   "point_in_time": "memos before the decision date, outcomes knowable before it"},
+                   "point_in_time": "rankers refit before each decision date; matured outcomes only",
+                   "index_version": "strict-historical-tfidf-v3", "portfolio_backtest": False},
         "committee_alone": _summary(rows),
         "calls_with_memory": _summary(with_memory),
         "memory_kept": _summary(kept),
@@ -89,12 +89,17 @@ def walk_forward(k: int | None = None, threshold: float = 0.0, min_precedents: i
 
 def cached_report(refresh: bool = False) -> dict:
     p = Path(REPORT_PATH)
+    fingerprint = hashlib.sha256(archive.MEMOS_PATH.read_bytes()).hexdigest()
     if p.is_file() and not refresh:
         try:
-            return json.loads(p.read_text(encoding="utf-8"))
+            cached = json.loads(p.read_text(encoding="utf-8"))
+            if (cached.get("method", {}).get("index_version") == "strict-historical-tfidf-v3"
+                    and cached.get("archive_sha256") == fingerprint):
+                return cached
         except ValueError:
             pass
     report = walk_forward()
+    report["archive_sha256"] = fingerprint
     # Sensitivity. The same test at other retrieval depths, so a reader can see
     # whether the headline survives a change of setting or is noise.
     sens = []
@@ -110,8 +115,8 @@ def cached_report(refresh: bool = False) -> dict:
         report["sensitivity_summary"] = (
             f"Across retrieval depths {sens[0]['k']} to {sens[-1]['k']}, calls the memory supported were right "
             f"{min(kept) * 100:.0f}% to {max(kept) * 100:.0f}% of the time and calls it warned against "
-            f"{min(vet) * 100:.0f}% to {max(vet) * 100:.0f}%. In no setting did following the memory clearly "
-            f"beat ignoring it.")
+            f"{min(vet) * 100:.0f}% to {max(vet) * 100:.0f}%. These are retrospective "
+            f"selected-call statistics, not portfolio returns or a significance test.")
     p.parent.mkdir(parents=True, exist_ok=True)
     tmp = p.with_suffix(".tmp")
     tmp.write_text(json.dumps(report, indent=1), encoding="utf-8")

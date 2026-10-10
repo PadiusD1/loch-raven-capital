@@ -45,7 +45,7 @@ def extract_facts(payload: dict, *, observed_at: str) -> list[dict]:
                         continue
                     if f.get("form") not in ("10-K", "10-Q"):
                         continue
-                    if not isinstance(f.get("val"), (int, float)):
+                    if isinstance(f.get("val"), bool) or not isinstance(f.get("val"), (int, float)) or not __import__("math").isfinite(f["val"]):
                         continue
                     entries.append({"metric": metric, "concept": concept,
                                     "value": f["val"], "unit": unit,
@@ -55,7 +55,7 @@ def extract_facts(payload: dict, *, observed_at: str) -> list[dict]:
         entries.sort(key=lambda x: (x["filed"], x["end"] or ""), reverse=True)
         seen = set()
         for e in entries:
-            key = (e["metric"], e["start"], e["end"], e["value"])
+            key = (e["concept"], e["start"], e["end"], e["value"], e["accession"])
             if key not in seen:
                 output.append(e)
                 seen.add(key)
@@ -77,7 +77,7 @@ def fetch(cik: int, *, user_agent: str, output: Path) -> dict:
     facts = extract_facts(payload, observed_at=observed)
     if not facts:
         raise ValueError("SEC returned no eligible financial facts")
-    published = min(x["filed"] for x in facts) + "T00:00:00+00:00"
+    published = observed  # Snapshot only became available when actually retrieved.
     # The bundle includes multiple filings; each fact retains its own filing date.
     body = json.dumps({"cik": cik, "entity": payload.get("entityName"),
                        "facts": facts}, separators=(",", ":"))

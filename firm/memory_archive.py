@@ -119,7 +119,7 @@ def load_memos(path: Path | None = None) -> tuple[Memo, ...]:
     p = Path(path or MEMOS_PATH)
     if not p.is_file():
         return ()
-    mtime = p.stat().st_mtime
+    mtime = (p.stat().st_mtime_ns, p.stat().st_size)
     with _lock:
         if _cache["path"] == str(p) and _cache["mtime"] == mtime:
             return _cache["memos"]

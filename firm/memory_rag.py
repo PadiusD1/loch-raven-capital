@@ -3,9 +3,9 @@
 Built at hackUMBC 2026 (T. Rowe Price NextGen Finance track).
 
 Every memo is indexed two ways. BM25 catches exact language such as tickers,
-catalysts and metric names. Latent semantic vectors (TF IDF followed by a
-truncated SVD) catch paraphrase, so "cash burn ahead of a financing" finds
-"runway risk and a likely raise". The two rankings are fused with reciprocal
+catalysts and metric names. TF-IDF cosine over words and bigrams supplies a second lexical ranking.
+Both rankers are fitted only on text available before each decision date.
+This lightweight index replaces expensive per-date LSA refits. The two rankings are fused with reciprocal
 rank fusion, the standard way to merge rankers without tuning weights.
 
 Retrieval is point in time. A decision dated t only sees memos written before
@@ -19,7 +19,7 @@ from __future__ import annotations
 import math
 import re
 import threading
-from collections import Counter
+from collections import Counter, OrderedDict
 from dataclasses import dataclass
 
 import numpy as np
@@ -62,10 +62,12 @@ class Hit:
 
 
 class MemoryIndex:
-    """BM25 plus LSA over one immutable snapshot of the archive."""
+    """BM25 plus TF-IDF cosine over one immutable snapshot of the archive."""
 
     def __init__(self, memos: tuple[archive.Memo, ...]):
         self.memos = memos
+        self._historical = OrderedDict()
+        self._history_lock = threading.RLock()
         self.ids = [m.id for m in memos]
         self.asof = np.array([m.asof for m in memos], dtype=object)
         texts = [m.text() for m in memos]
@@ -82,7 +84,7 @@ class MemoryIndex:
             for term, tf in counts.items():
                 self.postings.setdefault(term, []).append((i, tf))
         n = max(len(texts), 1)
-        self.avg_len = float(self.doc_len.mean()) if len(texts) else 1.0
+        self.avg_len = max(float(self.doc_len.mean()), 1.0) if len(texts) else 1.0
         self.idf = {t: math.log(1.0 + (n - len(p) + 0.5) / (len(p) + 0.5)) for t, p in self.postings.items()}
 
     def bm25(self, query: str) -> np.ndarray:
@@ -97,31 +99,28 @@ class MemoryIndex:
                 scores[i] += idf * tf * (BM25_K1 + 1) / denom
         return scores
 
-    # Dense (latent semantic) ---------------------------------------------
+    # Sparse TF-IDF cosine. Date-specific LSA refits made validation too costly;
+    # use a deterministic, lightweight second ranker for live AND replay paths.
+    # This is lexical hybrid retrieval, not a pretrained semantic embedding.
     def _build_dense(self, texts: list[str]) -> None:
         self.vectorizer = None
         self.svd = None
         self.dense = None
-        if len(texts) < 10:
+        if not texts:
             return
-        from sklearn.decomposition import TruncatedSVD
         from sklearn.feature_extraction.text import TfidfVectorizer
-        self.vectorizer = TfidfVectorizer(sublinear_tf=True, min_df=2, max_df=0.5, max_features=40000,
-                                          ngram_range=(1, 2), stop_words="english", dtype=np.float32)
-        x = self.vectorizer.fit_transform(texts)
-        dim = max(2, min(DENSE_DIM, x.shape[1] - 1, len(texts) - 1))
-        self.svd = TruncatedSVD(n_components=dim, random_state=7)
-        z = self.svd.fit_transform(x)
-        norms = np.linalg.norm(z, axis=1, keepdims=True)
-        norms[norms == 0] = 1.0
-        self.dense = z / norms
+        vectorizer = TfidfVectorizer(sublinear_tf=True, min_df=1, max_features=40000,
+                                    ngram_range=(1, 2), stop_words="english", dtype=np.float32)
+        try:
+            self.dense = vectorizer.fit_transform(texts)
+            self.vectorizer = vectorizer
+        except ValueError:  # all-stopword/empty historical vocabulary
+            return
 
     def dense_scores(self, query: str) -> np.ndarray:
         if self.dense is None:
             return np.zeros(len(self.memos))
-        q = self.svd.transform(self.vectorizer.transform([query]))[0]
-        nq = np.linalg.norm(q)
-        return self.dense @ (q / nq) if nq else np.zeros(len(self.memos))
+        return (self.dense @ self.vectorizer.transform([query]).T).toarray().ravel()
 
     # Search ---------------------------------------------------------------
     def search(self, query: str, *, asof: str | None = None, ticker: str | None = None, k: int = 8,
@@ -132,8 +131,22 @@ class MemoryIndex:
         require_outcome keeps only memos whose 20 day outcome was knowable before
         asof. That is the mode the evaluation and the precedent signal use.
         """
-        if not self.memos:
+        if not self.memos or k <= 0:
             return []
+        # Refit BOTH rankers on eligible historical documents. Filtering results
+        # after fitting on future text is not a point-in-time evaluation.
+        if asof and any(m.asof >= asof for m in self.memos):
+            with self._history_lock:
+                historical = self._historical.get(asof)
+                if historical is None:
+                    historical = MemoryIndex(tuple(m for m in self.memos if m.asof < asof))
+                    self._historical[asof] = historical
+                    if len(self._historical) > 48:
+                        self._historical.popitem(last=False)
+                else:
+                    self._historical.move_to_end(asof)
+            return historical.search(query, asof=asof, ticker=ticker, k=k,
+                per_ticker=per_ticker, require_outcome=require_outcome, exclude_ids=exclude_ids)
         eligible = np.ones(len(self.memos), dtype=bool)
         if asof:
             eligible &= self.asof < asof
@@ -181,7 +194,7 @@ _index: dict = {"key": None, "index": None}
 def get_index() -> MemoryIndex:
     """Process wide index, rebuilt only when the archive file changes."""
     memos = archive.load_memos()
-    key = (len(memos), memos[-1].id if memos else "")
+    key = id(memos)  # archive returns a new immutable snapshot after any file edit
     with _index_lock:
         if _index["key"] != key or _index["index"] is None:
             _index["index"] = MemoryIndex(memos)
@@ -277,10 +290,11 @@ class Passage:
     section: str
     source: str
     text: str
+    available_at: str = "2026-09-26"  # first documented playbook artifact date
 
     def public(self) -> dict:
         return {"id": self.id, "chapter": self.chapter, "section": self.section,
-                "source": self.source, "text": self.text}
+                "source": self.source, "text": self.text, "available_at": self.available_at}
 
 
 def _split_markdown(path) -> list[Passage]:
@@ -318,7 +332,7 @@ def _lesson_passages() -> list[Passage]:
         body = " ".join(m.group(2).split())
         out.append(Passage(id=f"lessons#{m.group(1)}", chapter="Firm lessons distilled from graded trades",
                            section=f"Lesson {m.group(1)}", source="Loch Raven learning review, 2026-09-18",
-                           text=body))
+                           text=body, available_at="2026-09-18"))
     return out
 
 
@@ -338,7 +352,7 @@ class KnowledgeIndex:
         self.passages = passages
         texts = [f"{p.chapter} {p.section} {p.section} {p.text}" for p in passages]
         self.doc_len = np.array([len(tokenize(t)) for t in texts], dtype=np.float64)
-        self.avg_len = float(self.doc_len.mean()) if len(texts) else 1.0
+        self.avg_len = max(float(self.doc_len.mean()), 1.0) if len(texts) else 1.0
         self.tf = [Counter(tokenize(t)) for t in texts]
         df = Counter(term for c in self.tf for term in c)
         n = max(len(texts), 1)
@@ -347,7 +361,10 @@ class KnowledgeIndex:
         if len(texts) >= 3:
             from sklearn.feature_extraction.text import TfidfVectorizer
             self.vectorizer = TfidfVectorizer(sublinear_tf=True, ngram_range=(1, 2), stop_words="english")
-            self.matrix = self.vectorizer.fit_transform(texts)
+            try:
+                self.matrix = self.vectorizer.fit_transform(texts)
+            except ValueError:
+                self.vectorizer = None
 
     def search(self, query: str, k: int = 3) -> list[tuple[Passage, float]]:
         if not self.passages:
@@ -376,9 +393,11 @@ class KnowledgeIndex:
 _kindex: dict = {"key": None, "index": None}
 
 
-def get_knowledge_index() -> KnowledgeIndex:
+def get_knowledge_index(asof: str | None = None) -> KnowledgeIndex:
     passages = load_playbook()
-    key = tuple(p.id for p in passages)
+    if asof:
+        passages = tuple(p for p in passages if p.available_at < asof[:10])
+    key = tuple((p.id, p.text, p.source, p.available_at) for p in passages)
     with _index_lock:
         if _kindex["key"] != key or _kindex["index"] is None:
             _kindex["index"] = KnowledgeIndex(passages)
@@ -390,14 +409,14 @@ def _is_lesson(p: Passage) -> bool:
     return p.id.startswith("lessons#")
 
 
-def knowledge_block(query: str, k: int = 3) -> tuple[str, list[Passage]]:
+def knowledge_block(query: str, k: int = 3, *, asof: str | None = None) -> tuple[str, list[Passage]]:
     """The FIRM PLAYBOOK section of a prompt, passages cited as [K#].
 
     Source quota. At least one methodology passage (how the firm analyzes) and at
     most two distilled lessons, so a review always applies the research method
     and not only the firm's recent trade record.
     """
-    ranked = [p for p, _ in get_knowledge_index().search(query, k=max(k * 6, 12))]
+    ranked = [p for p, _ in get_knowledge_index(asof).search(query, k=max(k * 6, 12))]
     method = [p for p in ranked if not _is_lesson(p)]
     found: list[Passage] = method[:1]
     for p in ranked:

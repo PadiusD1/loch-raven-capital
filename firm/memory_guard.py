@@ -37,19 +37,21 @@ def _check(name: str, status: str, detail: str, **extra) -> dict:
     return {"name": name, "status": status, "detail": detail, **extra}
 
 
-def check_citations(text: str, n_precedents: int, n_passages: int = 0) -> dict:
+def check_citations(text: str, n_precedents: int, n_passages: int = 0, source_ids=()) -> dict:
     cited = sorted({int(x) for x in CITE_RE.findall(text or "")})
     kcited = sorted({int(x) for x in KCITE_RE.findall(text or "")})
     invalid = [f"P{c}" for c in cited if c < 1 or c > n_precedents]
     invalid += [f"K{c}" for c in kcited if c < 1 or c > n_passages]
+    rcited = sorted(set(re.findall(r"\[(R[FSMTQ]\d{1,2})\]", text or "")))
+    invalid += [c for c in rcited if c not in set(source_ids)]
     if invalid:
         return _check("citations", "fail", f"cites sources it was never shown {invalid}",
                       cited=cited, kcited=kcited, invalid=invalid)
-    if not cited and not kcited:
+    if not cited and not kcited and not rcited:
         return _check("citations", "warn", "nothing cited, the verdict rests on the live data only",
                       cited=[], kcited=[], invalid=[])
     return _check("citations", "pass",
-                  f"{len(cited)} precedents and {len(kcited)} playbook passages cited, all real",
+                  f"{len(cited)} precedents, {len(kcited)} playbook and {len(rcited)} external sources cited, all supplied",
                   cited=cited, kcited=kcited, invalid=[])
 
 

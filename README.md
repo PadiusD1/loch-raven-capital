@@ -8,6 +8,24 @@ Built by Patrick Kamdem (Morgan State University) for the **T. Rowe Price NextGe
 
 ![Loch Raven Capital cockpit](docs/cockpit.png)
 
+## Research integrity upgrade (October 2026)
+
+The research layer now includes a source-linked seed corpus, live SEC/FRED/price
+collection, desk-specific retrieval, provenance hashes, and strict historical
+index fitting. See [`docs/RESEARCH_UPGRADE.md`](docs/RESEARCH_UPGRADE.md) for the
+source inventory, refresh operation, evaluation scope, and limitations.
+
+```bash
+python -m scripts.refresh_research
+python -m scripts.evaluate_research
+python -m unittest discover -s tests -p 'test_research*.py'
+```
+
+The retrieval evaluation measures whether source evidence reaches the right
+desk. It is **not a test of portfolio outperformance or a trained new model**.
+The older performance tables below describe the original hackathon engine and
+must not be read as the upgraded system's measured investment performance.
+
 ## The problem
 
 Investment firms are putting AI into their research. On September 10, 2026 T. Rowe Price announced it is expanding Claude across its investment organization. The hard question is not whether an AI can write a research note. It is how anyone knows the AI was right.
@@ -86,7 +104,7 @@ Open http://localhost:8430 and click any verdict dated September 27. Its memory 
 
 **Two kinds of institutional memory.** The playbook holds how the firm analyzes. Its nine chapters cover financial statements, thesis and due diligence, modeling, multiples, DCF, research writing, evidence on extreme winners and the firm risk policy, plus the 12 lessons the firm distilled from its own graded trades. The history holds what the firm decided and what the market did next. Every memo carries its outcome 5 and 20 trading days later versus SPY, and the date that outcome became knowable.
 
-**Retrieval.** Every document is indexed twice. BM25 catches exact language such as tickers, catalysts and metric names. Latent semantic vectors, TF IDF followed by a truncated SVD, catch paraphrase. The two rankings are fused with reciprocal rank fusion. A per ticker cap keeps results diverse, and a source quota puts at least one methodology passage in every review.
+**Retrieval.** Every document is indexed twice. BM25 catches exact language such as tickers, catalysts and metric names. TF-IDF cosine on words and bigrams supplies a second lexical ranker. Both rankers are refit on historically eligible text; this is not a neural embedding model. The two rankings are fused with reciprocal rank fusion. A per ticker cap keeps results diverse, and a source quota puts at least one methodology passage in every review.
 
 **Point in time.** A decision dated D only sees memos written before D, and only sees outcomes that were already knowable before D. This is enforced in the retriever, checked again by the guardrails and tested in the suite.
 
@@ -119,7 +137,7 @@ The team allocates on its own. The portfolio manager sizes every position from i
 
 At the September 25, 2026 close the book stood at $100,309 against a 4.6% gain for the S&P 500 since June 9. ETF Rotation ($26,109) and Core Blend ($26,098) tracked the index, the Options Desk ($25,450) trailed it, and Alpha Stocks ($22,651), the sleeve that leans hardest on AI judgment, lagged it by 14 points. That gap is why the memory layer exists.
 
-One known limitation. Documents and outcomes are point in time, but the index's term statistics are fit once over the whole archive, so ranking uses vocabulary statistics from memos written after some decisions. No future memo or outcome is ever retrieved, and a stricter study would rebuild the index per date.
+The October upgrade removes the original future-vocabulary limitation: both rankers are now fitted on text available before each replayed decision. Archived performance tables above have not been replaced with claims of a new investment edge.
 
 Four months and one market regime make a starter archive. The same pipeline pointed at a firm with decades of graded research is where these statistics become meaningful.
 

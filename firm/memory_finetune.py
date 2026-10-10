@@ -47,7 +47,7 @@ def _context(m: archive.Memo) -> str:
     where they were knowable before the decision."""
     from firm import memory_rag as rag
     query = f"{m.ticker} {m.debate_summary}"
-    kblock, _ = rag.knowledge_block(query, k=2)
+    kblock, _ = rag.knowledge_block(query, k=2, asof=m.asof)
     pblock, _, _ = rag.precedent_block(query, ticker=m.ticker, asof=m.asof, direction=0, k=3)
     return kblock + pblock
 
@@ -77,7 +77,7 @@ _built_lock = threading.Lock()
 def build(split: str = DEFAULT_SPLIT, min_abs_score: float = MIN_ABS_SCORE,
           with_context: bool = True) -> dict:
     memos = archive.load_memos()
-    key = (split, min_abs_score, with_context, len(memos), memos[-1].id if memos else "")
+    key = (split, min_abs_score, with_context, id(memos))
     with _built_lock:
         cached = _built.get(key)
     if cached is not None:
@@ -123,6 +123,8 @@ def _build(split: str, min_abs_score: float, with_context: bool) -> dict:
     overlap = ({r["metadata"]["memo_id"] for r in datasets["kto_train"]}
                & {r["metadata"]["memo_id"] for r in datasets["kto_test"]})
     card = {
+        "model_promotion_allowed": False,
+        "quality_warning": "Historical profitable calls are noisy outcome labels, not verified expert reasoning. Export does not train a model.",
         "split_date": split, "min_abs_score_for_sft": min_abs_score,
         "counts": {k: len(v) for k, v in datasets.items()},
         "kto_train_desirable": sum(1 for r in datasets["kto_train"] if r["label"]),
