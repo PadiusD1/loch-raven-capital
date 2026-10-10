@@ -200,22 +200,26 @@ def precedent_signal(hits: list[Hit], direction: int) -> dict:
     that followed the retrieved precedents. aligned flips the sign for a SELL,
     so a positive aligned number always means the memory supports the call.
     """
-    scored = [h for h in hits if h.outcome_visible and h.memo.excess_20d is not None]
+    # Only compare outcomes from calls in the SAME direction. Mixing BUY and
+    # SELL precedents treats opposite trade theses as equivalent evidence.
+    if direction not in (-1, 1):
+        return {"n": 0, "avg_excess_20d": None, "aligned": None,
+                "precedent_calls": 0, "precedent_calls_right": 0, "stance": "no memory"}
+    scored = [h for h in hits if h.outcome_visible and h.memo.excess_20d is not None
+              and h.memo.direction == direction]
     if not scored:
-        return {"n": 0, "avg_excess_20d": None, "aligned": None, "stance": "no memory"}
-    w = np.array([h.score for h in scored])
+        return {"n": 0, "avg_excess_20d": None, "aligned": None,
+                "precedent_calls": 0, "precedent_calls_right": 0, "stance": "no memory"}
+    w = np.array([h.score for h in scored], dtype=float)
     w = w / w.sum() if w.sum() > 0 else np.full(len(scored), 1.0 / len(scored))
-    ex = np.array([h.memo.excess_20d for h in scored])
+    ex = np.array([h.memo.excess_20d for h in scored], dtype=float)
     avg = float((w * ex).sum())
-    directional = [h for h in scored if h.memo.direction != 0]
-    right = sum(1 for h in directional if h.memo.label == "right")
-    aligned = avg * direction if direction else None
-    stance = "neutral"
-    if aligned is not None:
-        stance = "supports" if aligned > 0 else "warns"
+    right = sum(1 for h in scored if h.memo.label == "right")
+    aligned = avg * direction
+    stance = "supports" if aligned > 0 else "warns" if aligned < 0 else "neutral"
     return {"n": len(scored), "avg_excess_20d": round(avg, 2),
-            "aligned": None if aligned is None else round(aligned, 2),
-            "precedent_calls": len(directional), "precedent_calls_right": right, "stance": stance}
+            "aligned": round(aligned, 2), "precedent_calls": len(scored),
+            "precedent_calls_right": right, "stance": stance}
 
 
 def _outcome_phrase(h: Hit) -> str:
