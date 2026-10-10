@@ -174,3 +174,7 @@ python tests/test_week_sim.py    # 53 checks, a simulated trading week plus live
 Nothing here is investment advice. Past results do not promise future results.
 
 Copyright 2026 Patrick Kamdem. All rights reserved.
+
+## Automatic free-source coverage
+
+See [Free-data automation](docs/FREE_DATA_AUTOMATION.md) for twice-weekday collection, rotating issuer coverage, ETF and local-held-name integration, request budgets, quality reports, provider limitations and zero-LLM acquisition. No investment edge is implied.

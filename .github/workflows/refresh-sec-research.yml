@@ -3,10 +3,11 @@ name: Refresh source-linked research
 on:
   workflow_dispatch:
   schedule:
-    - cron: '20 12 * * 1-5'
+    - cron: '15 9,17 * * 1-5'
+      timezone: America/New_York
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: research-refresh-${{ github.ref }}
@@ -15,11 +16,14 @@ concurrency:
 jobs:
   research-refresh:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     timeout-minutes: 15
     env:
       PYTHONPATH: .
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
+      LOCH_RAVEN_AUTO_RESEARCH: '0'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,19 +50,40 @@ jobs:
               with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as fh:
                   fh.write('SEC_USER_AGENT=' + contact + '\n')
           PY
-      - name: Collect official disclosures, macro observations and price features
+      - name: Collect bounded free feeds for the configured fund universe
         run: python -m scripts.refresh_research
       - name: Verify corpus and retrieval before persistence
         run: |
           python -m unittest discover -s tests -p 'test_research*.py'
           python -m unittest discover -s tests -p 'test_desk_research_integration.py'
           python -m scripts.evaluate_research
-      - name: Persist validated research data only
+      - name: Publish collection health in the job summary
+        if: always()
         run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path('data/research_refresh_report.json')
+          if p.exists():
+              r = json.loads(p.read_text())
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
+                  fh.write(f"## Research collection: {r.get('status', 'unknown')}\n")
+                  fh.write(f"Records collected: {r.get('records_collected', 0)}; source errors: {len(r.get('errors', []))}; HTTP requests: {r.get('transport', {}).get('requests', 0)}\n")
+                  fh.write('No model training, paid API calls, or brokerage actions.\n')
+          PY
+      - name: Persist validated research data only
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          git config --local user.name 'github-actions[bot]'
+          git config --local user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -- data/research data/research_evaluation data/research_refresh_report.json
           if ! git diff --cached --quiet; then
-            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Refresh source-linked research and retrieval evaluation'
-            git push origin HEAD:"${GITHUB_REF_NAME}"
+            git commit -m 'Refresh source-linked research and retrieval evaluation'
+            git push origin HEAD:"refs/heads/${GITHUB_REF_NAME}"
           fi
       - uses: actions/upload-artifact@v4
         if: always()
@@ -67,4 +92,4 @@ jobs:
           path: |
             data/research_refresh_report.json
             data/research_evaluation/retrieval_evaluation.json
-          retention-days: 30
+          retention-days: 7

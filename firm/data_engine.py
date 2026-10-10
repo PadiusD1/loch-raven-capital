@@ -1303,7 +1303,7 @@ def build_packet(ticker: str, tech: dict, quant: float) -> dict:
                    if fund and fund.get(k) is not None}
     packet = {
         "ticker": ticker,
-        "asof": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "asof": datetime.now(timezone.utc).isoformat(),
         "quant_screen_score": quant_score(tech, fund) if fund else quant,
         "technicals": tech,
         "fundamentals": fund,

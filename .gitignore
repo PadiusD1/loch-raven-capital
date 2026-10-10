@@ -37,3 +37,6 @@ data/*.db
 .claude/
 data/memory/finetune/
 
+
+# Raw provider cache stays local; never publish it.
+data/research_http_cache/
