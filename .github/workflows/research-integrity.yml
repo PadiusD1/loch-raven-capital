@@ -20,10 +20,11 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
       - name: Compile modified research modules
-        run: python -m py_compile firm/analysts.py firm/memory_rag.py firm/research_provenance.py
+        run: python -m py_compile firm/analysts.py firm/memory_rag.py firm/research_provenance.py firm/research_rag.py scripts/fetch_sec_research.py
       - name: Run targeted regression tests
         run: |
           python tests/test_memory_direction.py
           python tests/test_research_provenance.py
+          python tests/test_research_rag.py
       - name: Run existing institutional-memory suite
         run: python tests/test_memory.py
