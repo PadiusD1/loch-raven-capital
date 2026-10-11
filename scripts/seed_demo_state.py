@@ -1,11 +1,14 @@
-"""Seed a demo copy's state/ from a live firm's state directory (read only on the source).
+"""Seed a demo copy's state/ from a local private state folder (read only on the source).
 
-  py -3.11 scripts/seed_demo_state.py --source ..\\ai-fund\\state
+  py -3.11 scripts/seed_demo_state.py --source PATH_TO_PRIVATE_STATE
 
-Copies the books, research history, bench, lessons and caches so the demo
-cockpit looks exactly like the live one. Skips backups, scratch files, locks,
-heartbeats, status, alerts and anything tied to live broker reconciliation, so
-the demo boots clean and never inherits a live incident. Forces paper mode.
+The source is a state folder the operator keeps outside this repository and
+names on the command line. It has no default, and a source inside the
+repository is refused, so no committed snapshot can seed a demo. Copies the
+books, research history, bench, lessons and caches so the demo cockpit looks
+exactly like the source firm. Skips backups, scratch files, locks, heartbeats,
+status, alerts and anything tied to live broker reconciliation, so the demo
+boots clean and never inherits a live incident. Forces paper mode.
 """
 import argparse
 import json
@@ -20,11 +23,14 @@ SKIP = re.compile(r"(\.bak|\.baktmp|\.tmp|corrupt|pre-xx)|^(heartbeat|status|ale
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--source", type=Path, required=True)
+    ap.add_argument("--source", type=Path, required=True,
+                    help="a local private state folder outside this repository")
     ap.add_argument("--dest", type=Path, default=REPO / "state")
     ap.add_argument("--depth", default="standard", choices=("fast", "standard", "full"))
     args = ap.parse_args()
     src, dst = args.source.resolve(), args.dest.resolve()
+    if src == REPO or REPO in src.parents:
+        raise SystemExit("the source must be a private state folder outside this repository")
     if src == dst:
         raise SystemExit("source and destination are the same folder")
     dst.mkdir(parents=True, exist_ok=True)

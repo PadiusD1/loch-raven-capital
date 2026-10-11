@@ -62,7 +62,7 @@ The hackUMBC rules ask that submitted work happen during the hacking period, fro
 | Precedents and playbook pages in every committee judge prompt | `firm/debate.py` |
 | Memory line and checks on every verdict in the cockpit | `firm/debate.py`, `dashboard/index.html` |
 | Demo isolation mode to run a paper copy beside a live firm | `config.py`, `scripts/seed_demo_state.py`, `scripts/export_demo_state.py` |
-| Overnight committee run with memory on, five verdicts, snapshot for offline viewing | `scripts/demo_committee_run.py`, `data/demo_state/` |
+| Overnight committee run with memory on, five verdicts | `scripts/demo_committee_run.py` |
 | 64 check memory test suite | `tests/test_memory.py` |
 
 ## Quick start, offline, no keys
@@ -78,13 +78,15 @@ Open http://localhost:8421/memory and click AMD, MU, CSCO or QQQ. Those four rev
 
 For a live review, sign in to the Claude Code CLI (`claude`) and switch the console to Live Claude. The full firm cockpit runs with `python app.py` on port 8420 and mounts the same memory routes.
 
-## Open the populated cockpit
+## Open a populated cockpit
 
-The cockpit in the screenshot is a paper copy of the firm holding the committee run of September 27, 2026, made with the memory switched on. To open it offline, seed a local state folder from the snapshot in `data/demo_state`.
+The cockpit in the screenshot is a paper copy of the firm holding the committee run of September 27, 2026, made with the memory switched on. The bundled state snapshot that used to sit in `data/demo_state` was removed from this repository on October 11, 2026, so no paper book ships with the code. To open a populated cockpit offline, seed the local `state/` folder from a private state folder you keep outside the repository and name on the command line.
 
 ```bash
-python scripts/seed_demo_state.py --source data/demo_state
+python scripts/seed_demo_state.py --source /path/to/your/private/state
 ```
+
+The seed script refuses a source inside the repository and forces paper mode.
 
 Then start the app in demo mode. On Windows PowerShell
 
@@ -98,7 +100,7 @@ On macOS or Linux
 LOCH_RAVEN_DEMO=1 LOCH_RAVEN_PORT=8430 python app.py
 ```
 
-Open http://localhost:8430 and click any verdict dated September 27. Its memory line lists the P and K sources the judge was shown and whether its citations and numbers checked out. The memory console is at http://localhost:8430/memory. Demo mode blanks the broker credentials, so it can only ever trade paper.
+Open http://localhost:8430 and click any verdict made with the memory switched on. Its memory line lists the P and K sources the judge was shown and whether its citations and numbers checked out. The memory console is at http://localhost:8430/memory. Demo mode blanks the broker credentials, so it can only ever trade paper.
 
 ## How the memory works
 
